@@ -13,10 +13,13 @@ public class FriendSystem {
 
     private static FriendSystem instance;
     private final FriendCommandManager commandManager;
-    private FriendStorage playerStorage;
+    private FriendStorage storage;
 
     public FriendCommandManager getCommandManager() {
         return this.commandManager;
+    }
+    public FriendStorage getStorage() {
+        return storage;
     }
     public static FriendSystem getInstance() {
         return instance;

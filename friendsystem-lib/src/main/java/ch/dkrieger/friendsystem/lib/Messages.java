@@ -15,4 +15,10 @@ public class Messages {
     public static String SYSTEM_NAME;
     public static String SYSTEM_PREFIX;
 
+    public static String PLAYER_DEFAULT_STATUS;
+
+
+    public static String PLAYER_DEFAULT_COLOR;
+
+
 }
