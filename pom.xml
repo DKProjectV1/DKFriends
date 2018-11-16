@@ -17,10 +17,10 @@
     <modules>
         <module>friendsystem-lib</module>
         <module>friendsystem-bungeecord</module>
-        <module>friendsystem-core</module>
         <module>friendsystem-spigot</module>
-        <module>friendsystem-spigot-api</module>
     </modules>
+
+
 
     <repositories>
         <repository>

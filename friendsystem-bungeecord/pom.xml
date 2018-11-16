@@ -44,8 +44,8 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>ch.dkrieger.friendsystem.core</groupId>
-            <artifactId>friendsystem-core</artifactId>
+            <groupId>ch.dkrieger.friendsystem.lib</groupId>
+            <artifactId>friendsystem-lib</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>

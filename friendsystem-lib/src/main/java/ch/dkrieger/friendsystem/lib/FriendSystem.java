@@ -1,11 +1,10 @@
-package ch.dkrieger.friendsystem.core;
+package ch.dkrieger.friendsystem.lib;
 
-import ch.dkrieger.friendsystem.core.command.FriendCommand;
-import ch.dkrieger.friendsystem.core.command.FriendCommandManager;
+import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 08:35
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:29
  *
  */
 

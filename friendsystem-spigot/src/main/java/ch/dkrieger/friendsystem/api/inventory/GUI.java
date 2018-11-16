@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.api.inventory;
+package ch.dkrieger.friendsystem.api.inventory;
 
 /*
  *
@@ -6,7 +6,7 @@ package ch.dkrieger.friendsystem.spigot.api.inventory;
  *
  */
 
-import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
+import ch.dkrieger.friendsystem.api.inventory.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.api;
+package ch.dkrieger.friendsystem.api;
 
 /*
  *

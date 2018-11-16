@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.core.command;
+package ch.dkrieger.friendsystem.lib.command;
 
 /*
  *

@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.core.command;
+package ch.dkrieger.friendsystem.lib.command;
 
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import net.md_5.bungee.api.chat.TextComponent;

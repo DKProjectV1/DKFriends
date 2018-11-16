@@ -1,14 +1,6 @@
-package ch.dkrieger.friendsystem.spigot.utils;
+package ch.dkrieger.friendsystem;
 
-/*
- *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 16.11.18 15:41
- *
- */
-
-import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.apache.commons.codec.binary.Base64;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -16,8 +8,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
+
 import java.util.LinkedList;
 import java.util.List;
+
+/*
+ *
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:27
+ *
+ */
 
 public class SpigotUtil {
 

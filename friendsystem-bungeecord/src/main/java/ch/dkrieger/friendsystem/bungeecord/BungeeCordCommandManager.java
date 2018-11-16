@@ -1,8 +1,8 @@
 package ch.dkrieger.friendsystem.bungeecord;
 
-import ch.dkrieger.friendsystem.core.command.FriendCommand;
-import ch.dkrieger.friendsystem.core.command.FriendCommandManager;
-import ch.dkrieger.friendsystem.core.command.FriendCommandSender;
+import ch.dkrieger.friendsystem.lib.command.FriendCommand;
+import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
+import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;

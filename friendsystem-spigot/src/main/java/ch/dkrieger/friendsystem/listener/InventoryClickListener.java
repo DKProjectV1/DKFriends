@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.listener;
+package ch.dkrieger.friendsystem.listener;
 
 /*
  *
@@ -6,7 +6,7 @@ package ch.dkrieger.friendsystem.spigot.listener;
  *
  */
 
-import ch.dkrieger.friendsystem.spigot.api.inventory.GUI;
+import ch.dkrieger.friendsystem.api.inventory.GUI;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
