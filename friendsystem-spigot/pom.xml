@@ -17,6 +17,12 @@
 
     <groupId>ch.dkrieger.friendsystem.spigot</groupId>
     <artifactId>friendsystem-spigot</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>ch.dkrieger.friendsystem.spigot.api</groupId>
+            <artifactId>friendsystem-spigot-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
 
 </project>
