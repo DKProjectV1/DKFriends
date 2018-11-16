@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.lib.utils;
+package ch.dkrieger.friendsystem.lib.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,7 +12,7 @@ import java.util.Random;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:46
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47
  *
  */
 

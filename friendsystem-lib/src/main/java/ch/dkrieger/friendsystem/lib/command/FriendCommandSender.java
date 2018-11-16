@@ -1,13 +1,13 @@
-package ch.dkrieger.friendsystem.spigot.lib.command;
+package ch.dkrieger.friendsystem.lib.command;
 
-import ch.dkrieger.friendsystem.spigot.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.UUID;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:46
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47
  *
  */
 

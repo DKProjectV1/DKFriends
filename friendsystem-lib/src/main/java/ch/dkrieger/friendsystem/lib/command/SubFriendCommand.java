@@ -1,8 +1,8 @@
-package ch.dkrieger.friendsystem.spigot.lib.command;
+package ch.dkrieger.friendsystem.lib.command;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:46
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47
  *
  */
 

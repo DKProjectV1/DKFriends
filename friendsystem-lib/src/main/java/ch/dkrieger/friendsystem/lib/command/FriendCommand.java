@@ -1,6 +1,6 @@
-package ch.dkrieger.friendsystem.spigot.lib.command;
+package ch.dkrieger.friendsystem.lib.command;
 
-import ch.dkrieger.friendsystem.spigot.lib.utils.GeneralUtil;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:46
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47
  *
  */
 

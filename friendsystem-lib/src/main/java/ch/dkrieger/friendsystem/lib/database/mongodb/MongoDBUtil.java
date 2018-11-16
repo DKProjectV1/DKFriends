@@ -1,6 +1,6 @@
-package ch.dkrieger.friendsystem.spigot.lib.database.mongodb;
+package ch.dkrieger.friendsystem.lib.database.mongodb;
 
-import ch.dkrieger.friendsystem.spigot.lib.utils.GeneralUtil;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
@@ -12,7 +12,7 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:46
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47
  *
  */
 

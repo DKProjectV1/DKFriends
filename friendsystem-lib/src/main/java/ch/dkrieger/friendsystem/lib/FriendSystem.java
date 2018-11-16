@@ -1,10 +1,10 @@
-package ch.dkrieger.friendsystem.spigot.lib;
+package ch.dkrieger.friendsystem.lib;
 
-import ch.dkrieger.friendsystem.spigot.lib.command.FriendCommandManager;
+import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:46
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47
  *
  */
 
