@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem;
+package ch.dkrieger.friendsystem.bungeecord;
 
 /*
  *

@@ -1,6 +1,5 @@
-package ch.dkrieger.friendsystem;
+package ch.dkrieger.friendsystem.bungeecord;
 
-import ch.dkrieger.friendsystem.BungeeCordFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.core.command.FriendCommand;
 import ch.dkrieger.friendsystem.core.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.core.command.FriendCommandSender;
@@ -45,7 +44,7 @@ public class BungeeCordCommandManager implements FriendCommandManager {
         private FriendCommand command;
 
         public BungeeCordFriendCommand(FriendCommand command) {
-            super(command.getName(),null,command.getAliases().toArray(new String[command.getAliases().size()]));
+            super(command.getName(),command.getPermission(),command.getAliases().toArray(new String[command.getAliases().size()]));
             this.command = command;
         }
         @Override
