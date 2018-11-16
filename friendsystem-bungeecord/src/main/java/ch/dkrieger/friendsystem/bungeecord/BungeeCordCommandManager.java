@@ -82,11 +82,11 @@ public class BungeeCordCommandManager implements FriendCommandManager {
             else return null;
         }
         @Override
-        public FriendPlayer getASFriendPlayer() {
+        public FriendPlayer getAsFriendPlayer() {
             return null;
         }
         @Override
-        public Boolean hasPermission(String permission) {
+        public boolean hasPermission(String permission) {
             return sender.hasPermission(permission);
         }
         @Override

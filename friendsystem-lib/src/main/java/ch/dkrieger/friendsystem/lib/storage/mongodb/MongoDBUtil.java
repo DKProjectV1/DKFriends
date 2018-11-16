@@ -38,6 +38,9 @@ public class MongoDBUtil {
     public static void updateOne(MongoCollection collection,Bson bson, Object object){
         collection.updateOne(bson,toDocument(object));
     }
+    public static void updateOne(MongoCollection collection,Bson bson1, Bson bson2){
+        collection.updateOne(bson1,bson2);
+    }
     public static void updateMany(MongoCollection collection,Bson bson, Object object){
         collection.updateMany(bson,toDocument(object));
     }

@@ -9,7 +9,7 @@ package ch.dkrieger.friendsystem.lib.storage;
 public enum StorageType {
 
     JSON(),
-    SQL(),
+    SQLITE(),
     MYSQL(),
     MONGODB();
 

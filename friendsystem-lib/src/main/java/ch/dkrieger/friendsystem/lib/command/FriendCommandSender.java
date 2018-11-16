@@ -17,9 +17,9 @@ public interface FriendCommandSender {
 
     public UUID getUUID();
 
-    public FriendPlayer getASFriendPlayer();
+    public FriendPlayer getAsFriendPlayer();
 
-    public Boolean hasPermission(String permission);
+    public boolean hasPermission(String permission);
 
     public void sendMessage(String message);
 
