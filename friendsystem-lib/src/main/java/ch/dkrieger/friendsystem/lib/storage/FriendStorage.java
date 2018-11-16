@@ -52,10 +52,7 @@ public interface FriendStorage {
 
     public void saveRequests(UUID uuid, List<Friend> requests);
 
-    public default void saveFriendsAndRequests(UUID uuid, List<Friend> friends,List<Friend> requests) {
-        saveFriends(uuid, friends);
-        saveRequests(uuid, requests);
-    }
+    public void saveFriendsAndRequests(UUID uuid, List<Friend> friends,List<Friend> requests);
 
     public void saveProperties(UUID uuid, Document properties);
 

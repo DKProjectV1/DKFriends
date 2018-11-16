@@ -112,6 +112,12 @@ public class MongoDBFriendStorage implements FriendStorage {
     }
 
     @Override
+    public void saveFriendsAndRequests(UUID uuid, List<Friend> friends, List<Friend> requests) {
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "friends", friends);
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "requests", requests);
+    }
+
+    @Override
     public void saveSettings(UUID uuid, FriendPlayer.Settings settings) {
         MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "settings", settings);
     }

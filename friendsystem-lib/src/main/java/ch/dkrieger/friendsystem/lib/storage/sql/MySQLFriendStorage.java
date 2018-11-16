@@ -166,20 +166,23 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
 
 	@Override
 	public void savePlayer(FriendPlayer player) {
-        saveName(player.getUUID(), player.getName());
-        saveColor(player.getUUID(), player.getColor());
-        saveGameProfile(player.getUUID(), player.getGameProfile());
-        saveLastLogin(player.getUUID(), player.getLastLogin());
-        saveMaxFriends(player.getUUID(), player.getMaxFriends());
-        saveMaxPartyPlayers(player.getUUID(), player.getMaxPartyPlayers());
-        saveMaxClanPlayers(player.getUUID(), player.getMaxClanPlayers());
-        saveHiderStatus(player.getUUID(), player.getHiderStatus());
-        saveStatus(player.getUUID(), player.getStatus());
-        saveSettings(player.getUUID(), player.getSettings());
-        saveFriends(player.getUUID(), player.getFriends());
-        saveRequests(player.getUUID(), player.getRequests());
-        saveProperties(player.getUUID(), player.getProperties());
-	}
+        this.friendPlayerTable.update()
+                .set("name", player.getName())
+                .set("color", player.getColor())
+                .set("gameProfile", player.getGameProfile())
+                .set("lastLogin", player.getLastLogin())
+                .set("maxFriends", player.getMaxFriends())
+                .set("maxPartyPlayers", player.getMaxPartyPlayers())
+                .set("maxClanPlayers", player.getMaxClanPlayers())
+                .set("hiderStatus", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getHiderStatus()))
+                .set("status", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getStatus()))
+                .set("settings", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getSettings()))
+                .set("friends", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getFriends()))
+                .set("requests", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getRequests()))
+                .set("properties", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getProperties()))
+                .where("uuid", player.getUUID().toString()).execute();
+
+    }
 
     @Override
     public void saveName(UUID uuid, String name) {
@@ -225,6 +228,11 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
 	public void saveRequests(UUID uuid, List<Friend> requests) {
         updateSettings(uuid, "requests", GeneralUtil.GSON_NOT_PRETTY.toJson(requests));
 	}
+
+    @Override
+    public void saveFriendsAndRequests(UUID uuid, List<Friend> friends, List<Friend> requests) {
+        this.friendPlayerTable.update().set("friends", friends).set("requests", requests).where("uuid", uuid.toString()).execute();
+    }
 
     @Override
 	public void saveSettings(UUID uuid, FriendPlayer.Settings settings) {
