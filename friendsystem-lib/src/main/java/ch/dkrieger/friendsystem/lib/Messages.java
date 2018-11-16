@@ -13,13 +13,17 @@ public class Messages {
         SYSTEM_PREFIX = "["+systemname+"] ";
     }
     public static String SYSTEM_NAME;
+
     public static String SYSTEM_PREFIX;
+
     public static String ERROR;
 
     public static String PLAYER_DEFAULT_STATUS;
 
 
     public static String PLAYER_DEFAULT_COLOR;
+
+    public static String PLAYER_MAX_FRIENDS_REACHED;
 
 
 }

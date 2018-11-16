@@ -16,6 +16,7 @@ public class FriendPlayer {
     private UUID uuid;
     private String name, color, gameProfile;
     private long firstLogin, lastLogin;
+    private int maxFriends, maxPartyPlayers, maxClanPlayers;
     private HiderStatus hiderStatus;
     private Status status;
     private Settings settings;
@@ -25,7 +26,6 @@ public class FriendPlayer {
     public FriendPlayer(UUID uuid, String name, String color, String gameProfile) {
         this(uuid,name,color,gameProfile,System.currentTimeMillis(),System.currentTimeMillis(),HiderStatus.NOBODY,new Status(),new Settings(),new LinkedList<>(),new LinkedList<>(),new Document());
     }
-
     public FriendPlayer(UUID uuid, String name, String color, String gameProfile, long firstLogin, long lastLogin, HiderStatus hiderStatus, Status status, Settings settings, List<Friend> friends, List<Friend> requests, Document properties) {
         this.uuid = uuid;
         this.name = name;
@@ -63,6 +63,18 @@ public class FriendPlayer {
 
     public long getLastLogin() {
         return lastLogin;
+    }
+
+    public int getMaxFriends() {
+        return maxFriends;
+    }
+
+    public int getMaxPartyPlayers() {
+        return maxPartyPlayers;
+    }
+
+    public int getMaxClanPlayers() {
+        return maxClanPlayers;
     }
 
     public HiderStatus getHiderStatus() {

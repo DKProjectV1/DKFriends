@@ -1,19 +1,18 @@
 package ch.dkrieger.friendsystem.lib.command.defaults.friend;
 
-/*
- *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 18:53
- *
- */
-
-import ch.dkrieger.friendsystem.lib.command.FriendCommand;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 
 import java.util.List;
 
-public class CommandFriend extends FriendCommand {
+/*
+ *
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 20:45
+ *
+ */
 
-    public CommandFriend() {
+public class FriendCommand extends ch.dkrieger.friendsystem.lib.command.FriendCommand {
+
+    public FriendCommand() {
         super("friend","Friend command",null,"/friend ","freund","f");
     }
 
