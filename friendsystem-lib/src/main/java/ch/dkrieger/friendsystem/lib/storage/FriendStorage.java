@@ -28,18 +28,35 @@ public interface FriendStorage {
 
     public void savePlayer(FriendPlayer player);
 
+    public void saveName(UUID uuid, String name);
+
+    public void saveColor(UUID uuid, String color);
+
+    public void saveGameProfile(UUID uuid, String gameProfile);
+
+    public void saveLastLogin(UUID uuid, long lastLogin);
+
+    public void saveMaxFriends(UUID uuid, int maxFriends);
+
+    public void saveMaxPartyPlayers(UUID uuid, int maxPartyPlayers);
+
+    public void saveMaxClanPlayers(UUID uuid, int maxClanPlayers);
+
+    public void saveHiderStatus(UUID uuid,FriendPlayer.HiderStatus hiderStatus);
+
+    public void saveStatus(UUID uuid, FriendPlayer.Status status);
+
+    public void saveSettings(UUID uuid,FriendPlayer.Settings settings);
+
     public void saveFriends(UUID uuid, List<Friend> friends);
 
     public void saveRequests(UUID uuid, List<Friend> requests);
 
-    public void saveFriendsAndRequests(UUID uuid, List<Friend> friends,List<Friend> requests);
-
-    public void saveSettings(UUID uuid,FriendPlayer.Settings settings);
+    public default void saveFriendsAndRequests(UUID uuid, List<Friend> friends,List<Friend> requests) {
+        saveFriends(uuid, friends);
+        saveRequests(uuid, requests);
+    }
 
     public void saveProperties(UUID uuid, Document properties);
-
-    public void saveStatus(UUID uuid, FriendPlayer.Status status);
-
-    public void saveHiderStatus(UUID uuid,FriendPlayer.HiderStatus hiderStatus);
 
 }

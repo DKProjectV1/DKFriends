@@ -67,6 +67,41 @@ public class MongoDBFriendStorage implements FriendStorage {
     }
 
     @Override
+    public void saveName(UUID uuid, String name) {
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "name", name);
+    }
+
+    @Override
+    public void saveColor(UUID uuid, String color) {
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "color", color);
+    }
+
+    @Override
+    public void saveGameProfile(UUID uuid, String gameProfile) {
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "gameProfile", gameProfile);
+    }
+
+    @Override
+    public void saveLastLogin(UUID uuid, long lastLogin) {
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "lastLogin", lastLogin);
+    }
+
+    @Override
+    public void saveMaxFriends(UUID uuid, int maxFriends) {
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "maxFriends", maxFriends);
+    }
+
+    @Override
+    public void saveMaxPartyPlayers(UUID uuid, int maxPartyPlayers) {
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "maxPartyPlayers", maxPartyPlayers);
+    }
+
+    @Override
+    public void saveMaxClanPlayers(UUID uuid, int maxClanPlayers) {
+        MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "maxClanPlayers", maxClanPlayers);
+    }
+
+    @Override
     public void saveFriends(UUID uuid, List<Friend> friends) {
         MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid, "friends", friends);
     }
