@@ -14,6 +14,7 @@ public class Messages {
     }
     public static String SYSTEM_NAME;
     public static String SYSTEM_PREFIX;
+    public static String ERROR;
 
     public static String PLAYER_DEFAULT_STATUS;
 

@@ -20,9 +20,9 @@ public interface FriendStorage {
 
     public void disconnect();
 
-    public FriendPlayer getPlayer(UUID uuid);
+    public FriendPlayer getPlayer(UUID uuid) throws Exception;
 
-    public FriendPlayer getPlayer(String name);
+    public FriendPlayer getPlayer(String name) throws Exception;
 
     public void createPlayer(FriendPlayer player);
 
