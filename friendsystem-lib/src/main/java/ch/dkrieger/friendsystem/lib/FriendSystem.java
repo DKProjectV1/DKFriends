@@ -1,6 +1,7 @@
 package ch.dkrieger.friendsystem.lib;
 
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
+import ch.dkrieger.friendsystem.lib.storage.FriendStorage;
 
 /*
  *
@@ -12,6 +13,7 @@ public class FriendSystem {
 
     private static FriendSystem instance;
     private final FriendCommandManager commandManager;
+    private FriendStorage playerStorage;
 
     public FriendCommandManager getCommandManager() {
         return this.commandManager;

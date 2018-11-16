@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.lib.database.mongodb;
+package ch.dkrieger.friendsystem.lib.storage.mongodb;
 
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import com.mongodb.client.FindIterable;
@@ -12,7 +12,7 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47
+ *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 18:51
  *
  */
 

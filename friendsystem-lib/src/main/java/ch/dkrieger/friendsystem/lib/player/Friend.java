@@ -12,6 +12,6 @@ public class Friend {
 
     private UUID uuid;
     private long timeStamp;
-    private boolean favorit;
+    private boolean favorite;
 
 }
