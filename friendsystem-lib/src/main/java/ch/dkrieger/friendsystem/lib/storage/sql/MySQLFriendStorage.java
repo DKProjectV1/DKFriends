@@ -9,6 +9,7 @@ import ch.dkrieger.friendsystem.lib.storage.sql.query.SelectQuery;
 import ch.dkrieger.friendsystem.lib.storage.sql.table.Table;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
+import com.google.gson.reflect.TypeToken;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -137,12 +138,15 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
                             result.getString("gameProfile"),
                             result.getLong("firstLogin"),
                             result.getLong("lastLogin"),
-                            GeneralUtil.GSON.fromJson(result.getString("hiderStatus"), FriendPlayer.HiderStatus.class),
-                            GeneralUtil.GSON.fromJson(result.getString("status"), FriendPlayer.Status.class),
-                            GeneralUtil.GSON.fromJson(result.getString("settings"), FriendPlayer.Settings.class),
-                            GeneralUtil.GSON.fromJson(result.getString("friends"), List.class),
-                            GeneralUtil.GSON.fromJson(result.getString("requests"), List.class),
-                            GeneralUtil.GSON.fromJson(result.getString("properties"), Document.class)
+                            result.getInt("maxFriends"),
+                            result.getInt("maxPartyPlayers"),
+                            result.getInt("maxClanPlayers"),
+                            GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("hiderStatus"), FriendPlayer.HiderStatus.class),
+                            GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("status"), FriendPlayer.Status.class),
+                            GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("settings"), FriendPlayer.Settings.class),
+                            GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("friends"), new TypeToken<List<Friend>>(){}.getType()),
+                            GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("requests"), new TypeToken<List<Friend>>(){}.getType()),
+                            GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("properties"), Document.class)
                             );
                 }
             }finally {
@@ -162,36 +166,40 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
 
 	@Override
 	public void savePlayer(FriendPlayer player) {
-	    this.friendPlayerTable.update().set("friendplayer", player).where("uuid", player.getUUID().toString()).execute();
+
 	}
 
 	@Override
 	public void saveFriends(UUID uuid, List<Friend> friends) {
-        //this.friendPlayerTable.update().set("friendplayer", player).where("uuid", player.getUUID().toString()).execute();
+	    updateSettings(uuid, "friends", GeneralUtil.GSON_NOT_PRETTY.toJson(friends));
 	}
 
 	@Override
 	public void saveRequests(UUID uuid, List<Friend> requests) {
-
+        updateSettings(uuid, "requests", GeneralUtil.GSON_NOT_PRETTY.toJson(requests));
 	}
 
 	@Override
 	public void saveSettings(UUID uuid, FriendPlayer.Settings settings) {
-
+	    updateSettings(uuid, "settings", GeneralUtil.GSON_NOT_PRETTY.toJson(settings));
 	}
 
 	@Override
 	public void saveProperties(UUID uuid, Document properties) {
-
+	    updateSettings(uuid, "properties", GeneralUtil.GSON_NOT_PRETTY.toJson(properties));
 	}
 
 	@Override
 	public void saveStatus(UUID uuid, FriendPlayer.Status status) {
-
+	    updateSettings(uuid, "status", GeneralUtil.GSON_NOT_PRETTY.toJson(status));
 	}
 
 	@Override
 	public void saveHiderStatus(UUID uuid, FriendPlayer.HiderStatus hiderStatus) {
-
+	    updateSettings(uuid, "hiderStatus", GeneralUtil.GSON_NOT_PRETTY.toJson(hiderStatus));
 	}
+
+	private void updateSettings(UUID uuid, String identifier, Object value) {
+        this.friendPlayerTable.update().set(identifier, value).where("uuid", uuid.toString()).execute();
+    }
 }
