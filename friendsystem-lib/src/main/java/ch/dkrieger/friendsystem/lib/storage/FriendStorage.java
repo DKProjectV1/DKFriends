@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public interface FriendStorage {
 
-    public void connect(Config config);
+    public void connect();
 
     public void disconnect();
 

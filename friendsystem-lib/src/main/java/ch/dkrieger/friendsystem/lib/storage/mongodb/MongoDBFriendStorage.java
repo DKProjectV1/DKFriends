@@ -24,12 +24,17 @@ import java.util.UUID;
 
 public class MongoDBFriendStorage implements FriendStorage {
 
+    private Config config;
     private MongoClient mongoClient;
     private MongoDatabase database;
     private MongoCollection friendPlayerCollection;
 
+    public MongoDBFriendStorage(Config config) {
+        this.config = config;
+    }
+
     @Override
-    public void connect(Config config) {
+    public void connect() {
         this.mongoClient = new MongoClient(new MongoClientURI("mongodb"+(config.isMongoDbSrv() ? "+srv" : "")+"://"+config.getUser()+":"
                 +config.getPassword()+"@"+config.getHost()+":"+config.getPort()+"/" +config.getMongoDbAuthenticationDatabase()+"?retryWrites=true"));
         this.database = this.mongoClient.getDatabase(config.getDatabase());
