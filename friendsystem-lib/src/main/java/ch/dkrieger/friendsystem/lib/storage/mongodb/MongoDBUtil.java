@@ -35,6 +35,9 @@ public class MongoDBUtil {
         for(Object object : objects) docuemtns.add(toDocument(object));
         collection.insertMany(docuemtns);
     }
+    public static void updateOne(MongoCollection collection, String identifier, Object identifierObject, String valueIdentifier, Object value) {
+        MongoDBUtil.updateOne(collection, new org.bson.Document(identifier, identifierObject), new org.bson.Document("$set", new org.bson.Document(valueIdentifier, value)));
+    }
     public static void updateOne(MongoCollection collection,Bson bson, Object object){
         collection.updateOne(bson,toDocument(object));
     }
