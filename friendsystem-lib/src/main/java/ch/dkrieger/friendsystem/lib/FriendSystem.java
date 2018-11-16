@@ -26,6 +26,13 @@ public class FriendSystem {
     public FriendStorage getStorage() {
         return storage;
     }
+
+    public void registerCommands(){
+        
+    }
+
+
+
     public static FriendSystem getInstance() {
         return instance;
     }

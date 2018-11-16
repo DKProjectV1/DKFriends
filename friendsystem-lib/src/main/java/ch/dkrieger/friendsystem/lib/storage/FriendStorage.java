@@ -32,6 +32,8 @@ public interface FriendStorage {
 
     public void saveRequests(UUID uuid, List<Friend> requests);
 
+    public void saveFriendsAndRequests(UUID uuid, List<Friend> friends,List<Friend> requests);
+
     public void saveSettings(UUID uuid,FriendPlayer.Settings settings);
 
     public void saveProperties(UUID uuid, Document properties);

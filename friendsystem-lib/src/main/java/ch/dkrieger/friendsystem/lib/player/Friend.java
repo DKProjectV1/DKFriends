@@ -14,4 +14,18 @@ public class Friend {
     private long timeStamp;
     private boolean favorite;
 
+    public Friend(UUID uuid, long timeStamp, boolean favorite) {
+        this.uuid = uuid;
+        this.timeStamp = timeStamp;
+        this.favorite = favorite;
+    }
+    public UUID getUUID() {
+        return uuid;
+    }
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+    public boolean isFavorite() {
+        return favorite;
+    }
 }

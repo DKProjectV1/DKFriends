@@ -34,9 +34,30 @@ public class AddCommand extends SubFriendCommand {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
             if(player.getFriends().size() >= player.getMaxFriends()){
-                sender.sendMessage(Messages.PLAYER_MAX_FRIENDS_REACHED.replace("[max]",player.getm));
+                sender.sendMessage(Messages.PLAYER_MAX_FRIENDS_REACHED.replace("[max]",""+player.getMaxFriends()));
                 return;
             }
+            FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
+            if(friend == null){
+                sender.sendMessage(Messages.PLAYER_NOT_FOUND);
+                return;
+            }
+            //check can add
+            if(friend.getFriends().size() >= friend.getMaxFriends()){
+                sender.sendMessage(Messages.PLAYER_MAX_FRIENDS_REACHED_FRIEND);
+                return;
+            }
+            if(player.hasRequest(friend)){
+                sender.sendMessage(Messages.PLAYER_HAS_ALREADY_REQUEST);
+                return;
+            }
+            //check request by friend
+            if(player.isFriend(friend)){
+                sender.sendMessage(Messages.PLAYER_ALREADY_FRIENDS);
+                return;
+            }
+            player.addRequest(friend);
+            sender.sendMessage(Messages.PLAYER_HAS_ALREADY_REQUEST);
         }
     }
     @Override
