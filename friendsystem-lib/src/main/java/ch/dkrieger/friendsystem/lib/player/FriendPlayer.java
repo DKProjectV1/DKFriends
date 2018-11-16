@@ -1,5 +1,6 @@
 package ch.dkrieger.friendsystem.lib.player;
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 
@@ -24,7 +25,7 @@ public class FriendPlayer {
     private Document properties;
 
     public FriendPlayer(UUID uuid, String name, String color, String gameProfile) {
-        this(uuid,name,color,gameProfile,System.currentTimeMillis(),System.currentTimeMillis(),HiderStatus.NOBODY,new Status(),new Settings(),new LinkedList<>(),new LinkedList<>(),new Document());
+        this(uuid,name,color,gameProfile,System.currentTimeMillis(),System.currentTimeMillis(),HiderStatus.NOBODY,new Status(),new Settings(),new ArrayList<>(),new ArrayList<>(),new Document());
     }
     public FriendPlayer(UUID uuid, String name, String color, String gameProfile, long firstLogin, long lastLogin, HiderStatus hiderStatus, Status status, Settings settings, List<Friend> friends, List<Friend> requests, Document properties) {
         this.uuid = uuid;
@@ -101,6 +102,62 @@ public class FriendPlayer {
         return properties;
     }
 
+    public Friend getRequest(FriendPlayer player){
+        return getRequest(player.getUUID());
+    }
+    public Friend getRequest(UUID uuid){
+        Iterator<Friend> iterator = this.requests.iterator();
+        Friend request = null;
+        while((request= iterator.next()) != null) if(request.getUUID().equals(uuid)) return request;
+        return null;
+    }
+    public void addRequest(FriendPlayer player){
+        addRequest(player,false);
+    }
+    public void addRequest(FriendPlayer player, boolean noRepeat){
+        this.requests.add(new Friend(player.getUUID(),System.currentTimeMillis(),false));
+        if(!noRepeat) player.addRequest(this,true);
+        FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
+    }
+    public void removeRequest(FriendPlayer player){
+        removeRequest(player.getUUID());
+    }
+    public void removeRequest(UUID uuid){
+        this.requests.remove(getRequest(uuid));
+        FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
+    }
+    public boolean hasRequest(FriendPlayer player){
+        return hasRequest(player.getUUID());
+    }
+    public boolean hasRequest(UUID uuid){
+        return getRequest(uuid) != null;
+    }
+    public Friend getFriend(FriendPlayer player){
+        return getFriend(player.getUUID());
+    }
+    public Friend getFriend(UUID uuid){
+        Iterator<Friend> iterator = this.friends.iterator();
+        Friend friend = null;
+        while((friend = iterator.next()) != null) if(friend.getUUID().equals(uuid)) return friend;
+        return null;
+    }
+    public void addFriend(FriendPlayer player){
+        addFriend(player,false);
+    }
+    public void addFriend(FriendPlayer player, boolean noRepeat){
+        Friend friend = getRequest(player);
+        if(friend == null) friend = new Friend(player.getUUID(),System.currentTimeMillis(),false);
+        else this.friends.add(friend);
+        this.requests.remove(friend);
+        if(!noRepeat) player.addFriend(this,true);
+        FriendSystem.getInstance().getStorage().saveFriendsAndRequests(this.uuid,this.friends,this.requests);
+    }
+    public boolean isFriend(FriendPlayer player){
+        return isFriend(player.getUUID());
+    }
+    public boolean isFriend(UUID uuid){
+        return getFriend(uuid) != null;
+    }
     public static class Settings {
 
         private Map<String,Boolean> friendRequests, partyRequests, playerHider;

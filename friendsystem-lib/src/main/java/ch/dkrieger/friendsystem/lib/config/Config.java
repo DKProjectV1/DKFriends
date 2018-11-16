@@ -14,7 +14,7 @@ public class Config extends SimpleConfig {
 
     private StorageType storageType;
     private String host, port, user, password, database, mongoDbAuthenticationDatabase, jsonFolder;
-    private boolean mongoDbSrv;
+    private boolean mongoDbSrv, commandsEnabled;
 
     public Config(File file) {
         super(file);
