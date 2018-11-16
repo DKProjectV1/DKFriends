@@ -25,15 +25,18 @@ public class FriendPlayer {
     private Document properties;
 
     public FriendPlayer(UUID uuid, String name, String color, String gameProfile) {
-        this(uuid,name,color,gameProfile,System.currentTimeMillis(),System.currentTimeMillis(),HiderStatus.NOBODY,new Status(),new Settings(),new ArrayList<>(),new ArrayList<>(),new Document());
+        this(uuid,name,color,gameProfile,System.currentTimeMillis(),System.currentTimeMillis(),50,10,10,HiderStatus.NOBODY,new Status(),new Settings(),new ArrayList<>(),new ArrayList<>(),new Document());
     }
-    public FriendPlayer(UUID uuid, String name, String color, String gameProfile, long firstLogin, long lastLogin, HiderStatus hiderStatus, Status status, Settings settings, List<Friend> friends, List<Friend> requests, Document properties) {
+    public FriendPlayer(UUID uuid, String name, String color, String gameProfile, long firstLogin, long lastLogin, int maxFriends, int maxPartyPlayers, int maxClanPlayers, HiderStatus hiderStatus, Status status, Settings settings, List<Friend> friends, List<Friend> requests, Document properties) {
         this.uuid = uuid;
         this.name = name;
         this.color = color;
         this.gameProfile = gameProfile;
         this.firstLogin = firstLogin;
         this.lastLogin = lastLogin;
+        this.maxFriends = maxFriends;
+        this.maxPartyPlayers = maxPartyPlayers;
+        this.maxClanPlayers = maxClanPlayers;
         this.hiderStatus = hiderStatus;
         this.status = status;
         this.settings = settings;
