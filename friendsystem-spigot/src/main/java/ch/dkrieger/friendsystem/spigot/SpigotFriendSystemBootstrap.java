@@ -7,6 +7,7 @@ package ch.dkrieger.friendsystem.spigot;
  */
 
 import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
+import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.spigot.listener.InventoryOpenListener;
 import org.bukkit.Bukkit;
@@ -18,10 +19,13 @@ import java.io.File;
 public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriendsPlatform {
 
     private static SpigotFriendSystemBootstrap instance;
+    private SpigotCommandManager commandManager;
 
     @Override
     public void onLoad() {
         instance = this;
+        this.commandManager = new SpigotCommandManager();
+        new FriendSystem(this, new SpigotFriendPlayerManager());
     }
 
     @Override

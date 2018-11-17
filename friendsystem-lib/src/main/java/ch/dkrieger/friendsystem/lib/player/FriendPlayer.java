@@ -114,6 +114,59 @@ public class FriendPlayer {
         while((request= iterator.next()) != null) if(request.getUUID().equals(uuid)) return request;
         return null;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setGameProfile(String gameProfile) {
+        this.gameProfile = gameProfile;
+    }
+
+    public void setLastLogin(long lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public void setMaxFriends(int maxFriends) {
+        this.maxFriends = maxFriends;
+    }
+
+    public void setMaxPartyPlayers(int maxPartyPlayers) {
+        this.maxPartyPlayers = maxPartyPlayers;
+    }
+
+    public void setMaxClanPlayers(int maxClanPlayers) {
+        this.maxClanPlayers = maxClanPlayers;
+    }
+
+    public void setHiderStatus(HiderStatus hiderStatus) {
+        this.hiderStatus = hiderStatus;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public void setFriends(List<Friend> friends) {
+        this.friends = friends;
+    }
+
+    public void setRequests(List<Friend> requests) {
+        this.requests = requests;
+    }
+
+    public void setProperties(Document properties) {
+        this.properties = properties;
+    }
+
     public void addRequest(FriendPlayer player){
         addRequest(player,false);
     }
