@@ -104,5 +104,9 @@ public class SpigotCommandManager implements FriendCommandManager {
         public void sendMessage(TextComponent component) {
 
         }
+        @Override
+        public void executeCommand(String command) {
+
+        }
     }
 }

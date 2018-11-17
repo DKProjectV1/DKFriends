@@ -1,5 +1,7 @@
 package ch.dkrieger.friendsystem.lib.player;
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
+
 import java.util.UUID;
 
 /*
@@ -27,5 +29,17 @@ public class Friend {
     }
     public boolean isFavorite() {
         return favorite;
+    }
+    public boolean isOnline(){
+        return FriendSystem.getInstance().getPlayerManager().getOnlinePlayer(this.uuid) != null;
+    }
+    public FriendPlayer getFriendPlayer(){
+        return FriendSystem.getInstance().getPlayerManager().getPlayer(this.uuid);
+    }
+    public OnlineFriendPlayer getOnlineFriendPlayer(){
+        return FriendSystem.getInstance().getPlayerManager().getOnlinePlayer(this.uuid);
+    }
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

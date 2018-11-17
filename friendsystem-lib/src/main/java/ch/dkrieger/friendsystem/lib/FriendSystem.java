@@ -11,6 +11,8 @@ import ch.dkrieger.friendsystem.lib.storage.json.JsonFriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.mongodb.MongoDBFriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.sql.MySQLFriendStorage;
 
+import java.io.File;
+
 /*
  *
  *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47

@@ -3,8 +3,10 @@ package ch.dkrieger.friendsystem.lib.player;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.utils.Document;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.*;
+import java.util.List;
 
 /*
  *
@@ -100,7 +102,29 @@ public class FriendPlayer {
     public List<Friend> getFriends() {
         return friends;
     }
+    public List<Friend> getSortedFriends(){
+        List<Friend> online = new ArrayList<>();
+        List<Friend> online_favorite = new ArrayList<>();
+        List<Friend> offline = new ArrayList<>();
+        List<Friend> offline_favorite = new ArrayList<>();
 
+        Iterator<Friend> iterator = this.friends.iterator();
+        Friend friend = null;
+        while(iterator.hasNext() && (friend= iterator.next()) != null){
+            if(friend.isOnline()){
+                if(friend.isFavorite()) online_favorite.add(friend);
+                else online.add(friend);
+            }else{
+                if(friend.isFavorite()) offline_favorite.add(friend);
+                else offline.add(friend);
+            }
+        }
+        online_favorite.addAll(online);
+        online_favorite.addAll(offline_favorite);
+        online_favorite.addAll(offline);
+
+        return online_favorite;
+    }
     public List<Friend> getRequests() {
         return requests;
     }
@@ -164,6 +188,14 @@ public class FriendPlayer {
     public OnlineFriendPlayer getOnlinePlayer(){
         return FriendSystem.getInstance().getPlayerManager().getOnlinePlayer(this.uuid);
     }
+    public void sendMessage(String message){
+        OnlineFriendPlayer online = getOnlinePlayer();
+        if(online != null) getOnlinePlayer().sendMessage(message);
+    }
+    public void sendMessage(TextComponent component){
+        OnlineFriendPlayer online = getOnlinePlayer();
+        if(online != null) getOnlinePlayer().sendMessage(component);
+    }
 
 
     public Friend getRequest(FriendPlayer player){
@@ -207,10 +239,18 @@ public class FriendPlayer {
     public void addFriend(FriendPlayer player, boolean noRepeat){
         Friend friend = getRequest(player);
         if(friend == null) friend = new Friend(player.getUUID(),System.currentTimeMillis(),false);
-        else this.friends.add(friend);
+        this.friends.add(friend);
         this.requests.remove(friend);
         if(!noRepeat) player.addFriend(this,true);
         FriendSystem.getInstance().getStorage().saveFriendsAndRequests(this.uuid,this.friends,this.requests);
+    }
+    public void removeFriend(FriendPlayer player){
+        removeFriend(player,false);
+    }
+    public void removeFriend(FriendPlayer player, boolean noRepeat){
+        this.friends.remove(getFriend(player.getUUID()));
+        if(!noRepeat) player.removeFriend(this,true);
+        FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
     }
     public boolean isFriend(FriendPlayer player){
         return isFriend(player.getUUID());
@@ -218,15 +258,18 @@ public class FriendPlayer {
     public boolean isFriend(UUID uuid){
         return getFriend(uuid) != null;
     }
-
-
-
-
-
-
-
-
-
+    public boolean isFavorite(FriendPlayer player){
+        return isFavorite(player.getUUID());
+    }
+    public boolean isFavorite(UUID uuid){
+        Friend friend = getFriend(uuid);
+        return friend != null && friend.isFavorite();
+    }
+    public void setFavorite(FriendPlayer player, boolean favorite){
+        Friend friend = getFriend(player.getUUID());
+        if(friend != null) friend.setFavorite(favorite);
+        FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
+    }
 
     public static class Settings {
 

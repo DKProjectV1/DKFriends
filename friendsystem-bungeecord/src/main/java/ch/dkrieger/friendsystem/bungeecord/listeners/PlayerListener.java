@@ -29,13 +29,13 @@ public class PlayerListener implements Listener {
                 player = FriendSystem.getInstance().getPlayerManager().getPlayerSave(event.getConnection().getUniqueId());
             }catch (Exception exception2){
                 event.setCancelled(true);
-                event.setCancelReason(new TextComponent(Messages.ERROR));
+                event.setCancelReason(new TextComponent(Messages.ERROR.replace("[prefix]",Messages.PREFIX_FRIEND)));
+                exception.printStackTrace();
                 //PermissionSystem.getInstance().debug(PermissionSystem.PermissionInfoLevel.ERROR,null,"Could not load player "+event.getConnection().getName());
                 //PermissionSystem.getInstance().debug(PermissionSystem.PermissionInfoLevel.ERROR,null,exception2.getMessage());
                 return;
             }
         }
-        System.out.println(player);
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getConnection().getUniqueId()
                     ,event.getConnection().getName(),"§8",null);

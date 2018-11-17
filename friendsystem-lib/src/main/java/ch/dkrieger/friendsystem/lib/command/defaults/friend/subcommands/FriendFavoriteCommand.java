@@ -10,14 +10,14 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 17.11.18 16:58
+ *  * Copyright (c) 2018 Davide Wietlisbach on 17.11.18 18:17
  *
  */
 
-public class FriendDenyCommand extends SubFriendCommand {
+public class FriendFavoriteCommand extends SubFriendCommand {
 
-    public FriendDenyCommand() {
-        super("deny");
+    public FriendFavoriteCommand() {
+        super("favorite","",null,"","favourite","darling","fav","honey","ducky");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
@@ -30,19 +30,23 @@ public class FriendDenyCommand extends SubFriendCommand {
                         .replace("[player]",args[0]));
                 return;
             }
-            if(!player.hasRequest(friend)){
-                sender.sendMessage(Messages.PLAYER_NOT_REQUEST
+            if(!player.isFriend(friend)){
+                sender.sendMessage(Messages.PLAYER_NOT_FRIENDS
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            player.removeRequest(friend);
-            sender.sendMessage(Messages.PLAYER_REQUEST_DENIED_SELF
-                    .replace("[prefix]",getPrefix())
-                    .replace("[player]",friend.getColoredName()));
-            friend.sendMessage(Messages.PLAYER_REQUEST_DENIED_OTHER
-                    .replace("[prefix]",getPrefix())
-                    .replace("[player]",player.getColoredName()));
+            if(player.isFavorite(friend)){
+                player.setFavorite(friend,false);
+                sender.sendMessage(Messages.PLAYER_FAVORITE_REMOVE
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+            }else{
+                player.setFavorite(friend,true);
+                sender.sendMessage(Messages.PLAYER_FAVORITE_ADD
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+            }
         }
     }
     @Override

@@ -20,21 +20,20 @@ public class JsonFriendStorage implements FriendStorage {
 
     private File file;
     private Document data;
+    private ArrayList<FriendPlayer> players;
 
     public JsonFriendStorage(Config config) {
-        this.file = new File(config.getDataFolder(), "dkfriends_friendplayers.json");
+        new File(config.getDataFolder()).mkdirs();
+        this.file = new File(config.getDataFolder(), "players.json");
         if(file.exists() && file.isFile()) this.data = Document.loadData(file);
         else this.data = new Document();
-        this.data.appendDefault("friendplayers", new ArrayList<>());
-        if(!(file.exists() && file.isFile())){
-            file.delete();
-            this.data.saveData(file);
-        }
+        this.data.appendDefault("players", new ArrayList<>());
+        this.players = this.data.getObject("players", new TypeToken<List<FriendPlayer>>(){}.getType());
     }
 
     @Override
     public boolean connect() {
-        return false;
+        return true;
     }
 
     @Override
@@ -44,48 +43,43 @@ public class JsonFriendStorage implements FriendStorage {
 
     @Override
     public boolean isConnected() {
-        return false;
+        return true;
     }
 
     @Override
     public FriendPlayer getPlayer(UUID uuid) {
-        List<FriendPlayer> friendPlayers = data.getObject("friendplayers", new TypeToken<List<FriendPlayer>>(){}.getType());
-        Iterator<FriendPlayer> iterator = friendPlayers.iterator();
+        Iterator<FriendPlayer> iterator = this.players.iterator();
         FriendPlayer player;
-        while((player = iterator.next()) != null) if(player.getUUID().equals(uuid)) return player;
-        this.data.saveData(file);
+        while(iterator.hasNext() &&(player = iterator.next()) != null) if(player.getUUID().equals(uuid)) return player;
         return null;
     }
 
     @Override
     public FriendPlayer getPlayer(String name) {
-        List<FriendPlayer> friendPlayers = data.getObject("friendplayers", new TypeToken<List<FriendPlayer>>(){}.getType());
-        Iterator<FriendPlayer> iterator = friendPlayers.iterator();
+        Iterator<FriendPlayer> iterator = this.players.iterator();
         FriendPlayer player;
-        while((player = iterator.next()) != null) if(player.getName().equalsIgnoreCase(name)) return player;
-        this.data.saveData(file);
+        while(iterator.hasNext() &&(player = iterator.next()) != null) if(player.getName().equalsIgnoreCase(name)) return player;
         return null;
     }
 
     @Override
     public void createPlayer(FriendPlayer player) {
-        List<FriendPlayer> friendPlayers = data.getObject("friendplayers", new TypeToken<List<FriendPlayer>>(){}.getType());
-        friendPlayers.add(player);
-        this.data.saveData(file);
+        this.players.add(player);
+        save();
     }
 
     @Override
     public void savePlayer(FriendPlayer friendPlayer) {
-        List<FriendPlayer> friendPlayers = data.getObject("friendplayers", new TypeToken<List<FriendPlayer>>(){}.getType());
-        Iterator<FriendPlayer> iterator = friendPlayers.iterator();
+        Iterator<FriendPlayer> iterator = this.players.iterator();
         FriendPlayer player;
-        while((player = iterator.next()) != null) {
+        while(iterator.hasNext() &&(player = iterator.next()) != null) {
             if(player.getUUID().equals(friendPlayer.getUUID())) {
-                friendPlayers.remove(player);
-                friendPlayers.add(friendPlayer);
+                this.players.remove(player);
+                this.players.add(friendPlayer);
+                save();
+                return;
             }
         }
-        this.data.saveData(file);
     }
 
     @Override
@@ -185,5 +179,9 @@ public class JsonFriendStorage implements FriendStorage {
         FriendPlayer player = getPlayer(uuid);
         player.setProperties(properties);
         savePlayer(player);
+    }
+    public void save(){
+        this.data.append("players",this.players);
+        this.data.saveData(this.file);
     }
 }

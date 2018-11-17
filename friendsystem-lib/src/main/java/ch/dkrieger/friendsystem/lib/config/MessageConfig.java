@@ -32,6 +32,11 @@ public class MessageConfig extends SimpleConfig {
 
         Messages.PLAYER_NOT_FOUND = get("player.not.found");
         Messages.PLAYER_NOT_ONLINE = get("player.not.online");
+        Messages.PLAYER_NOT_REQUEST = get("player.not.request");
+        Messages.PLAYER_NOT_FRIENDS = get("player.not.friends");
+
+        Messages.PLAYER_NO_FRIENDS = get("player.no.friends");
+        Messages.PLAYER_NO_REQUESTS = get("player.no.requests");
 
         Messages.PLAYER_ALREADY_FRIENDS = get("player.already.friends");
         Messages.PLAYER_ALREADY_REQUEST = get("player.already.request");
@@ -45,6 +50,24 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_REQUEST_RECEIVED_MESSAGE = get("player.request.received.message");
         Messages.PLAYER_REQUEST_RECEIVED_ACCEPT= get("player.request.received.accept");
         Messages.PLAYER_REQUEST_RECEIVED_DENY = get("player.request.received.deny");
+
+        Messages.PLAYER_REQUEST_DENIED_SELF = get("player.request.denied.self");
+        Messages.PLAYER_REQUEST_DENIED_OTHER = get("player.request.denied.other");
+
+        Messages.PLAYER_REQUEST_ACCEPTED_SELF = get("player.request.accepted.self");
+        Messages.PLAYER_REQUEST_ACCEPTED_OTHER = get("player.request.accepted.other");
+
+        Messages.PLAYER_REMOVED_SELF = get("player.removed.self");
+        Messages.PLAYER_REMOVED_OTHER = get("player.removed.other");
+
+        Messages.PLAYER_LIST_HEADER = get("player.list.header");
+        Messages.PLAYER_LIST_ONLINE = get("player.list.online");
+        Messages.PLAYER_LIST_OFFLINE = get("player.list.offline");
+        Messages.PLAYER_LIST_SYMBOL_NORMAL = get("player.list.symbol.normal");
+        Messages.PLAYER_LIST_SYMBOL_FAVORITE = get("player.list.symbol.favorite");
+        
+        Messages.PLAYER_FAVORITE_ADD = get("player.favorite.add");
+        Messages.PLAYER_FAVORITE_REMOVE = get("player.favorite.remove");
     }
     @Override
     public void registerDefaults() {
@@ -59,9 +82,14 @@ public class MessageConfig extends SimpleConfig {
 
         addValue("player.not.found", "[prefix]&cThe player &e[player] was not found.");
         addValue("prefix.not.online", "[prefix]&cThe player &e[player] is not online.");
+        addValue("player.not.request", "[prefix]&cYou don't have a request from &e[player].");
+        addValue("player.not.friends", "[prefix]&e[player] &cis not your friend.");
 
-        addValue("player.already.friends", "&e[player] is already your friend.");
-        addValue("player.already.request", "[prefix]&cYou have already sent a request to &e[player].");
+        addValue("player.no.friends", "[prefix]&cYou do not have any friends.");
+        addValue("player.no.requests", "[prefix]&cYou do not have any requests.");
+
+        addValue("player.already.friends", "[prefix]&e[player] &cis already your friend.");
+        addValue("player.already.request", "[prefix]&e[prefix]&cYou have already sent a request to &e[player].");
 
         addValue("player.reached.max.friends.self","[prefix]&cYou reached the maximum amount of &e[max] &cfriends.");
         addValue("player.reached.max.friends.other","[prefix]&e[player] &creached the maximum amount of friends.");
@@ -72,6 +100,28 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.request.received.message", "[prefix]&7You received a request from &e[player].\n[prefix]&7Click here: [accept] [deny]");
         addValue("player.request.received.accept", "&8[&aAccept&8]");
         addValue("player.request.received.deny", "&8[&cDeny&8]");
+
+        addValue("player.request.denied.self", "[prefix]&7You denied the friend request from &e[player].");
+        addValue("player.request.denied.other", "[prefix]&e[player] &7denied your friend request.");
+
+        addValue("player.request.accepted.self", "[prefix]&aYou accepted the friend request from &e[player].");
+        addValue("player.request.accepted.other", "[prefix]&e[player] &aaccepted your friend request.");
+
+        addValue("player.request.list.header", "[prefix]&7Request list page [page]/[maxPages]");
+        addValue("player.request.list.list", " &7- [player] [accept] [deny]");
+
+        addValue("player.removed.self", "[prefix]&e[player] &7is no longer your friend.");
+        addValue("player.removed.other", "[prefix]&e[player] &7is no longer your friend.");
+
+        addValue("player.list.header", "[prefix]&7Friend list page [page]/[maxPages]");
+        addValue("player.list.online", " [symbol] &e[player] &aOnline &7on [server]");
+        addValue("player.list.offline", " [symbol] &e[player] &cOffline &7since [lastOnline]");
+        addValue("player.list.symbol.normal", "&7-");
+        addValue("player.list.symbol.favorite", "&6✦");
+
+        addValue("player.favorite.add", "[prefix]&7You marked &e[player] &7as favorite.");
+        addValue("player.favorite.remove", "[prefix]&7You removed &e[player] &7as favorite.");
+
     }
     public String get(String path){
         return getMessageValue(path);

@@ -46,13 +46,16 @@ public class FriendAddCommand extends SubFriendCommand {
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(player.hasRequest(friend)){
+            if(friend.hasRequest(player)){
                 sender.sendMessage(Messages.PLAYER_ALREADY_REQUEST
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            //check request by friend
+            if(player.hasRequest(friend)){
+                sender.executeCommand(getMainCommand().getName()+" accept "+friend.getName());
+                return;
+            }
             if(player.isFriend(friend)){
                 sender.sendMessage(Messages.PLAYER_ALREADY_FRIENDS
                         .replace("[prefix]",getPrefix())
@@ -63,7 +66,14 @@ public class FriendAddCommand extends SubFriendCommand {
             sender.sendMessage(Messages.PLAYER_REQUEST_SENDED
                     .replace("[prefix]",getPrefix())
                     .replace("[player]",friend.getColoredName()));
+            friend.sendMessage(Messages.replaceAcceptDeny(
+                    Messages.PLAYER_REQUEST_RECEIVED_MESSAGE
+                            .replace("[prefix]",getPrefix())
+                            .replace("[player]",player.getColoredName())
+                    ,"/"+getMainCommand().getName()+" accept "+player.getName()
+                    ,"/"+getMainCommand().getName()+" deny "+player.getName()));
 
+            /*
             TextComponent message = new TextComponent();
             String text = Messages.PLAYER_REQUEST_RECEIVED_MESSAGE
                     .replace("[prefix]",getPrefix())
@@ -86,8 +96,8 @@ public class FriendAddCommand extends SubFriendCommand {
                 text = text.substring(index).replace("[deny]","");
             }
             if(text.length() > 0) message.addExtra(text);
-            OnlineFriendPlayer online = friend.getOnlinePlayer();
-            if(online != null) online.sendMessage(message);
+            friend.sendMessage(message);
+             */
         }
     }
     @Override

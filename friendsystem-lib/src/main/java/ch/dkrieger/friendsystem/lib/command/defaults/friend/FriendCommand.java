@@ -2,7 +2,7 @@ package ch.dkrieger.friendsystem.lib.command.defaults.friend;
 
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
-import ch.dkrieger.friendsystem.lib.command.defaults.friend.subcommands.FriendAddCommand;
+import ch.dkrieger.friendsystem.lib.command.defaults.friend.subcommands.*;
 
 import java.util.List;
 
@@ -18,6 +18,11 @@ public class FriendCommand extends ch.dkrieger.friendsystem.lib.command.FriendCo
         super("friend","Friend command",null,"/friend ","freund","f");
         setPrefix(Messages.PREFIX_FRIEND);
         registerSubCommand(new FriendAddCommand());
+        registerSubCommand(new FriendAcceptCommand());
+        registerSubCommand(new FriendDenyCommand());
+        registerSubCommand(new FriendRemoveCommand());
+        registerSubCommand(new FriendListCommand());
+        registerSubCommand(new FriendFavoriteCommand());
     }
 
     @Override

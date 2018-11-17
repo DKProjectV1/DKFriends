@@ -10,14 +10,14 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 17.11.18 16:58
+ *  * Copyright (c) 2018 Davide Wietlisbach on 17.11.18 17:59
  *
  */
 
-public class FriendDenyCommand extends SubFriendCommand {
+public class FriendAcceptCommand extends SubFriendCommand {
 
-    public FriendDenyCommand() {
-        super("deny");
+    public FriendAcceptCommand() {
+        super("accept");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
@@ -36,11 +36,11 @@ public class FriendDenyCommand extends SubFriendCommand {
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            player.removeRequest(friend);
-            sender.sendMessage(Messages.PLAYER_REQUEST_DENIED_SELF
+            player.addFriend(friend);
+            sender.sendMessage(Messages.PLAYER_REQUEST_ACCEPTED_SELF
                     .replace("[prefix]",getPrefix())
                     .replace("[player]",friend.getColoredName()));
-            friend.sendMessage(Messages.PLAYER_REQUEST_DENIED_OTHER
+            friend.sendMessage(Messages.PLAYER_REQUEST_ACCEPTED_OTHER
                     .replace("[prefix]",getPrefix())
                     .replace("[player]",player.getColoredName()));
         }

@@ -13,6 +13,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.UUID;
@@ -97,6 +98,10 @@ public class BungeeCordCommandManager implements FriendCommandManager {
         @Override
         public void sendMessage(TextComponent component) {
             sender.sendMessage(component);
+        }
+        @Override
+        public void executeCommand(String command) {
+            BungeeCord.getInstance().getPluginManager().dispatchCommand(sender,command);
         }
     }
 }

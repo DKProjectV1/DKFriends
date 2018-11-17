@@ -25,5 +25,7 @@ public interface FriendCommandSender {
 
     public void sendMessage(TextComponent component);
 
+    public void executeCommand(String command);
+
 
 }
