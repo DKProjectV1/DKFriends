@@ -11,7 +11,8 @@ import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
-import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.List;
 
@@ -25,30 +26,64 @@ public class FriendAddCommand extends SubFriendCommand {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
             if(player.getFriends().size() >= player.getMaxFriends()){
-                sender.sendMessage(Messages.PLAYER_MAX_FRIENDS_REACHED.replace("[max]",""+player.getMaxFriends()));
+                sender.sendMessage(Messages.PLAYER_REACHED_MAX_FRIENDS_SELF
+                        .replace("[prefix]",getPrefix())
+                        .replace("[max]",""+player.getMaxFriends()));
                 return;
             }
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
             if(friend == null){
-                sender.sendMessage(Messages.PLAYER_NOT_FOUND);
+                sender.sendMessage(Messages.PLAYER_NOT_FOUND
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",args[0]));
                 return;
             }
             //check can add
             if(friend.getFriends().size() >= friend.getMaxFriends()){
-                sender.sendMessage(Messages.PLAYER_MAX_FRIENDS_REACHED_FRIEND);
+                sender.sendMessage(Messages.PLAYER_REACHED_MAX_FRIENDS_OTHER
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
                 return;
             }
             if(player.hasRequest(friend)){
-                sender.sendMessage(Messages.PLAYER_HAS_ALREADY_REQUEST);
+                sender.sendMessage(Messages.PLAYER_ALREADY_REQUEST
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
                 return;
             }
             //check request by friend
             if(player.isFriend(friend)){
-                sender.sendMessage(Messages.PLAYER_ALREADY_FRIENDS);
+                sender.sendMessage(Messages.PLAYER_ALREADY_FRIENDS
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
                 return;
             }
             player.addRequest(friend);
-            sender.sendMessage(Messages.PLAYER_HAS_ALREADY_REQUEST);
+            sender.sendMessage(Messages.PLAYER_REQUEST_SENDED
+                    .replace("[prefix]",getPrefix())
+                    .replace("[player]",friend.getColoredName()));
+
+            TextComponent message = new TextComponent();
+            String text = Messages.PLAYER_REQUEST_RECEIVED_MESSAGE.replace("[player]",player.getColoredName());
+            if(text.contains("[accept]")){
+                int index = text.indexOf("[accept]");
+                TextComponent component = new TextComponent(Messages.PLAYER_REQUEST_RECEIVED_ACCEPT);
+                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,getMainCommand().getName()+" accept "+player.getName()));
+                message.addExtra(component);
+                message.addExtra(new TextComponent(text.substring(0,index)));
+                text = text.substring(index);
+            }
+            if(text.contains("[deny]")){
+                int index = text.indexOf("[deny]");
+                TextComponent component = new TextComponent(Messages.PLAYER_REQUEST_RECEIVED_DENY);
+                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,getMainCommand().getName()+" deny "+player.getName()));
+                message.addExtra(component);
+                message.addExtra(new TextComponent(text.substring(0,index)));
+                text = text.substring(index);
+            }
+            if(text.length() > 0) message.addExtra(text);
+
+
         }
     }
     @Override

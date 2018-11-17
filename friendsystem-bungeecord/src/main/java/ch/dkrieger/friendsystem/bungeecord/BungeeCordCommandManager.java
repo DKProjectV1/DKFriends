@@ -1,5 +1,7 @@
 package ch.dkrieger.friendsystem.bungeecord;
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
+import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommand;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
@@ -55,9 +57,8 @@ public class BungeeCordCommandManager implements FriendCommandManager {
                 });
                 return;
             }
-            sender.sendMessage(new TextComponent("No Perms"));
-            //send no perm message
-            //sender.sendMessage(new TextComponent(Messages.PREFIX+Messages.NOPERMISSIONS));
+            sender.sendMessage(new TextComponent(Messages.NOPERMISSIONS
+                    .replace("[prefix]",(command.getPrefix() != null?command.getPrefix():Messages.PREFIX_FRIEND))));
         }
         @Override
         public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
@@ -82,7 +83,8 @@ public class BungeeCordCommandManager implements FriendCommandManager {
         }
         @Override
         public FriendPlayer getAsFriendPlayer() {
-            return null;
+            if(sender instanceof ProxiedPlayer) return FriendSystem.getInstance().getPlayerManager().getPlayer(getUUID());
+            else return null;
         }
         @Override
         public boolean hasPermission(String permission) {

@@ -38,7 +38,7 @@ public class PlayerListener implements Listener {
         System.out.println(player);
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getConnection().getUniqueId()
-                    ,event.getConnection().getName(),"ColorChange",null);
+                    ,event.getConnection().getName(),"§8",null);
         }//else PermissionPlayerManager.getInstance().checkName(event.getConnection().getUniqueId(),event.getConnection().getName());
         if(BungeeCord.getInstance().getPlayers().size() == 0){
             BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{

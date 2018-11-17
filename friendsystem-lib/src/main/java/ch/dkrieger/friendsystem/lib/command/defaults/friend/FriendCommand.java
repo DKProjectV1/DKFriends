@@ -1,5 +1,6 @@
 package ch.dkrieger.friendsystem.lib.command.defaults.friend;
 
+import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.defaults.friend.subcommands.FriendAddCommand;
 
@@ -15,6 +16,7 @@ public class FriendCommand extends ch.dkrieger.friendsystem.lib.command.FriendCo
 
     public FriendCommand() {
         super("friend","Friend command",null,"/friend ","freund","f");
+        setPrefix(Messages.PREFIX_FRIEND);
         registerSubCommand(new FriendAddCommand());
     }
 

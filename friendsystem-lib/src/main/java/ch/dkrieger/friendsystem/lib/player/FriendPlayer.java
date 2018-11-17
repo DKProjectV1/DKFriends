@@ -61,6 +61,10 @@ public class FriendPlayer {
         return gameProfile;
     }
 
+    public String getColoredName(){
+        return this.color+this.name;
+    }
+
     public long getFirstLogin() {
         return firstLogin;
     }
@@ -103,16 +107,6 @@ public class FriendPlayer {
 
     public Document getProperties() {
         return properties;
-    }
-
-    public Friend getRequest(FriendPlayer player){
-        return getRequest(player.getUUID());
-    }
-    public Friend getRequest(UUID uuid){
-        Iterator<Friend> iterator = this.requests.iterator();
-        Friend request = null;
-        while((request= iterator.next()) != null) if(request.getUUID().equals(uuid)) return request;
-        return null;
     }
 
     public void setName(String name) {
@@ -167,6 +161,21 @@ public class FriendPlayer {
         this.properties = properties;
     }
 
+    public OnlineFriendPlayer getOnlinePlayer(){
+        return FriendSystem.getInstance().getPlayerManager().getOnlinePlayer(this.uuid);
+    }
+
+
+    public Friend getRequest(FriendPlayer player){
+        return getRequest(player.getUUID());
+    }
+    public Friend getRequest(UUID uuid){
+        Iterator<Friend> iterator = this.requests.iterator();
+        Friend request = null;
+        while(iterator.hasNext() && (request= iterator.next()) != null) if(request.getUUID().equals(uuid)) return request;
+        return null;
+    }
+
     public void addRequest(FriendPlayer player){
         addRequest(player,false);
     }
@@ -193,8 +202,8 @@ public class FriendPlayer {
     }
     public Friend getFriend(UUID uuid){
         Iterator<Friend> iterator = this.friends.iterator();
-        Friend friend = null;
-        while((friend = iterator.next()) != null) if(friend.getUUID().equals(uuid)) return friend;
+        Friend request = null;
+        while(iterator.hasNext() && (request= iterator.next()) != null) if(request.getUUID().equals(uuid)) return request;
         return null;
     }
     public void addFriend(FriendPlayer player){
@@ -214,6 +223,16 @@ public class FriendPlayer {
     public boolean isFriend(UUID uuid){
         return getFriend(uuid) != null;
     }
+
+
+
+
+
+
+
+
+
+
     public static class Settings {
 
         private Map<String,Boolean> friendRequests, partyRequests, playerHider;
@@ -266,6 +285,10 @@ public class FriendPlayer {
         public short getDesign() {
             return design;
         }
+
+
+
+
     }
     public static class Status {
 

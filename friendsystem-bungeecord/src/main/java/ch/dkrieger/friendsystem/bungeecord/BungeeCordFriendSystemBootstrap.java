@@ -22,6 +22,10 @@ public class BungeeCordFriendSystemBootstrap extends Plugin implements DKFriends
     private static BungeeCordFriendSystemBootstrap instance;
     private BungeeCordCommandManager commandManager;
 
+    public BungeeCordFriendSystemBootstrap() {
+        instance = this;
+    }
+
     @Override
     public void onLoad() {
         instance = this;

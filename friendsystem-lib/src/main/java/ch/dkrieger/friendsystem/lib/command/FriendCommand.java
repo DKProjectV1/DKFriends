@@ -1,5 +1,6 @@
 package ch.dkrieger.friendsystem.lib.command;
 
+import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public abstract class FriendCommand {
 
-    private String name, description, permission, usage;
+    private String name, prefix, description, permission, usage;
     private List<String> aliases;
     private List<SubFriendCommand> subCommands;
 
@@ -38,6 +39,9 @@ public abstract class FriendCommand {
     public String getName() {
         return this.name;
     }
+    public String getPrefix() {
+        return this.prefix;
+    }
     public String getDescription() {
         return this.description;
     }
@@ -49,6 +53,9 @@ public abstract class FriendCommand {
     }
     public boolean hasUsage() {
         return usage != null;
+    }
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
     public int getMaxPages() {
         return GeneralUtil.getMaxPages(8,subCommands);
@@ -81,6 +88,7 @@ public abstract class FriendCommand {
     }
     public FriendCommand registerSubCommand(SubFriendCommand subCommand){
         subCommand.init(this,this);
+        if(subCommand.getPrefix() == null) subCommand.setPrefix(this.prefix);
         this.subCommands.add(subCommand);
         return this;
     }
@@ -94,11 +102,23 @@ public abstract class FriendCommand {
         if(page > maxPages) page = 1;
         int nextPage = page+1;
         if(nextPage > maxPages) nextPage = 1;
-        if(nextPage == page) sender.sendMessage("Seite "+page+"/"+maxPages);
-        else sender.sendMessage("Seite "+page+"/"+ maxPages + " | Weitere Hilfe mit " + getName() + " " + nextPage);
+        if(page == maxPages) sender.sendMessage(Messages.HELP_HEADER_ONE
+                .replace("[prefix]",this.prefix)
+                .replace("[page]",""+page)
+                .replace("[maxPage]",""+maxPages)
+                .replace("[command]",this.name)
+                .replace("[nextPage]",""+nextPage));
+        else sender.sendMessage(Messages.HELP_HEADER_MORE
+                .replace("[prefix]",this.prefix)
+                .replace("[page]",""+page)
+                .replace("[maxPage]",""+maxPages)
+                .replace("[command]",this.name)
+                .replace("[nextPage]",""+nextPage));
         int from = 1;
         if(page > 1) from = 8 * (page - 1) + 1;
         int to = 8 * page;
+        from--;
+        to--;
         for(int h = from; h <= to; h++) {
             if(h > subCommands.size()) break;
             SubFriendCommand subCommand = subCommands.get(h - 1);
