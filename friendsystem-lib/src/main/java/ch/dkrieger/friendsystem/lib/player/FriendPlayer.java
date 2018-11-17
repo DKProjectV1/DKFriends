@@ -175,13 +175,8 @@ public class FriendPlayer {
         while(iterator.hasNext() && (request= iterator.next()) != null) if(request.getUUID().equals(uuid)) return request;
         return null;
     }
-
     public void addRequest(FriendPlayer player){
-        addRequest(player,false);
-    }
-    public void addRequest(FriendPlayer player, boolean noRepeat){
         this.requests.add(new Friend(player.getUUID(),System.currentTimeMillis(),false));
-        if(!noRepeat) player.addRequest(this,true);
         FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
     }
     public void removeRequest(FriendPlayer player){

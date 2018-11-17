@@ -11,25 +11,20 @@ import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.storage.mongodb.MongoDBUtil;
 import org.bson.Document;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class FriendPlayerManager {
 
-    private List<FriendPlayer> loadedPlayers;
+    private Map<UUID,FriendPlayer> loadedPlayers;
 
     public FriendPlayerManager() {
-        this.loadedPlayers = new ArrayList<>();
+        this.loadedPlayers = new HashMap<>();
     }
-    public List<FriendPlayer> getLoadedPlayers() {
-        return this.loadedPlayers;
+    public Collection<FriendPlayer> getLoadedPlayers() {
+        return this.loadedPlayers.values();
     }
     public FriendPlayer getPlayer(UUID uuid){
-        Iterator<FriendPlayer> iterator = this.loadedPlayers.iterator();
-        FriendPlayer player = null;
-        while((player = iterator.next()) != null) if(player.getUUID().equals(uuid)) return player;
+        FriendPlayer player = this.loadedPlayers.get(uuid);
         try{
             return getPlayerSave(uuid);
         }catch (Exception exception){}
@@ -37,7 +32,7 @@ public abstract class FriendPlayerManager {
     }
     public FriendPlayer getPlayer(String name){
         try{
-            Iterator<FriendPlayer> iterator = this.loadedPlayers.iterator();
+            Iterator<FriendPlayer> iterator = this.loadedPlayers.values().iterator();
             FriendPlayer player = null;
             while((player = iterator.next()) != null) if(player.getName().equalsIgnoreCase(name)) return player;
             return FriendSystem.getInstance().getStorage().getPlayer(name);
@@ -47,13 +42,13 @@ public abstract class FriendPlayerManager {
     }
     public FriendPlayer getPlayerSave(UUID uuid) throws Exception{
         FriendPlayer player = FriendSystem.getInstance().getStorage().getPlayer(uuid);
-        if(player != null) this.loadedPlayers.add(player);
+        if(player != null) this.loadedPlayers.put(player.getUUID(),player);
         System.out.println("getPlayerSave: "+player);
         return player;
     }
     public FriendPlayer createPlayer(UUID uuid, String name, String color, String gameProfile){
         FriendPlayer player = new FriendPlayer(uuid,name,color,gameProfile);
-        this.loadedPlayers.add(player);
+        this.loadedPlayers.put(player.getUUID(),player);
         FriendSystem.getInstance().getStorage().createPlayer(player);
         return player;
     }

@@ -117,8 +117,6 @@ public abstract class FriendCommand {
         int from = 1;
         if(page > 1) from = 8 * (page - 1) + 1;
         int to = 8 * page;
-        from--;
-        to--;
         for(int h = from; h <= to; h++) {
             if(h > subCommands.size()) break;
             SubFriendCommand subCommand = subCommands.get(h - 1);

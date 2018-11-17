@@ -69,9 +69,9 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.self.integration", "[prefix]&cYou can't integrate with your self.");
 
         addValue("player.request.sended", "[prefix]&7You send a friend request to &e[player].");
-        addValue("player.request.received.message", "[prefix]&7You received a friend request from &e[player].\n[prefix]Click here: [accept] [denny]");
-        addValue("player.request.received.accept", "&8[&a&lAccept8&]");
-        addValue("player.request.received.deny", "&8[&c&lDeny8&]");
+        addValue("player.request.received.message", "[prefix]&7You received a request from &e[player].\n[prefix]&7Click here: [accept] [deny]");
+        addValue("player.request.received.accept", "&8[&aAccept&8]");
+        addValue("player.request.received.deny", "&8[&cDeny&8]");
     }
     public String get(String path){
         return getMessageValue(path);

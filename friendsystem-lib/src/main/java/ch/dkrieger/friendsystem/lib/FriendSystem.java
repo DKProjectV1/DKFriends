@@ -7,6 +7,7 @@ import ch.dkrieger.friendsystem.lib.config.MessageConfig;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.storage.FriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.StorageType;
+import ch.dkrieger.friendsystem.lib.storage.json.JsonFriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.mongodb.MongoDBFriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.sql.MySQLFriendStorage;
 
@@ -61,10 +62,10 @@ public class FriendSystem {
         else if(this.config.getStorageType() == StorageType.SQLITE);//set sqlite storage
         else if(this.config.getStorageType() == StorageType.MONGODB) this.storage = new MongoDBFriendStorage(this.config);
 
-        if(this.storage.connect()) return;
+        if(this.storage != null && this.storage.connect()) return;
 
 
-        //set json storage
+        this.storage = new JsonFriendStorage(this.config);
     }
     public void shutdown(){
         if(this.storage != null) this.storage.disconnect();
