@@ -299,6 +299,15 @@ public class FriendPlayer {
         while(iterator.hasNext() && (friend= iterator.next()) != null) friend.getFriendPlayer().removeFriend(this,true);
         FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
     }
+    public void updateInfos(String name,String color,String gameProfile){
+        updateInfos(name,color,this.gameProfile);
+    }
+    public void updateInfos(String name,String color){
+        this.name = name;
+        this.color = color;
+        this.lastLogin = System.currentTimeMillis();
+        //save infos to storage  and gameProfile  (name/color(lastLogin/gameProfile)
+    }
     public static class Settings {
 
         private Map<String,Boolean> friendRequests, partyRequests, playerHider;

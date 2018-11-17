@@ -7,10 +7,6 @@ package ch.dkrieger.friendsystem.lib.player;
  */
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
-import ch.dkrieger.friendsystem.lib.Messages;
-import ch.dkrieger.friendsystem.lib.storage.mongodb.MongoDBUtil;
-import org.bson.Document;
-
 import java.util.*;
 
 public abstract class FriendPlayerManager {
@@ -25,6 +21,7 @@ public abstract class FriendPlayerManager {
     }
     public FriendPlayer getPlayer(UUID uuid){
         FriendPlayer player = this.loadedPlayers.get(uuid);
+        if(player != null) return player;
         try{
             return getPlayerSave(uuid);
         }catch (Exception exception){}

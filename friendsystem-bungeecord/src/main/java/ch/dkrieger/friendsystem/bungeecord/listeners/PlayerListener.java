@@ -15,7 +15,9 @@ import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -105,6 +107,31 @@ public class PlayerListener implements Listener {
                         .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
                         .replace("[more]",""+(friends.size()-2))));
             }
+            player.updateInfos(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });
+    }
+    @EventHandler
+    public void onDisconnect(PlayerDisconnectEvent event){
+        BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{
+            FriendPlayer player = FriendSystem.getInstance().getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
+            if(player == null) return;
+            List<Friend> friends = player.getOnlineFriends();
+            if(friends.isEmpty()) return;
+            for(Friend friend : friends){
+                OnlineFriendPlayer online = friend.getOnlineFriendPlayer();
+                if(online != null) online.sendMessage(Messages.PLAYER_NOTIFY_OFFLINE
+                        .replace("[prefix]",Messages.PREFIX_FRIEND)
+                        .replace("[player]",player.getColoredName()));
+            }
+            player.updateInfos(event.getPlayer().getName(),getColor(player,event.getPlayer()));
+        });
+    }
+    private String getColor(FriendPlayer friendPlayer, ProxiedPlayer player){
+        return "&8";
+        /*
+
+        returns colors
+
+         */
     }
 }
