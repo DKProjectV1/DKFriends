@@ -311,7 +311,7 @@ public class FriendPlayer {
     public static class Settings {
 
         private Map<String,Boolean> friendRequests, partyRequests, playerHider;
-        private boolean jumpEnabled, notifyEnabled, messageEnabled, partyTagsEnalbed, clanTagsEnabled;
+        private boolean jumpEnabled, notifyEnabled, messageEnabled, partyTagsEnabled, clanTagsEnabled;
         private short design;
 
         public Settings() {
@@ -321,7 +321,7 @@ public class FriendPlayer {
             this.jumpEnabled = true;
             this.notifyEnabled = true;
             this.messageEnabled = true;
-            this.partyTagsEnalbed = true;
+            this.partyTagsEnabled = true;
             this.clanTagsEnabled = true;
             this.design = -1;
         }
@@ -349,8 +349,8 @@ public class FriendPlayer {
             return messageEnabled;
         }
 
-        public boolean isPartyTagsEnalbed() {
-            return partyTagsEnalbed;
+        public boolean isPartyTagsEnabled() {
+            return partyTagsEnabled;
         }
 
         public boolean isClanTagsEnabled() {
@@ -360,10 +360,7 @@ public class FriendPlayer {
         public short getDesign() {
             return design;
         }
-
-
-
-
+        
     }
     public static class Status {
 
