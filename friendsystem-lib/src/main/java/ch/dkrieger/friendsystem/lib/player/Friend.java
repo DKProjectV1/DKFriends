@@ -39,6 +39,9 @@ public class Friend {
     public OnlineFriendPlayer getOnlineFriendPlayer(){
         return FriendSystem.getInstance().getPlayerManager().getOnlinePlayer(this.uuid);
     }
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
     }

@@ -30,12 +30,12 @@ public class FriendRequestListCommand extends SubFriendCommand {
             int page = 1;
             if(args.length > 0) if(GeneralUtil.isNumber(args[0])) page = Integer.valueOf(args[0]);
 
-            if(player.getFriends().size() < 1){
+            List<Friend> requests = player.getRequests();
+            if(requests.size() < 1){
                 sender.sendMessage(Messages.PLAYER_NO_REQUESTS
                         .replace("[prefix]",getPrefix()));
                 return;
             }
-            List<Friend> requests = player.getRequests();
             int maxPages = GeneralUtil.getMaxPages(8,requests);
             if(page > maxPages){
                 sender.sendMessage(Messages.PAGENOTFOUND

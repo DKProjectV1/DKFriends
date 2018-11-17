@@ -6,6 +6,7 @@ package ch.dkrieger.friendsystem.bungeecord;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import net.md_5.bungee.BungeeCord;
@@ -73,7 +74,10 @@ public class BungeeCordPlayerManager extends FriendPlayerManager {
         @Override
         public void connect(String server) {
             ServerInfo info = BungeeCord.getInstance().getServerInfo(server);
-            if(info != null && !(this.proxiedPlayer.getServer().getInfo().equals(info))) this.proxiedPlayer.connect(info);
+            if(info != null ){
+                if(!this.proxiedPlayer.getServer().getInfo().equals(info)) this.proxiedPlayer.connect(info);
+                else sendMessage(Messages.SERVER_ALREADY);
+            }else sendMessage(Messages.SERVER_NOTFOUND);
         }
     }
 }

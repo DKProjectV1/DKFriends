@@ -125,6 +125,13 @@ public class FriendPlayer {
 
         return online_favorite;
     }
+    public List<Friend> getOnlineFriends(){
+        List<Friend> online = new ArrayList<>();
+        Iterator<Friend> iterator = this.friends.iterator();
+        Friend friend = null;
+        while(iterator.hasNext() && (friend= iterator.next()) != null) if(friend.isOnline()) online.add(friend);
+        return online;
+    }
     public List<Friend> getRequests() {
         return requests;
     }
@@ -239,6 +246,7 @@ public class FriendPlayer {
     public void addFriend(FriendPlayer player, boolean noRepeat){
         Friend friend = getRequest(player);
         if(friend == null) friend = new Friend(player.getUUID(),System.currentTimeMillis(),false);
+        else friend.setTimeStamp(System.currentTimeMillis());
         this.friends.add(friend);
         this.requests.remove(friend);
         if(!noRepeat) player.addFriend(this,true);
@@ -270,7 +278,21 @@ public class FriendPlayer {
         if(friend != null) friend.setFavorite(favorite);
         FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
     }
-
+    public void acceptAll(){
+        Iterator<Friend> iterator = new ArrayList<>(this.requests).iterator();
+        this.requests.clear();
+        Friend request = null;
+        while(iterator.hasNext() && (request= iterator.next()) != null) request.getFriendPlayer().addFriend(this,true);
+        FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
+    }
+    public void denyAll(){
+        this.requests.clear();
+        FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
+    }
+    public void clearFriends(){
+        this.friends.clear();
+        FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
+    }
     public static class Settings {
 
         private Map<String,Boolean> friendRequests, partyRequests, playerHider;

@@ -28,6 +28,12 @@ public class Messages {
     public static String HELP_HEADER_ONE;
     public static String HELP_HEADER_MORE;
 
+    public static String SERVER_ALREADY;
+    public static String SERVER_NOTFOUND;
+
+    public static String WORLD_ALREADY;
+    public static String WORLD_NOTFOUND;
+
     public static String PLAYER_NOT_FOUND;
     public static String PLAYER_NOT_ONLINE;
     public static String PLAYER_NOT_FRIENDS;
@@ -62,17 +68,34 @@ public class Messages {
     public static String PLAYER_REQUEST_ACCEPTED_SELF;
     public static String PLAYER_REQUEST_ACCEPTED_OTHER;
 
+    public static String PLAYER_REQUEST_OPEN_MESSAGE;
+    public static String PLAYER_REQUEST_OPEN_SINGULAR;
+    public static String PLAYER_REQUEST_OPEN_PLURAL;
+
     public static String PLAYER_REMOVED_SELF;
     public static String PLAYER_REMOVED_OTHER;
-
-    public static String PLAYER_FAVORITE_ADD;
-    public static String PLAYER_FAVORITE_REMOVE;
 
     public static String PLAYER_LIST_HEADER;
     public static String PLAYER_LIST_ONLINE;
     public static String PLAYER_LIST_OFFLINE;
     public static String PLAYER_LIST_SYMBOL_NORMAL;
     public static String PLAYER_LIST_SYMBOL_FAVORITE;
+
+    public static String PLAYER_FAVORITE_ADD;
+    public static String PLAYER_FAVORITE_REMOVE;
+
+    public static String PLAYER_MESSAGE_FORMAT;
+    public static String PLAYER_MESSAGE_COLOR;
+
+    public static String PLAYER_NOTIFY_ONLINE;
+    public static String PLAYER_NOTIFY_OFFLINE;
+
+    public static String PLAYER_ONLINE_ONE;
+    public static String PLAYER_ONLINE_TWO;
+    public static String PLAYER_ONLINE_THREE;
+    public static String PLAYER_ONLINE_MORE;
+
+    public static String PLAYER_JUMP;
 
     public static TextComponent replaceAcceptDeny(String text,String acceptCommand,String denyCommand){
         TextComponent message = new TextComponent();

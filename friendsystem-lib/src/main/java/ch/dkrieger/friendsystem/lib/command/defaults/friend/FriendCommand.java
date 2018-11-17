@@ -23,6 +23,12 @@ public class FriendCommand extends ch.dkrieger.friendsystem.lib.command.FriendCo
         registerSubCommand(new FriendRemoveCommand());
         registerSubCommand(new FriendListCommand());
         registerSubCommand(new FriendFavoriteCommand());
+        registerSubCommand(new FriendRequestListCommand());
+        registerSubCommand(new FriendJumpCommand());
+        registerSubCommand(new FriendMessageCommand());
+        registerSubCommand(new FriendClearCommand());
+        registerSubCommand(new FriendAcceptAllCommand());
+        registerSubCommand(new FriendDenyAllCommand());
     }
 
     @Override
