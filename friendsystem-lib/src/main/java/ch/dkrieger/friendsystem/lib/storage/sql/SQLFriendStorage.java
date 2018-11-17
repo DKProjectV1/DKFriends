@@ -1,5 +1,11 @@
 package ch.dkrieger.friendsystem.lib.storage.sql;
 
+/*
+ *
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 17.11.18 20:24
+ *
+ */
+
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.config.Config;
 import ch.dkrieger.friendsystem.lib.player.Friend;
@@ -10,30 +16,23 @@ import ch.dkrieger.friendsystem.lib.storage.sql.table.Table;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import com.google.gson.reflect.TypeToken;
-
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
-/*
- *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 20:57
- *
- */
-
-public class MySQLFriendStorage implements Runnable, FriendStorage {
+public abstract class SQLFriendStorage implements FriendStorage {
 
     private Config config;
-	private Connection connection;
-	private Table friendPlayerTable;
+    private Connection connection;
+    private Table friendPlayerTable;
 
-	public MySQLFriendStorage(Config config) {
-	    this.config = config;
-	}
+    public SQLFriendStorage(Config config) {
+        this.config = config;
+    }
 
+    @Override
     public boolean isConnected() {
         return connection != null;
     }
@@ -46,32 +45,19 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
         return friendPlayerTable;
     }
 
-    public void loadDriver() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch(ClassNotFoundException exception) {
-			System.out.println(Messages.SYSTEM_PREFIX +"Could not load MySQLFriendStorage driver.");
-		}
-	}
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
 
-	public void reconnect() {
-		disconnect();
-		connect();
-	}
-
-	@Override
-	public void run() {
-		reconnect();
-	}
-
-	@Override
-	public boolean connect() {
+    @Override
+    public boolean connect() {
         if(!isConnected()){
             loadDriver();
-            System.out.println(Messages.SYSTEM_PREFIX+"connecting to MySQLFriendStorage server at "+config.getHost()+":"+config.getPort());
+            System.out.println(Messages.SYSTEM_PREFIX+"connecting to SQL server at "+config.getHost()+":"+config.getPort());
             try {
-                this.connection = DriverManager.getConnection("jdbc:mysql://"+config.getHost()+":"+config.getPort()+"/"+config.getDatabase()+
-                        "?autoReconnect=true&allowMultiQueries=true&reconnectAtTxEnd=true",config.getUser(), config.getPassword());
+                /*this.connection = DriverManager.getConnection("jdbc:mysql://"+config.getHost()+":"+config.getPort()+"/"+config.getDatabase()+
+                        "?autoReconnect=true&allowMultiQueries=true&reconnectAtTxEnd=true",config.getUser(), config.getPassword());*/
+                connect(config);
                 this.friendPlayerTable = new Table(this, "DKFriends_players");
                 friendPlayerTable.create()
                         .create("`id` int NOT NULL AUTO_INCREMENT")
@@ -91,9 +77,9 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
                         .create("`requests` LONGTEXT NOT NULL")
                         .create("`properties` LONGTEXT NOT NULL")
                         .execute();
-                System.out.println(Messages.SYSTEM_PREFIX+"successful connected to MySQL server at "+config.getHost()+":"+config.getPort());
+                System.out.println(Messages.SYSTEM_PREFIX+"successful connected to SQL server at "+config.getHost()+":"+config.getPort());
             }catch (SQLException exception) {
-                System.out.println(Messages.SYSTEM_PREFIX+"Could not connect to MySQL server at "+config.getHost()+":"+config.getPort());
+                System.out.println(Messages.SYSTEM_PREFIX+"Could not connect to SQL server at "+config.getHost()+":"+config.getPort());
                 System.out.println(Messages.SYSTEM_PREFIX+"Error: "+exception.getMessage());
                 System.out.println(Messages.SYSTEM_PREFIX+"Check your login data in the config.");
                 connection = null;
@@ -101,9 +87,9 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
             }
         }
         return true;
-	}
-	@Override
-	public void disconnect() {
+    }
+    @Override
+    public void disconnect() {
         if(isConnected()){
             try {
                 connection.close();
@@ -113,19 +99,19 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
                 connection = null;
             }
         }
-	}
+    }
 
-	@Override
-	public FriendPlayer getPlayer(UUID uuid) {
+    @Override
+    public FriendPlayer getPlayer(UUID uuid) {
         return getPlayer("uuid", uuid.toString());
-	}
+    }
 
-	@Override
-	public FriendPlayer getPlayer(String name) {
-	    return getPlayer("name", name);
-	}
+    @Override
+    public FriendPlayer getPlayer(String name) {
+        return getPlayer("name", name);
+    }
 
-	private FriendPlayer getPlayer(String identifier, Object identifierObject) {
+    private FriendPlayer getPlayer(String identifier, Object identifierObject) {
         try {
             SelectQuery query = this.friendPlayerTable.select().where(identifier,identifierObject);
             ResultSet result = query.execute();
@@ -147,7 +133,7 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
                             GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("friends"), new TypeToken<List<Friend>>(){}.getType()),
                             GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("requests"), new TypeToken<List<Friend>>(){}.getType()),
                             GeneralUtil.GSON_NOT_PRETTY.fromJson(result.getString("properties"), Document.class)
-                            );
+                    );
                 }
             }finally {
                 query.close();
@@ -159,13 +145,13 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
         return null;
     }
 
-	@Override
-	public void createPlayer(FriendPlayer player) {
+    @Override
+    public void createPlayer(FriendPlayer player) {
         this.friendPlayerTable.insert().insert("uuid").insert("name").insert("friendplayer").value(player.getUUID().toString()).value(player.getName()).value(GeneralUtil.GSON_NOT_PRETTY.toJson(player)).execute();
-	}
+    }
 
-	@Override
-	public void savePlayer(FriendPlayer player) {
+    @Override
+    public void savePlayer(FriendPlayer player) {
         this.friendPlayerTable.update()
                 .set("name", player.getName())
                 .set("color", player.getColor())
@@ -186,7 +172,7 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
 
     @Override
     public void saveName(UUID uuid, String name) {
-	    updateSettings(uuid, "name", name);
+        updateSettings(uuid, "name", name);
     }
 
     @Override
@@ -196,38 +182,38 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
 
     @Override
     public void saveGameProfile(UUID uuid, String gameProfile) {
-	    updateSettings(uuid, "gameProfile", gameProfile);
+        updateSettings(uuid, "gameProfile", gameProfile);
     }
 
     @Override
     public void saveLastLogin(UUID uuid, long lastLogin) {
-	    updateSettings(uuid, "lastLogin", lastLogin);
+        updateSettings(uuid, "lastLogin", lastLogin);
     }
 
     @Override
     public void saveMaxFriends(UUID uuid, int maxFriends) {
-	    updateSettings(uuid, "maxFriends", maxFriends);
+        updateSettings(uuid, "maxFriends", maxFriends);
     }
 
     @Override
     public void saveMaxPartyPlayers(UUID uuid, int maxPartyPlayers) {
-	    updateSettings(uuid, "maxPartyPlayers", maxPartyPlayers);
+        updateSettings(uuid, "maxPartyPlayers", maxPartyPlayers);
     }
 
     @Override
     public void saveMaxClanPlayers(UUID uuid, int maxClanPlayers) {
-	    updateSettings(uuid, "maxClanPlayers", maxClanPlayers);
+        updateSettings(uuid, "maxClanPlayers", maxClanPlayers);
     }
 
     @Override
-	public void saveFriends(UUID uuid, List<Friend> friends) {
-	    updateSettings(uuid, "friends", GeneralUtil.GSON_NOT_PRETTY.toJson(friends));
-	}
+    public void saveFriends(UUID uuid, List<Friend> friends) {
+        updateSettings(uuid, "friends", GeneralUtil.GSON_NOT_PRETTY.toJson(friends));
+    }
 
-	@Override
-	public void saveRequests(UUID uuid, List<Friend> requests) {
+    @Override
+    public void saveRequests(UUID uuid, List<Friend> requests) {
         updateSettings(uuid, "requests", GeneralUtil.GSON_NOT_PRETTY.toJson(requests));
-	}
+    }
 
     @Override
     public void saveFriendsAndRequests(UUID uuid, List<Friend> friends, List<Friend> requests) {
@@ -235,26 +221,29 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
     }
 
     @Override
-	public void saveSettings(UUID uuid, FriendPlayer.Settings settings) {
-	    updateSettings(uuid, "settings", GeneralUtil.GSON_NOT_PRETTY.toJson(settings));
-	}
+    public void saveSettings(UUID uuid, FriendPlayer.Settings settings) {
+        updateSettings(uuid, "settings", GeneralUtil.GSON_NOT_PRETTY.toJson(settings));
+    }
 
-	@Override
-	public void saveProperties(UUID uuid, Document properties) {
-	    updateSettings(uuid, "properties", GeneralUtil.GSON_NOT_PRETTY.toJson(properties));
-	}
+    @Override
+    public void saveProperties(UUID uuid, Document properties) {
+        updateSettings(uuid, "properties", GeneralUtil.GSON_NOT_PRETTY.toJson(properties));
+    }
 
-	@Override
-	public void saveStatus(UUID uuid, FriendPlayer.Status status) {
-	    updateSettings(uuid, "status", GeneralUtil.GSON_NOT_PRETTY.toJson(status));
-	}
+    @Override
+    public void saveStatus(UUID uuid, FriendPlayer.Status status) {
+        updateSettings(uuid, "status", GeneralUtil.GSON_NOT_PRETTY.toJson(status));
+    }
 
-	@Override
-	public void saveHiderStatus(UUID uuid, FriendPlayer.HiderStatus hiderStatus) {
-	    updateSettings(uuid, "hiderStatus", GeneralUtil.GSON_NOT_PRETTY.toJson(hiderStatus));
-	}
+    @Override
+    public void saveHiderStatus(UUID uuid, FriendPlayer.HiderStatus hiderStatus) {
+        updateSettings(uuid, "hiderStatus", GeneralUtil.GSON_NOT_PRETTY.toJson(hiderStatus));
+    }
 
-	private void updateSettings(UUID uuid, String identifier, Object value) {
+    private void updateSettings(UUID uuid, String identifier, Object value) {
         this.friendPlayerTable.update().set(identifier, value).where("uuid", uuid.toString()).execute();
     }
+
+    public abstract void connect(Config config) throws SQLException;
+    public abstract void loadDriver();
 }

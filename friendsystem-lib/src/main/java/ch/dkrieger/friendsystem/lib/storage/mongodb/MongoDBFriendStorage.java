@@ -16,8 +16,8 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class MongoDBFriendStorage implements FriendStorage {
@@ -54,7 +54,12 @@ public class MongoDBFriendStorage implements FriendStorage {
     }
     @Override
     public boolean isConnected() {
-        return false;
+        MongoDatabase database = mongoClient.getDatabase(config.getDatabase());
+        org.bson.Document serverStatus = database.runCommand(new org.bson.Document("serverStatus", 1));
+        Map connections = (Map) serverStatus.get("connections");
+        Integer current = (Integer) connections.get("current");
+        System.out.println(current);
+        return true;
     }
 
     @Override

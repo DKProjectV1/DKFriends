@@ -9,9 +9,8 @@ import ch.dkrieger.friendsystem.lib.storage.FriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.StorageType;
 import ch.dkrieger.friendsystem.lib.storage.json.JsonFriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.mongodb.MongoDBFriendStorage;
-import ch.dkrieger.friendsystem.lib.storage.sql.MySQLFriendStorage;
-
-import java.io.File;
+import ch.dkrieger.friendsystem.lib.storage.sql.mysql.MySQLFriendStorage;
+import ch.dkrieger.friendsystem.lib.storage.sql.sqlite.SQLiteFriendStorage;
 
 /*
  *
@@ -61,7 +60,7 @@ public class FriendSystem {
     }
     private void setupStorage(){
         if(this.config.getStorageType() == StorageType.MYSQL) this.storage = new MySQLFriendStorage(this.config);
-        else if(this.config.getStorageType() == StorageType.SQLITE);//set sqlite storage
+        else if(this.config.getStorageType() == StorageType.SQLITE) this.storage = new SQLiteFriendStorage(this.config);
         else if(this.config.getStorageType() == StorageType.MONGODB) this.storage = new MongoDBFriendStorage(this.config);
 
         if(this.storage != null && this.storage.connect()) return;
