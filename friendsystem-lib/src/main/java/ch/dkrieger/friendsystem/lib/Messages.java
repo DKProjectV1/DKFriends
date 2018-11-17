@@ -52,7 +52,6 @@ public class Messages {
 
     public static String PLAYER_SELF_INTEGRATION;
 
-
     public static String PLAYER_DEFAULT_COLOR;
 
     public static String PLAYER_REQUEST_SENDED;
@@ -86,6 +85,8 @@ public class Messages {
 
     public static String PLAYER_MESSAGE_FORMAT;
     public static String PLAYER_MESSAGE_COLOR;
+    public static String PLAYER_MESSAGE_NOT_ALLOWED;
+    public static String PLAYER_MESSAGE_NOT_ENABLED;
 
     public static String PLAYER_NOTIFY_ONLINE;
     public static String PLAYER_NOTIFY_OFFLINE;
@@ -96,6 +97,17 @@ public class Messages {
     public static String PLAYER_ONLINE_MORE;
 
     public static String PLAYER_JUMP;
+    public static String PLAYER_JUMP_NOTALLOWED;
+
+    public static String PLAYER_SETTING_JUMP_ENABLE;
+    public static String PLAYER_SETTING_JUMP_DISABLE;
+
+    public static String PLAYER_SETTING_MESSAGE_ENABLE;
+    public static String PLAYER_SETTING_MESSAGE_DISABLE;
+
+    public static String PLAYER_SETTING_NOTIFY_ENABLE;
+    public static String PLAYER_SETTING_NOTIFY_DISABLE;
+    public static String PLAYER_SETTING_HELP;
 
     public static TextComponent replaceAcceptDeny(String text,String acceptCommand,String denyCommand){
         TextComponent message = new TextComponent();

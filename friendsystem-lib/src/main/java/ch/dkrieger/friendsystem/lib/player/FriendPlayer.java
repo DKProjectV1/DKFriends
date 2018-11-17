@@ -360,7 +360,31 @@ public class FriendPlayer {
         public short getDesign() {
             return design;
         }
-        
+
+
+        public void setJumpEnabled(boolean jumpEnabled) {
+            this.jumpEnabled = jumpEnabled;
+        }
+
+        public void setNotifyEnabled(boolean notifyEnabled) {
+            this.notifyEnabled = notifyEnabled;
+        }
+
+        public void setMessageEnabled(boolean messageEnabled) {
+            this.messageEnabled = messageEnabled;
+        }
+
+        public void setPartyTagsEnabled(boolean partyTagsEnabled) {
+            this.partyTagsEnabled = partyTagsEnabled;
+        }
+
+        public void setClanTagsEnabled(boolean clanTagsEnabled) {
+            this.clanTagsEnabled = clanTagsEnabled;
+        }
+
+        public void setDesign(short design) {
+            this.design = design;
+        }
     }
     public static class Status {
 

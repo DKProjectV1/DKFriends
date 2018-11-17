@@ -20,7 +20,6 @@ public class MessageConfig extends SimpleConfig {
         super(new File(platform.getFolder(),"messages.yml"));
         this.platform = platform;
     }
-
     @Override
     public void onLoad() {
         Messages.PREFIX_FRIEND = get("prefix.friend");
@@ -82,10 +81,13 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_FAVORITE_ADD = get("player.favorite.add");
         Messages.PLAYER_FAVORITE_REMOVE = get("player.favorite.remove");
 
-        Messages.PLAYER_JUMP = get("player.jump");
+        Messages.PLAYER_JUMP = get("player.jump.jump");
+        Messages.PLAYER_JUMP_NOTALLOWED = get("player.jump.notallowed");
 
         Messages.PLAYER_MESSAGE_FORMAT = get("player.message.format");
         Messages.PLAYER_MESSAGE_COLOR = get("player.message.color");
+        Messages.PLAYER_MESSAGE_NOT_ALLOWED = get("player.message.not.allowed");
+        Messages.PLAYER_MESSAGE_NOT_ENABLED = get("player.message.not.enabled");
 
         Messages.PLAYER_NOTIFY_ONLINE = get("player.notify.online");
         Messages.PLAYER_NOTIFY_OFFLINE = get("player.notify.offline");
@@ -94,6 +96,16 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_ONLINE_TWO = get("player.online.two");
         Messages.PLAYER_ONLINE_THREE = get("player.online.three");
         Messages.PLAYER_ONLINE_MORE = get("player.online.more");
+
+        Messages.PLAYER_SETTING_JUMP_ENABLE = get("player.setting.jump.enable");
+        Messages.PLAYER_SETTING_JUMP_DISABLE = get("player.setting.jump.disable");
+
+        Messages.PLAYER_SETTING_MESSAGE_ENABLE = get("player.setting.message.enable");
+        Messages.PLAYER_SETTING_MESSAGE_DISABLE= get("player.setting.message.disable");
+
+        Messages.PLAYER_SETTING_NOTIFY_ENABLE = get("player.setting.notify.enable");
+        Messages.PLAYER_SETTING_NOTIFY_DISABLE = get("player.setting.notify.disable");
+        Messages.PLAYER_SETTING_HELP = get("player.setting.help");
     }
     @Override
     public void registerDefaults() {
@@ -158,10 +170,13 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.favorite.add", "[prefix]&7You marked &e[player] &7as favorite.");
         addValue("player.favorite.remove", "[prefix]&7You removed &e[player] &7as favorite.");
 
-        addValue("player.jump","[prefix]&7You jumped to server from &e[player]&7.");
+        addValue("player.jump.jump","[prefix]&7You jumped to server from &e[player]&7.");
+        addValue("player.jump.notallowed","[prefix]&7You can not jump to &e[player]&7.");
 
         addValue("player.message.format","[prefix][sender] §7§l»§f [receiver]§7: §e[message]");
         addValue("player.message.color","&e");
+        addValue("player.message.not.allowed","[prefix]&cYou can't send &e[player] &7a message.");
+        addValue("player.message.not.enable","[prefix]&cTo send a message, enable messages with &e/friend toggle message");
 
         addValue("player.notify.online","[prefix]&e[player] &ais now online.");
         addValue("player.notify.offline","[prefix]&e[player] &cis now offline.");
@@ -171,6 +186,15 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.online.three","[prefix]&7Currently is &e[player-1]&7, &e[player-2] &7and &e[player-3] &7online.");
         addValue("player.online.more","[prefix]&7Currently is &e[player-1]&7, &e[player-2] &7and &e[more] &7more online.");
 
+        addValue("player.setting.jump.enable","[prefix]&aFriends can now jump to you.");
+        addValue("player.setting.jump.disable","[prefix]&aFriends can no longer jump to you.");
+
+        addValue("player.setting.message.enable","[prefix]&aFriends can now send you messages.");
+        addValue("player.setting.message.disable","[prefix]&aFriends can no longer send you messages.");
+
+        addValue("player.setting.notify.enable","[prefix]&aYou receive now join and quit notification.");
+        addValue("player.setting.notify.disable","[prefix]&aYou do no longer receive notifications.");
+        addValue("player.setting.help","[prefix] Possible settings\n &8- &7jump\n &8- &7message\n &8- &7notify");
     }
     public String get(String path){
         return getMessageValue(path);

@@ -18,12 +18,16 @@ import java.util.List;
 public class FriendMessageCommand extends SubFriendCommand {
 
     public FriendMessageCommand() {
-        super("messages");
+        super("message");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
+            if(!player.getSettings().isMessageEnabled()){
+                sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ENABLED);
+                return;
+            }
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
             if(friend == null){
                 sender.sendMessage(Messages.PLAYER_NOT_FOUND
@@ -37,7 +41,10 @@ public class FriendMessageCommand extends SubFriendCommand {
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            //check can send a message
+            if(!friend.getSettings().isMessageEnabled()){
+                sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ALLOWED);
+                return;
+            }
             OnlineFriendPlayer online = player.getOnlinePlayer();
             if(online == null){
                 sender.sendMessage(Messages.PLAYER_NOT_ONLINE

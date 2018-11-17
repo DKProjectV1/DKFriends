@@ -37,7 +37,10 @@ public class FriendJumpCommand extends SubFriendCommand {
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            //check can jump
+            if(!friend.getSettings().isJumpEnabled()){
+                sender.sendMessage(Messages.PLAYER_JUMP_NOTALLOWED);
+                return;
+            }
             OnlineFriendPlayer online = friend.getOnlinePlayer();
             if(online == null){
                 sender.sendMessage(Messages.PLAYER_NOT_ONLINE

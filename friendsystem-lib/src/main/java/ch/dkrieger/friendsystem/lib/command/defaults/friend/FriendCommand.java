@@ -29,8 +29,8 @@ public class FriendCommand extends ch.dkrieger.friendsystem.lib.command.FriendCo
         registerSubCommand(new FriendClearCommand());
         registerSubCommand(new FriendAcceptAllCommand());
         registerSubCommand(new FriendDenyAllCommand());
+        registerSubCommand(new FriendToggleCommand());
     }
-
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
         sendHelp(sender);
