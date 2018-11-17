@@ -72,7 +72,7 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
             try {
                 this.connection = DriverManager.getConnection("jdbc:mysql://"+config.getHost()+":"+config.getPort()+"/"+config.getDatabase()+
                         "?autoReconnect=true&allowMultiQueries=true&reconnectAtTxEnd=true",config.getUser(), config.getPassword());
-                this.friendPlayerTable = new Table(this, "dkfriends_friendplayers");
+                this.friendPlayerTable = new Table(this, "DKFriends_players");
                 friendPlayerTable.create()
                         .create("`id` int NOT NULL AUTO_INCREMENT")
                         .create("`uuid` varchar(32) NOT NULL")

@@ -1,5 +1,6 @@
 package ch.dkrieger.friendsystem.bungeecord;
 
+import ch.dkrieger.friendsystem.bungeecord.listeners.PlayerListener;
 import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
@@ -23,13 +24,14 @@ public class BungeeCordFriendSystemBootstrap extends Plugin implements DKFriends
 
     @Override
     public void onLoad() {
+        instance = this;
         this.commandManager = new BungeeCordCommandManager();
 
         new FriendSystem(this,new BungeeCordPlayerManager());
     }
     @Override
     public void onEnable() {
-        super.onEnable();
+        BungeeCord.getInstance().getPluginManager().registerListener(this,new PlayerListener());
 
         BungeeCord.getInstance().getScheduler().schedule(this,()->{
             if(isCloudNet()){

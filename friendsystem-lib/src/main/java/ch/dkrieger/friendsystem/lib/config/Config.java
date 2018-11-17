@@ -17,7 +17,7 @@ public class Config extends SimpleConfig {
     private final DKFriendsPlatform platform;
     private StorageType storageType;
     private String host, port, user, password, database, mongoDbAuthenticationDatabase, dataFolder;
-    private boolean mongoDbSrv, commandFriendEnabled;
+    private boolean mongoDbSrv, mongoDbAuthentication, commandFriendEnabled;
 
     public Config(DKFriendsPlatform platform) {
         super(new File(platform.getFolder(),"config.yml"));
@@ -51,8 +51,10 @@ public class Config extends SimpleConfig {
     public String getMongoDbAuthenticationDatabase() {
         return mongoDbAuthenticationDatabase;
     }
-
-    public boolean isMongoDbSrv() {
+    public boolean hasMongoDbAuthentication() {
+        return mongoDbAuthentication;
+    }
+    public boolean hasMongoDbSrv() {
         return mongoDbSrv;
     }
     public boolean isCommandFriendEnabled() {
@@ -71,6 +73,7 @@ public class Config extends SimpleConfig {
         this.user = getStringValue("storage.user");
         this.password = getStringValue("storage.password");
         this.database = getStringValue("storage.database");
+        this.mongoDbAuthentication = getBooleanValue("storage.mongodb.mongodbauthentication");
         this.mongoDbAuthenticationDatabase = getStringValue("storage.mongodb.authenticationDatabase");
         this.mongoDbSrv = getBooleanValue("storage.mongodb.srv");
 
@@ -85,6 +88,7 @@ public class Config extends SimpleConfig {
         addValue("storage.user", "root");
         addValue("storage.password", "password");
         addValue("storage.database", "DKFriends");
+        addValue("storage.mongodb.mongodbauthentication",true);
         addValue("storage.mongodb.authenticationDatabase", "admin");
         addValue("storage.mongodb.srv", false);
 

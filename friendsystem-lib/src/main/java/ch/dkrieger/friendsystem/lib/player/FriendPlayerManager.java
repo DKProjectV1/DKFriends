@@ -48,6 +48,7 @@ public abstract class FriendPlayerManager {
     public FriendPlayer getPlayerSave(UUID uuid) throws Exception{
         FriendPlayer player = FriendSystem.getInstance().getStorage().getPlayer(uuid);
         if(player != null) this.loadedPlayers.add(player);
+        System.out.println("getPlayerSave: "+player);
         return player;
     }
     public FriendPlayer createPlayer(UUID uuid, String name, String color, String gameProfile){

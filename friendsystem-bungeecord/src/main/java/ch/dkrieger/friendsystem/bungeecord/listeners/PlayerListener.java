@@ -16,7 +16,7 @@ import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-public class PlayerListeners implements Listener {
+public class PlayerListener implements Listener {
 
     @EventHandler(priority=80)
     public void onLogin(LoginEvent event){
@@ -35,6 +35,7 @@ public class PlayerListeners implements Listener {
                 return;
             }
         }
+        System.out.println(player);
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getConnection().getUniqueId()
                     ,event.getConnection().getName(),"ColorChange",null);
