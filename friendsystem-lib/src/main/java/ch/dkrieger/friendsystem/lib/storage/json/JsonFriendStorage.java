@@ -12,6 +12,8 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.storage.FriendStorage;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import com.google.gson.reflect.TypeToken;
+import io.netty.util.internal.ConcurrentSet;
+
 import java.io.File;
 import java.util.*;
 
@@ -19,15 +21,15 @@ public class JsonFriendStorage implements FriendStorage {
 
     private File file;
     private Document data;
-    private ArrayList<FriendPlayer> players;
+    private ConcurrentSet<FriendPlayer> players;
 
     public JsonFriendStorage(Config config) {
         new File(config.getDataFolder()).mkdirs();
         this.file = new File(config.getDataFolder(), "players.json");
         if(file.exists() && file.isFile()) this.data = Document.loadData(file);
         else this.data = new Document();
-        this.data.appendDefault("players", new ArrayList<>());
-        this.players = this.data.getObject("players", new TypeToken<List<FriendPlayer>>(){}.getType());
+        this.data.appendDefault("players",new ConcurrentSet<>());
+        this.players = this.data.getObject("players", new TypeToken<ConcurrentSet<FriendPlayer>>(){}.getType());
     }
 
     @Override

@@ -50,11 +50,13 @@ public class FriendMessageCommand extends SubFriendCommand {
                 if(i > 2 ) message = message + " §e" + args[i];
                 else  message = args[i];
             }
-            message = getPrefix()+Messages.PLAYER_MESSAGE_FORMAT.replace("[message]",message)
+            message = Messages.PLAYER_MESSAGE_FORMAT
+                    .replace("[message]",message)
+                    .replace("[prefix]",getPrefix())
                     .replace("[sender]",player.getColoredName())
                     .replace("[receiver]",friend.getColoredName());
             sender.sendMessage(message);
-            player.sendMessage(message);
+            friend.sendMessage(message);
         }
     }
     @Override

@@ -282,15 +282,21 @@ public class FriendPlayer {
         Iterator<Friend> iterator = new ArrayList<>(this.requests).iterator();
         this.requests.clear();
         Friend request = null;
-        while(iterator.hasNext() && (request= iterator.next()) != null) request.getFriendPlayer().addFriend(this,true);
-        FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
+        while(iterator.hasNext() && (request= iterator.next()) != null){
+            this.friends.add(new Friend(request.getUUID(),System.currentTimeMillis(),false));
+            request.getFriendPlayer().addFriend(this,true);
+        }
+        FriendSystem.getInstance().getStorage().saveFriendsAndRequests(this.uuid,this.friends,this.requests);
     }
     public void denyAll(){
         this.requests.clear();
         FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
     }
     public void clearFriends(){
+        Iterator<Friend> iterator = new ArrayList<>(this.friends).iterator();
         this.friends.clear();
+        Friend friend = null;
+        while(iterator.hasNext() && (friend= iterator.next()) != null) friend.getFriendPlayer().removeFriend(this,true);
         FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
     }
     public static class Settings {

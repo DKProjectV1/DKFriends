@@ -31,7 +31,6 @@ public abstract class SQLFriendStorage implements FriendStorage {
     public SQLFriendStorage(Config config) {
         this.config = config;
     }
-
     @Override
     public boolean isConnected() {
         return connection != null;
@@ -60,7 +59,6 @@ public abstract class SQLFriendStorage implements FriendStorage {
                 connect(config);
                 this.friendPlayerTable = new Table(this, "DKFriends_players");
                 friendPlayerTable.create()
-                        .create("`id` int NOT NULL AUTO_INCREMENT")
                         .create("`uuid` varchar(32) NOT NULL")
                         .create("`name` varchar(32) NOT NULL")
                         .create("`color` TEXT NOT NULL")
@@ -147,7 +145,37 @@ public abstract class SQLFriendStorage implements FriendStorage {
 
     @Override
     public void createPlayer(FriendPlayer player) {
-        this.friendPlayerTable.insert().insert("uuid").insert("name").insert("friendplayer").value(player.getUUID().toString()).value(player.getName()).value(GeneralUtil.GSON_NOT_PRETTY.toJson(player)).execute();
+        this.friendPlayerTable.insert()
+                .insert("uuid")
+                .insert("name")
+                .insert("color")
+                .insert("gameProfile")
+                .insert("firstLogin")
+                .insert("lastLogin")
+                .insert("maxFriends")
+                .insert("maxPartyPlayers")
+                .insert("maxClanPlayers")
+                .insert("hiderStatus")
+                .insert("status")
+                .insert("settings")
+                .insert("friends")
+                .insert("requests")
+                .insert("properties")
+                .value(player.getUUID())
+                .value(player.getName())
+                .value(player.getColor())
+                .value(player.getGameProfile())
+                .value(player.getFirstLogin())
+                .value(player.getLastLogin())
+                .value(player.getMaxFriends())
+                .value(player.getMaxPartyPlayers())
+                .value(player.getMaxClanPlayers())
+                .value(player.getHiderStatus())
+                .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getStatus()))
+                .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getSettings()))
+                .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getFriends()))
+                .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getRequests()))
+                .value(player.getProperties().toJson());
     }
 
     @Override

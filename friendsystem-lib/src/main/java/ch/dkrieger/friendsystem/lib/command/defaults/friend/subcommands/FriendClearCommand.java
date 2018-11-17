@@ -31,13 +31,13 @@ public class FriendClearCommand extends SubFriendCommand {
                 return;
             }
             for(Friend friend : friends){
-                FriendPlayer friendPlayer = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
+                FriendPlayer friendPlayer = friend.getFriendPlayer();
                 sender.sendMessage(Messages.PLAYER_REMOVED_SELF
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friendPlayer.getColoredName()));
                 friendPlayer.sendMessage(Messages.PLAYER_REMOVED_OTHER
                         .replace("[prefix]",getPrefix())
-                        .replace("[player]",friendPlayer.getColoredName()));
+                        .replace("[player]",player.getColoredName()));
             }
             player.clearFriends();
         }

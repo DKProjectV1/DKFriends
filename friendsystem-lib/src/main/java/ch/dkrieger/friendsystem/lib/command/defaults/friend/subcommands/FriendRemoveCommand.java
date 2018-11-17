@@ -42,7 +42,7 @@ public class FriendRemoveCommand extends SubFriendCommand {
                     .replace("[player]",friend.getColoredName()));
             friend.sendMessage(Messages.PLAYER_REMOVED_OTHER
                     .replace("[prefix]",getPrefix())
-                    .replace("[player]",friend.getColoredName()));
+                    .replace("[player]",player.getColoredName()));
         }
     }
     @Override

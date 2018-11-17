@@ -38,7 +38,7 @@ public class FriendJumpCommand extends SubFriendCommand {
                 return;
             }
             //check can jump
-            OnlineFriendPlayer online = player.getOnlinePlayer();
+            OnlineFriendPlayer online = friend.getOnlinePlayer();
             if(online == null){
                 sender.sendMessage(Messages.PLAYER_NOT_ONLINE
                         .replace("[prefix]",getPrefix())

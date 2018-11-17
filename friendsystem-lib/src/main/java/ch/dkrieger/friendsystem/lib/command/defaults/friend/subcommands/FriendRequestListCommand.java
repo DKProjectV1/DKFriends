@@ -58,8 +58,8 @@ public class FriendRequestListCommand extends SubFriendCommand {
                         Messages.PLAYER_REQUEST_LIST_LIST
                                 .replace("[prefix]",getPrefix())
                                 .replace("[player]",requestPlayer.getColoredName())
-                        ,"/"+getMainCommand().getName()+" accept "+player.getName()
-                        ,"/"+getMainCommand().getName()+" deny "+player.getName()));
+                        ,"/"+getMainCommand().getName()+" accept "+requestPlayer.getName()
+                        ,"/"+getMainCommand().getName()+" deny "+requestPlayer.getName()));
 
             }
         }

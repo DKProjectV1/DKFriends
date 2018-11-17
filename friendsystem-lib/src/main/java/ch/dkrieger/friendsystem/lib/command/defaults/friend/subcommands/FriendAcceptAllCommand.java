@@ -31,7 +31,7 @@ public class FriendAcceptAllCommand extends SubFriendCommand {
                 return;
             }
             for(Friend friend : requests){
-                FriendPlayer friendPlayer = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
+                FriendPlayer friendPlayer = friend.getFriendPlayer();
                 sender.sendMessage(Messages.PLAYER_REQUEST_ACCEPTED_SELF
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friendPlayer.getColoredName()));

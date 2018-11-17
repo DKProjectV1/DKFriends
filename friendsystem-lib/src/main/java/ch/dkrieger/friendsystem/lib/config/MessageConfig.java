@@ -104,7 +104,7 @@ public class MessageConfig extends SimpleConfig {
         addValue("nopermissions", "[prefix]&4You don't have permission to execute this command.");
 
         addValue("help.header.one", "[prefix]&7Page [page]/[maxPage]");
-        addValue("help.header.more", "[prefix]&7Page [page]/[maxPage] &8| &7More help with &e/[command] [nexPage]");
+        addValue("help.header.more", "[prefix]&7Page [page]/[maxPage] &8| &7More help with &e/[command] [nextPage]");
 
         addValue("server.notfound", "[prefix]&7cThe server was not found.");
         addValue("server.already", "[prefix]&7c You are already connected to this server.");
@@ -142,7 +142,7 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.request.list.header", "[prefix]&7Request list page [page]/[maxPages]");
         addValue("player.request.list.list", " &7- [player] [accept] [deny]");
 
-        addValue("player.request.open.message", "[prefix]&7You have [amount] open [design]");
+        addValue("player.request.open.message", "[prefix]&7You have &e[amount] &7open [design] &8[&aShow&8]");
         addValue("player.request.open.singular", "friend request");
         addValue("player.request.open.plural", "friend requests");
 
@@ -167,7 +167,7 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.notify.offline","[prefix]&e[player] &cis now offline.");
 
         addValue("player.online.one","[prefix]&7Currently is only &e[player-1] &7online.");
-        addValue("player.online.two","[prefix]&7Currently is &e[player-1] &7and &e[player-3] &7online.");
+        addValue("player.online.two","[prefix]&7Currently is &e[player-1] &7and &e[player-2] &7online.");
         addValue("player.online.three","[prefix]&7Currently is &e[player-1]&7, &e[player-2] &7and &e[player-3] &7online.");
         addValue("player.online.more","[prefix]&7Currently is &e[player-1]&7, &e[player-2] &7and &e[more] &7more online.");
 

@@ -76,8 +76,8 @@ public class BungeeCordPlayerManager extends FriendPlayerManager {
             ServerInfo info = BungeeCord.getInstance().getServerInfo(server);
             if(info != null ){
                 if(!this.proxiedPlayer.getServer().getInfo().equals(info)) this.proxiedPlayer.connect(info);
-                else sendMessage(Messages.SERVER_ALREADY);
-            }else sendMessage(Messages.SERVER_NOTFOUND);
+                else sendMessage(Messages.SERVER_ALREADY.replace("[prefix]",Messages.PREFIX_FRIEND));
+            }else sendMessage(Messages.SERVER_NOTFOUND.replace("[prefix]",Messages.PREFIX_FRIEND));
         }
     }
 }

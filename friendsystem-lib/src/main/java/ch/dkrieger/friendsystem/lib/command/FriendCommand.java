@@ -120,7 +120,7 @@ public abstract class FriendCommand {
         for(int h = from; h <= to; h++) {
             if(h > subCommands.size()) break;
             SubFriendCommand subCommand = subCommands.get(h - 1);
-            if(sender.hasPermission(subCommand.getPermission())) {
+            if(subCommand.getPermission() == null || sender.hasPermission(subCommand.getPermission())) {
                 sender.sendMessage(getName()+(subCommand.getUsage() != null ? " " + subCommand.getUsage() : "") + (subCommand.getDescription() != null ? " " + subCommand.getDescription() : ""));
                 if(!subCommand.getSubCommands().isEmpty()){
                     String helpMessage = "";
