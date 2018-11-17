@@ -15,19 +15,10 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 
 import java.util.List;
 
-public class AddCommand extends SubFriendCommand {
+public class FriendAddCommand extends SubFriendCommand {
 
-    public AddCommand(String name) {
-        super(name);
-    }
-    public AddCommand(String name, String description) {
-        super(name, description);
-    }
-    public AddCommand(String name, String description, String permission) {
-        super(name, description, permission);
-    }
-    public AddCommand(String name, String description, String permission, String usage, String... aliases) {
-        super(name, description, permission, usage, aliases);
+    public FriendAddCommand() {
+        super("add");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

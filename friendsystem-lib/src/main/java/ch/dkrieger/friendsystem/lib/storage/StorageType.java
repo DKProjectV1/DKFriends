@@ -13,4 +13,11 @@ public enum StorageType {
     MYSQL(),
     MONGODB();
 
+    public static StorageType parse(String name){
+        try{
+            return valueOf(name.toUpperCase());
+        }catch (Exception exception){}
+        return JSON;
+    }
+
 }

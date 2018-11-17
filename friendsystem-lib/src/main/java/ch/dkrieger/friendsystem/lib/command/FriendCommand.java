@@ -80,6 +80,7 @@ public abstract class FriendCommand {
         return this;
     }
     public FriendCommand registerSubCommand(SubFriendCommand subCommand){
+        subCommand.init(this,this);
         this.subCommands.add(subCommand);
         return this;
     }

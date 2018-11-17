@@ -33,4 +33,11 @@ public abstract class SubFriendCommand extends FriendCommand {
         this.mainCommand = mainCommand;
         this.commandBefore = commandBefore;
     }
+
+    @Override
+    public FriendCommand registerSubCommand(SubFriendCommand subCommand) {
+        super.registerSubCommand(subCommand);
+        subCommand.init(this.mainCommand,this.commandBefore);
+        return this;
+    }
 }

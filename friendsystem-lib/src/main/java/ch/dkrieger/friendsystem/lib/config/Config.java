@@ -6,18 +6,21 @@ package ch.dkrieger.friendsystem.lib.config;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.storage.StorageType;
 
 import java.io.File;
 
 public class Config extends SimpleConfig {
 
+    private final DKFriendsPlatform platform;
     private StorageType storageType;
-    private String host, port, user, password, database, mongoDbAuthenticationDatabase, jsonFolder;
+    private String host, port, user, password, database, mongoDbAuthenticationDatabase, dataFolder;
     private boolean mongoDbSrv, commandsEnabled;
 
-    public Config(File file) {
-        super(file);
+    public Config(DKFriendsPlatform platform) {
+        super(new File(platform.getFolder(),"config.yml"));
+        this.platform = platform;
     }
 
     public StorageType getStorageType() {
@@ -51,14 +54,17 @@ public class Config extends SimpleConfig {
     public boolean isMongoDbSrv() {
         return mongoDbSrv;
     }
-
-    public String getJsonFolder() {
-        return jsonFolder;
+    public boolean areCommandsEnabled(){
+        return this.commandsEnabled;
+    }
+    public String getDataFolder() {
+        return dataFolder;
     }
 
     @Override
     public void onLoad() {
-        this.storageType = (StorageType) getValue("storage.type");
+        this.dataFolder = getStringValue("storage.folder");
+        this.storageType = StorageType.parse(getStringValue("storage.type");
         this.host = getStringValue("storage.host");
         this.port = getStringValue("storage.port");
         this.user = getStringValue("storage.user");
@@ -66,19 +72,17 @@ public class Config extends SimpleConfig {
         this.database = getStringValue("storage.database");
         this.mongoDbAuthenticationDatabase = getStringValue("storage.mongodb.authenticationDatabase");
         this.mongoDbSrv = getBooleanValue("storage.mongodb.srv");
-        this.jsonFolder = getStringValue("storage.json.folder");
     }
-
     @Override
     public void registerDefaults() {
-        addValue("storage.type", StorageType.MONGODB);
+        addValue("storage.folder",this.platform.getFolder()+"/data/");
+        addValue("storage.type", StorageType.MONGODB);//change to json
         addValue("storage.host", "127.0.0.1");
-        addValue("storage.port", "27018");
+        addValue("storage.port", "3306"); //mongo 27018
         addValue("storage.user", "root");
-        addValue("storage.password", "1234");
-        addValue("storage.database", "dkfriends");
+        addValue("storage.password", "password");
+        addValue("storage.database", "DKFriends");
         addValue("storage.mongodb.authenticationDatabase", "admin");
         addValue("storage.mongodb.srv", false);
-        addValue("storage.json.folder", "json");
     }
 }

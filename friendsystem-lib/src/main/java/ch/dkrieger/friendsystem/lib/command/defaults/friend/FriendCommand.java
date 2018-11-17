@@ -1,6 +1,7 @@
 package ch.dkrieger.friendsystem.lib.command.defaults.friend;
 
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
+import ch.dkrieger.friendsystem.lib.command.defaults.friend.subcommands.FriendAddCommand;
 
 import java.util.List;
 
@@ -14,11 +15,12 @@ public class FriendCommand extends ch.dkrieger.friendsystem.lib.command.FriendCo
 
     public FriendCommand() {
         super("friend","Friend command",null,"/friend ","freund","f");
+        registerSubCommand(new FriendAddCommand());
     }
 
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
-
+        sendHelp(sender);
     }
 
     @Override
