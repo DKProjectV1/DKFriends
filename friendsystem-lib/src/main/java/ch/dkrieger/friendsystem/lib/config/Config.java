@@ -8,7 +8,6 @@ package ch.dkrieger.friendsystem.lib.config;
 
 import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.storage.StorageType;
-
 import java.io.File;
 import java.util.Arrays;
 
@@ -82,7 +81,7 @@ public class Config extends SimpleConfig {
     @Override
     public void registerDefaults() {
         addValue("storage.folder",this.platform.getFolder()+"/data/");
-        addValue("storage.type", StorageType.MONGODB);//change to json
+        addValue("storage.type", StorageType.MONGODB.toString().toUpperCase());//change to json
         addValue("storage.host", "127.0.0.1");
         addValue("storage.port", "3306"); //mongo 27018
         addValue("storage.user", "root");

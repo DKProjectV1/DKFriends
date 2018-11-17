@@ -55,10 +55,9 @@ public class BungeeCordCommandManager implements FriendCommandManager {
                 });
                 return;
             }
-            sender.sendMessage("No Perms");
+            sender.sendMessage(new TextComponent("No Perms"));
             //send no perm message
             //sender.sendMessage(new TextComponent(Messages.PREFIX+Messages.NOPERMISSIONS));
-            return;
         }
         @Override
         public Iterable<String> onTabComplete(CommandSender sender, String[] args) {

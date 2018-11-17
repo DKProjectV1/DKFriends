@@ -1,7 +1,7 @@
 package ch.dkrieger.friendsystem.spigot.api.inventory.item;
 
 import ch.dkrieger.friendsystem.spigot.api.Reflection;
-import ch.dkrieger.friendsystem.spigot.SpigotUtil;
+import ch.dkrieger.friendsystem.spigot.util.SpigotUtil;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
