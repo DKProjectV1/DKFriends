@@ -6,6 +6,7 @@ package ch.dkrieger.friendsystem.lib.storage.sql.sqlite;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.config.Config;
 import ch.dkrieger.friendsystem.lib.storage.sql.SQLFriendStorage;
 
@@ -20,12 +21,16 @@ public class SQLiteFriendStorage extends SQLFriendStorage {
 
     @Override
     public void connect(Config config) throws SQLException {
-        setConnection(DriverManager.getConnection("jdbc:sqlite:players.db"));
+        setConnection(DriverManager.getConnection("jdbc:sqlite:"+config.getDataFolder()+"players.db"));
 
     }
 
     @Override
     public void loadDriver() {
-
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println(Messages.SYSTEM_PREFIX +"Could not load SQLiteFriendStorage driver.");
+        }
     }
 }
