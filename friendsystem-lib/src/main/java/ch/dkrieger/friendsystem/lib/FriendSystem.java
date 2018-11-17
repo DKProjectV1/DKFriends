@@ -10,8 +10,6 @@ import ch.dkrieger.friendsystem.lib.storage.StorageType;
 import ch.dkrieger.friendsystem.lib.storage.mongodb.MongoDBFriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.sql.MySQLFriendStorage;
 
-import java.io.File;
-
 /*
  *
  *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:47
@@ -30,6 +28,8 @@ public class FriendSystem {
     private MessageConfig messageConfig;
 
     public FriendSystem(DKFriendsPlatform platform, FriendPlayerManager playerManager) {
+        if(instance != null) throw new IllegalArgumentException("DKFriends is already running!");
+        instance = this;
         this.version = "1.0.0";
         this.platform = platform;
         new Messages("DKFriends");
@@ -60,7 +60,14 @@ public class FriendSystem {
         if(this.config.getStorageType() == StorageType.MYSQL) this.storage = new MySQLFriendStorage(this.config);
         else if(this.config.getStorageType() == StorageType.SQLITE);//set sqlite storage
         else if(this.config.getStorageType() == StorageType.MONGODB) this.storage = new MongoDBFriendStorage(this.config);
-        else; //set json storage
+
+        if(this.storage.connect()) return;
+
+
+        //set json storage
+    }
+    public void shutdown(){
+        if(this.storage != null) this.storage.disconnect();
     }
     public String getVersion() {
         return this.version;
@@ -79,8 +86,10 @@ public class FriendSystem {
     }
 
     public void registerCommands(){
-        if(!this.config.areCommandsEnabled()) return;
-        this.commandManager.registerCommand(new FriendCommand());
+        if(this.config.isCommandFriendEnabled()){
+            System.out.println("register");
+            this.platform.getCommandManager().registerCommand(new FriendCommand());
+        }
     }
 
     public static FriendSystem getInstance() {

@@ -16,9 +16,11 @@ import java.util.UUID;
 
 public interface FriendStorage {
 
-    public void connect();
+    public boolean connect();
 
     public void disconnect();
+
+    public boolean isConnected();
 
     public FriendPlayer getPlayer(UUID uuid) throws Exception;
 

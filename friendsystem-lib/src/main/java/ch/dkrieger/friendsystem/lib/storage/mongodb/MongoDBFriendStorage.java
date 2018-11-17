@@ -34,16 +34,21 @@ public class MongoDBFriendStorage implements FriendStorage {
     }
 
     @Override
-    public void connect() {
+    public boolean connect() {
         this.mongoClient = new MongoClient(new MongoClientURI("mongodb"+(config.isMongoDbSrv() ? "+srv" : "")+"://"+config.getUser()+":"
                 +config.getPassword()+"@"+config.getHost()+":"+config.getPort()+"/" +config.getMongoDbAuthenticationDatabase()+"?retryWrites=true"));
         this.database = this.mongoClient.getDatabase(config.getDatabase());
         this.friendPlayerCollection = database.getCollection("dkfriends_friendplayers");
+        return true;
     }
 
     @Override
     public void disconnect() {
 
+    }
+    @Override
+    public boolean isConnected() {
+        return false;
     }
 
     @Override

@@ -10,13 +10,14 @@ import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.storage.StorageType;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class Config extends SimpleConfig {
 
     private final DKFriendsPlatform platform;
     private StorageType storageType;
     private String host, port, user, password, database, mongoDbAuthenticationDatabase, dataFolder;
-    private boolean mongoDbSrv, commandsEnabled;
+    private boolean mongoDbSrv, commandFriendEnabled;
 
     public Config(DKFriendsPlatform platform) {
         super(new File(platform.getFolder(),"config.yml"));
@@ -54,8 +55,8 @@ public class Config extends SimpleConfig {
     public boolean isMongoDbSrv() {
         return mongoDbSrv;
     }
-    public boolean areCommandsEnabled(){
-        return this.commandsEnabled;
+    public boolean isCommandFriendEnabled() {
+        return commandFriendEnabled;
     }
     public String getDataFolder() {
         return dataFolder;
@@ -64,7 +65,7 @@ public class Config extends SimpleConfig {
     @Override
     public void onLoad() {
         this.dataFolder = getStringValue("storage.folder");
-        this.storageType = StorageType.parse(getStringValue("storage.type");
+        this.storageType = StorageType.parse(getStringValue("storage.type"));
         this.host = getStringValue("storage.host");
         this.port = getStringValue("storage.port");
         this.user = getStringValue("storage.user");
@@ -72,6 +73,8 @@ public class Config extends SimpleConfig {
         this.database = getStringValue("storage.database");
         this.mongoDbAuthenticationDatabase = getStringValue("storage.mongodb.authenticationDatabase");
         this.mongoDbSrv = getBooleanValue("storage.mongodb.srv");
+
+        this.commandFriendEnabled = getBooleanValue("command.friend.enabled");
     }
     @Override
     public void registerDefaults() {
@@ -84,5 +87,12 @@ public class Config extends SimpleConfig {
         addValue("storage.database", "DKFriends");
         addValue("storage.mongodb.authenticationDatabase", "admin");
         addValue("storage.mongodb.srv", false);
+
+        addValue("command.friend.enabled",true);
+        addValue("command.friend.name","friend");
+        addValue("command.friend.aliases", Arrays.asList("f","freund"));
+        addValue("command.party.enabled",true);
+        addValue("command.party.name","party");
+        addValue("command.party.aliases", Arrays.asList("p"));
     }
 }

@@ -65,7 +65,7 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
 	}
 
 	@Override
-	public void connect() {
+	public boolean connect() {
         if(!isConnected()){
             loadDriver();
             System.out.println(Messages.SYSTEM_PREFIX+"connecting to MySQLFriendStorage server at "+config.getHost()+":"+config.getPort());
@@ -91,17 +91,17 @@ public class MySQLFriendStorage implements Runnable, FriendStorage {
                         .create("`requests` LONGTEXT NOT NULL")
                         .create("`properties` LONGTEXT NOT NULL")
                         .execute();
-                System.out.println(Messages.SYSTEM_PREFIX+"successful connected to MySQLFriendStorage server at "+config.getHost()+":"+config.getPort());
-
+                System.out.println(Messages.SYSTEM_PREFIX+"successful connected to MySQL server at "+config.getHost()+":"+config.getPort());
             }catch (SQLException exception) {
-                System.out.println(Messages.SYSTEM_PREFIX+"Could not connect to MySQLFriendStorage server at "+config.getHost()+":"+config.getPort());
+                System.out.println(Messages.SYSTEM_PREFIX+"Could not connect to MySQL server at "+config.getHost()+":"+config.getPort());
                 System.out.println(Messages.SYSTEM_PREFIX+"Error: "+exception.getMessage());
-                System.out.println(Messages.SYSTEM_PREFIX+"Check your login datas in the config.");
+                System.out.println(Messages.SYSTEM_PREFIX+"Check your login data in the config.");
                 connection = null;
+                return false;
             }
         }
+        return true;
 	}
-
 	@Override
 	public void disconnect() {
         if(isConnected()){
