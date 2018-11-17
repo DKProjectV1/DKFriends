@@ -23,14 +23,13 @@ public class BungeeCordFriendSystemBootstrap extends Plugin implements DKFriends
 
     @Override
     public void onLoad() {
+        instance = this;
         this.commandManager = new BungeeCordCommandManager();
 
         new FriendSystem(this,new BungeeCordPlayerManager());
     }
     @Override
     public void onEnable() {
-        super.onEnable();
-
         BungeeCord.getInstance().getScheduler().schedule(this,()->{
             if(isCloudNet()){
 

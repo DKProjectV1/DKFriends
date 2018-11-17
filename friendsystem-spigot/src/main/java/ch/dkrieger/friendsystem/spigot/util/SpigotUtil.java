@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.spigot;
+package ch.dkrieger.friendsystem.spigot.util;
 
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Location;
@@ -14,7 +14,7 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:46
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 17.11.18 13:17
  *
  */
 
