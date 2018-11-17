@@ -12,7 +12,6 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.storage.FriendStorage;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
 import java.util.*;
 

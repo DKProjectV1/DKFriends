@@ -6,40 +6,40 @@ package ch.dkrieger.friendsystem.lib.storage.sql.table;
  *
  */
 
-import ch.dkrieger.friendsystem.lib.storage.sql.MySQLFriendStorage;
+import ch.dkrieger.friendsystem.lib.storage.sql.SQLFriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.sql.query.*;
 
 public class Table {
 
     private String name;
-    private MySQLFriendStorage mysql;
+    private SQLFriendStorage sql;
 
-    public Table(MySQLFriendStorage mysql, String name){
-        this.mysql = mysql;
+    public Table(SQLFriendStorage sql, String name){
+        this.sql = sql;
         this.name = name;
     }
     public String getName(){
         return this.name;
     }
     public CreateQuery create(){
-        return new CreateQuery(mysql.getConnection(),"CREATE TABLE IF NOT EXISTS `"+this.name+"` (");
+        return new CreateQuery(sql.getConnection(),"CREATE TABLE IF NOT EXISTS `"+this.name+"` (");
     }
     public InsertQuery insert(){
-        return new InsertQuery(mysql.getConnection(),"INSERT INTO `"+this.name+"` (");
+        return new InsertQuery(sql.getConnection(),"INSERT INTO `"+this.name+"` (");
     }
     public UpdateQuery update(){
-        return new UpdateQuery(mysql.getConnection(),"UPDATE `"+this.name+"` SET");
+        return new UpdateQuery(sql.getConnection(),"UPDATE `"+this.name+"` SET");
     }
     public SelectQuery select(){
         return select("*");
     }
     public SelectQuery select(String selection){
-        return new SelectQuery(mysql.getConnection(), "SELECT "+selection+" FROM `"+this.name+"`");
+        return new SelectQuery(sql.getConnection(), "SELECT "+selection+" FROM `"+this.name+"`");
     }
     public DeleteQuery delete(){
-        return new DeleteQuery(mysql.getConnection(), "DELETE FROM `"+this.name+"`");
+        return new DeleteQuery(sql.getConnection(), "DELETE FROM `"+this.name+"`");
     }
     public CustomQuery query(){
-        return new CustomQuery(mysql.getConnection());
+        return new CustomQuery(sql.getConnection());
     }
 }
