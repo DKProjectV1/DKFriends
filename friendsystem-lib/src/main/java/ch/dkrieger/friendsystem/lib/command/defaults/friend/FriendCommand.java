@@ -1,8 +1,10 @@
 package ch.dkrieger.friendsystem.lib.command.defaults.friend;
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.defaults.friend.subcommands.*;
+import ch.dkrieger.friendsystem.lib.config.Config;
 
 import java.util.List;
 
@@ -15,21 +17,26 @@ import java.util.List;
 public class FriendCommand extends ch.dkrieger.friendsystem.lib.command.FriendCommand {
 
     public FriendCommand() {
-        super("friend","Friend command",null,"/friend ","freund","f");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friend.aliases"));
         setPrefix(Messages.PREFIX_FRIEND);
-        registerSubCommand(new FriendAddCommand());
-        registerSubCommand(new FriendAcceptCommand());
-        registerSubCommand(new FriendDenyCommand());
-        registerSubCommand(new FriendRemoveCommand());
-        registerSubCommand(new FriendListCommand());
-        registerSubCommand(new FriendFavoriteCommand());
-        registerSubCommand(new FriendRequestListCommand());
-        registerSubCommand(new FriendJumpCommand());
-        registerSubCommand(new FriendMessageCommand());
-        registerSubCommand(new FriendClearCommand());
-        registerSubCommand(new FriendAcceptAllCommand());
-        registerSubCommand(new FriendDenyAllCommand());
-        registerSubCommand(new FriendToggleCommand());
+        Config config = FriendSystem.getInstance().getConfig();
+        if(config.getBooleanValue("command.friend.acceptall.enabled")) registerSubCommand(new FriendAcceptAllCommand(config.getStringValue("command.friend.acceptall.name")));
+        if(config.getBooleanValue("command.friend.accept.enabled")) registerSubCommand(new FriendAcceptCommand(config.getStringValue("command.friend.accept.name")));
+        if(config.getBooleanValue("command.friend.add.enabled")) registerSubCommand(new FriendAddCommand(config.getStringValue("command.friend.add.name")));
+        if(config.getBooleanValue("command.friend.clear.enabled")) registerSubCommand(new FriendClearCommand(config.getStringValue("command.friend.clear.name")));
+        if(config.getBooleanValue("command.friend.denyall.enabled")) registerSubCommand(new FriendDenyAllCommand(config.getStringValue("command.friend.denyall.name")));
+        if(config.getBooleanValue("command.friend.deny.enabled")) registerSubCommand(new FriendDenyCommand(config.getStringValue("command.friend.deny.name")));
+        if(config.getBooleanValue("command.friend.favorite.enabled")) registerSubCommand(new FriendFavoriteCommand(config.getStringValue("command.friend.favorite.name")));
+        if(config.getBooleanValue("command.friend.jump.enabled")) registerSubCommand(new FriendJumpCommand(config.getStringValue("command.friend.jump.name")));
+        if(config.getBooleanValue("command.friend.list.enabled")) registerSubCommand(new FriendListCommand(config.getStringValue("command.friend.list.name")));
+        if(config.getBooleanValue("command.friend.message.enabled")) registerSubCommand(new FriendMessageCommand(config.getStringValue("command.friend.message.name")));
+        if(config.getBooleanValue("command.friend.remove.enabled")) registerSubCommand(new FriendRemoveCommand(config.getStringValue("command.friend.remove.name")));
+        if(config.getBooleanValue("command.friend.requestlist.enabled")) registerSubCommand(new FriendRequestListCommand(config.getStringValue("command.friend.requestlist.name")));
+        if(config.getBooleanValue("command.friend.toggle.enabled")) registerSubCommand(new FriendToggleCommand(config.getStringValue("command.friend.toggle.name")));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

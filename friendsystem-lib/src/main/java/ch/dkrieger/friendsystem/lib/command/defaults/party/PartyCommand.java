@@ -6,6 +6,7 @@ package ch.dkrieger.friendsystem.lib.command.defaults.party;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommand;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
@@ -16,7 +17,11 @@ import java.util.List;
 public class PartyCommand extends FriendCommand {
 
     public PartyCommand() {
-        super("party","Party command",null,"/party ","p");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.aliases"));
         setPrefix(Messages.PREFIX_PARTY);
         registerSubCommand(new PartyInviteCommand());
         registerSubCommand(new PartyAcceptCommand());

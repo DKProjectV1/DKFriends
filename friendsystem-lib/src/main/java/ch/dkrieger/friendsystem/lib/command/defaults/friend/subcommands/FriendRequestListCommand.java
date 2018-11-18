@@ -1,5 +1,6 @@
 package ch.dkrieger.friendsystem.lib.command.defaults.friend.subcommands;
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
@@ -20,8 +21,12 @@ import java.util.List;
 
 public class FriendRequestListCommand extends SubFriendCommand {
 
-    public FriendRequestListCommand() {
-        super("requests");
+    public FriendRequestListCommand(String name) {
+        super(name,
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friend."+name+".aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

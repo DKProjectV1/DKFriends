@@ -19,8 +19,12 @@ import java.util.List;
 
 public class FriendAddCommand extends SubFriendCommand {
 
-    public FriendAddCommand() {
-        super("add");
+    public FriendAddCommand(String name) {
+        super(name,
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friend."+name+".aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

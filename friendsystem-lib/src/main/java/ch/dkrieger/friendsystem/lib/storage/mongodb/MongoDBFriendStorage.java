@@ -145,6 +145,13 @@ public class MongoDBFriendStorage implements FriendStorage {
     }
 
     @Override
+    public void saveInformations(UUID uuid, String color, long lastLogin, String gameProfile) {
+        saveColor(uuid, color);
+        saveLastLogin(uuid, lastLogin);
+        saveGameProfile(uuid, gameProfile);
+    }
+
+    @Override
     public void saveStatus(UUID uuid, FriendPlayer.Status status) {
         MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid.toString(), "status", status);
     }

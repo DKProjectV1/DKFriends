@@ -6,6 +6,8 @@ package ch.dkrieger.friendsystem.lib.command;
  *
  */
 
+import java.util.List;
+
 public abstract class SubFriendCommand extends FriendCommand {
 
     private FriendCommand mainCommand, commandBefore;
@@ -13,15 +15,23 @@ public abstract class SubFriendCommand extends FriendCommand {
     public SubFriendCommand(String name) {
         super(name);
     }
+
     public SubFriendCommand(String name, String description) {
         super(name, description);
     }
+
     public SubFriendCommand(String name, String description, String permission) {
         super(name, description, permission);
     }
+
     public SubFriendCommand(String name, String description, String permission, String usage, String... aliases) {
         super(name, description, permission, usage, aliases);
     }
+
+    public SubFriendCommand(String name, String description, String permission, String usage, List<String> aliases) {
+        super(name, description, permission, usage, aliases);
+    }
+
     public FriendCommand getMainCommand() {
         return this.mainCommand;
     }

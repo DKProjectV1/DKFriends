@@ -49,6 +49,11 @@ public class FriendSystem {
 
         System.out.println(Messages.SYSTEM_PREFIX+"plugin successfully started");
     }
+
+    public Config getConfig() {
+        return config;
+    }
+
     private void systemBootstrap() {
 
         this.platform.getFolder().mkdirs();

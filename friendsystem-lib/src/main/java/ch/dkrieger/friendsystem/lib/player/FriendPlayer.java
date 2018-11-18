@@ -306,14 +306,16 @@ public class FriendPlayer {
     public boolean isInParty(){
         return getParty() != null;
     }
-    public void updateInfos(String name,String color,String gameProfile){
-        updateInfos(name,color,this.gameProfile);
+    public void updateInformations(String name,String color,String gameProfile){
+        updateInformations(name,color);
+        this.gameProfile = gameProfile;
+        updateInformations(name,color,this.gameProfile);
     }
-    public void updateInfos(String name,String color){
+    public void updateInformations(String name,String color){
         this.name = name;
         this.color = color;
         this.lastLogin = System.currentTimeMillis();
-        //save infos to storage  and gameProfile  (name/color(lastLogin/gameProfile)
+        FriendSystem.getInstance().getStorage().saveInformations(this.uuid, this.color, this.lastLogin, this.gameProfile);
     }
     public static class Settings {
 

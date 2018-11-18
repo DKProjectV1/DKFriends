@@ -29,11 +29,14 @@ public abstract class FriendCommand {
         this(name,description,permission,name);
     }
     public FriendCommand(String name, String description, String permission, String usage, String... aliases) {
+        this(name, description, permission, usage, Arrays.asList(aliases));
+    }
+    public FriendCommand(String name, String description, String permission, String usage, List<String> aliases) {
         this.name = name;
         this.description = description;
         this.permission = permission;
         this.usage = usage;
-        this.aliases = new LinkedList<>(Arrays.asList(aliases));
+        this.aliases = aliases;
         this.subCommands = new LinkedList<>();
     }
     public String getName() {
