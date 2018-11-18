@@ -23,6 +23,7 @@ public class MessageConfig extends SimpleConfig {
     @Override
     public void onLoad() {
         Messages.PREFIX_FRIEND = get("prefix.friend");
+        Messages.PREFIX_PARTY = get("prefix.party");
         Messages.ERROR = get("error");
         Messages.NOPERMISSIONS = get("nopermissions");
 
@@ -106,6 +107,26 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_SETTING_NOTIFY_ENABLE = get("player.setting.notify.enable");
         Messages.PLAYER_SETTING_NOTIFY_DISABLE = get("player.setting.notify.disable");
         Messages.PLAYER_SETTING_HELP = get("player.setting.help");
+
+
+
+
+        Messages.PLAYER_PARTY_NOT_LEADER = get("player.party.not.leader");
+        Messages.PLAYER_PARTY_NOT_PARTY = get("player.party.not.party");
+        Messages.PLAYER_PARTY_NOT_ALLOWED_INVITE = get("player.party.not.allowed.invite");
+
+        Messages.PLAYER_PARTY_REQUEST_SENDED = get("player.party.request.sended");
+        Messages.PLAYER_PARTY_REQUEST_RECEIVED = get("player.party.request.received");
+        Messages.PLAYER_PARTY_REQUEST_ALREADY = get("player.party.request.already");
+        Messages.PLAYER_PARTY_REQUEST_NOT = get("player.party.request.not");
+
+        Messages.PLAYER_PARTY_ALREADY_INVITED = get("player.party.already.invited");
+
+        Messages.PLAYER_PARTY_ALREADY_OWN = get("player.party.already.own");
+        Messages.PLAYER_PARTY_ALREADY_MY = get("player.party.already.my");
+        Messages.PLAYER_PARTY_ALREADY_OTHER = get("player.party.already.other");
+
+        Messages.PLAYER_PARTY_JOINED = get("player.party.joined");
     }
     @Override
     public void registerDefaults() {
@@ -124,8 +145,8 @@ public class MessageConfig extends SimpleConfig {
         addValue("world.notfound", "[prefix]&7cThe world was not found.");
         addValue("world.already", "[prefix]&7c You are already in this world.");
 
-        addValue("player.not.found", "[prefix]&cThe player &e[player] was not found.");
-        addValue("prefix.not.online", "[prefix]&cThe player &e[player] is not online.");
+        addValue("player.not.found", "[prefix]&cThe player &e[player] &cwas not found.");
+        addValue("player.not.online", "[prefix]&cThe player &e[player] &cis not online.");
         addValue("player.not.request", "[prefix]&cYou don't have a request from &e[player].");
         addValue("player.not.friends", "[prefix]&e[player] &cis not your friend.");
 
@@ -195,6 +216,22 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.setting.notify.enable","[prefix]&aYou receive now join and quit notification.");
         addValue("player.setting.notify.disable","[prefix]&aYou do no longer receive notifications.");
         addValue("player.setting.help","[prefix] Possible settings\n &8- &7jump\n &8- &7message\n &8- &7notify");
+
+        addValue("player.party.not.leader","[prefix]&cYou are not the party leader.");
+        addValue("player.party.not.party","[prefix]&e[player] &cdoes not have a party.");
+        addValue("player.party.not.allowed.invite","[prefix]&cYou are not allowed to invite players to this party.");
+
+        addValue("player.party.request.sended","[prefix]&e[player] &7was invited to the party.");
+        addValue("player.party.request.received","[prefix]&7You received a invitation from &e[player].\n[prefix]&7Click here: [accept] [deny]");
+        addValue("player.party.request.already","[prefix]&e[player] &chas already a invitation to this party.");
+        addValue("player.party.request.not","[prefix]&cYou don't have a request to party from &e[player]&c.");
+        addValue("player.party.already.invited","[prefix]&e[player] &cis already invited to this party.");
+
+        addValue("player.party.already.own","[prefix]&e[player] &cis already in this party.");
+        addValue("player.party.already.my","[prefix]&e[player] &cYou are already in a party.");
+        addValue("player.party.already.other","[prefix]&e[player] &cis already in a party.");
+
+        addValue("player.party.joined","[prefix]&e[player] &caJoined the party.");
     }
     public String get(String path){
         return getMessageValue(path);

@@ -47,7 +47,13 @@ public class PartyManager {
         return getParty(player) != null;
     }
     public Party createParty(OnlineFriendPlayer player){
-        Party party = new Party(player);
+        return createParty(player.getUUID());
+    }
+    public Party createParty(FriendPlayer player){
+        return createParty(player.getUUID());
+    }
+    public Party createParty(UUID uuid){
+        Party party = new Party(uuid);
         this.parties.add(party);
         return party;
     }

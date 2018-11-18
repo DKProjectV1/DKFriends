@@ -2,6 +2,7 @@ package ch.dkrieger.friendsystem.lib;
 
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.command.defaults.friend.FriendCommand;
+import ch.dkrieger.friendsystem.lib.command.defaults.party.PartyCommand;
 import ch.dkrieger.friendsystem.lib.config.Config;
 import ch.dkrieger.friendsystem.lib.config.MessageConfig;
 import ch.dkrieger.friendsystem.lib.party.PartyManager;
@@ -42,6 +43,7 @@ public class FriendSystem {
         System.out.println(Messages.SYSTEM_PREFIX+"FriendSystem "+this.version+" by Davide Wietlisbach & Philipp Elvin Friedhoff");
 
         this.playerManager = playerManager;
+        this.partyManager = new PartyManager();
 
         systemBootstrap();
 
@@ -96,6 +98,7 @@ public class FriendSystem {
         if(this.config.isCommandFriendEnabled()){
             this.platform.getCommandManager().registerCommand(new FriendCommand());
         }
+        this.platform.getCommandManager().registerCommand(new PartyCommand());
     }
 
     public static FriendSystem getInstance() {

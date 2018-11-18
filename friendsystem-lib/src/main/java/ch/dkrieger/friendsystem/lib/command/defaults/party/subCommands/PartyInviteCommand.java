@@ -32,6 +32,13 @@ public class PartyInviteCommand extends SubFriendCommand {
                         .replace("[player]",args[0]));
                 return;
             }
+            OnlineFriendPlayer online = friend.getOnlinePlayer();
+            if(online == null){
+                sender.sendMessage(Messages.PLAYER_NOT_ONLINE
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+                return;
+            }
             /*
             check can invite
              */
@@ -43,24 +50,32 @@ public class PartyInviteCommand extends SubFriendCommand {
                 return;
             }
             if(party.isMember(friend)){
-                sender.sendMessage(Messages.PLAYER_ALREADY_PARTY_OWN
+                sender.sendMessage(Messages.PLAYER_PARTY_ALREADY_MY
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
             if(party.hasRequest(friend)){
-                sender.sendMessage(Messages.PLAYER_ALREADY_PARTY_REQUEST
+                sender.sendMessage(Messages.PLAYER_PARTY_REQUEST_ALREADY
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
             if(FriendSystem.getInstance().getPartyManager().getParty(friend) != null){
-                sender.sendMessage(Messages.PLAYER_ALREADY_PARTY_OTHER
+                sender.sendMessage(Messages.PLAYER_PARTY_ALREADY_OTHER
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            
+            party.addRequest(friend);
+            party.sendMessage(Messages.PLAYER_PARTY_REQUEST_SENDED
+                    .replace("[prefix]",getPrefix())
+                    .replace("[player]",friend.getColoredName()));
+            online.sendMessage(Messages.replaceAcceptDeny(Messages.PLAYER_PARTY_REQUEST_RECEIVED
+                    .replace("[prefix]",getPrefix())
+                    .replace("[player]",player.getColoredName()),
+                    "/"+getName()+" accept "+player.getName()
+                    ,"/"+getName()+" deny "+player.getName()));
         }
     }
     @Override

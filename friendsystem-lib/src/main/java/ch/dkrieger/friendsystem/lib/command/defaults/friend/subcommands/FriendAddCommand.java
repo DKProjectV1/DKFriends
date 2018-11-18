@@ -72,32 +72,6 @@ public class FriendAddCommand extends SubFriendCommand {
                             .replace("[player]",player.getColoredName())
                     ,"/"+getMainCommand().getName()+" accept "+player.getName()
                     ,"/"+getMainCommand().getName()+" deny "+player.getName()));
-
-            /*
-            TextComponent message = new TextComponent();
-            String text = Messages.PLAYER_REQUEST_RECEIVED_MESSAGE
-                    .replace("[prefix]",getPrefix())
-                    .replace("[player]",player.getColoredName());
-
-            if(text.contains("[accept]")){
-                int index = text.lastIndexOf("[accept]");
-                TextComponent component = new TextComponent(Messages.PLAYER_REQUEST_RECEIVED_ACCEPT);
-                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/"+getMainCommand().getName()+" accept "+player.getName()));
-                message.addExtra(new TextComponent(text.substring(0,index)));
-                message.addExtra(component);
-                text = text.substring(index).replace("[accept]","");
-            }
-            if(text.contains("[deny]")){
-                int index = text.lastIndexOf("[deny]");
-                TextComponent component = new TextComponent(Messages.PLAYER_REQUEST_RECEIVED_DENY);
-                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/"+getMainCommand().getName()+" deny "+player.getName()));
-                message.addExtra(new TextComponent(text.substring(0,index)));
-                message.addExtra(component);
-                text = text.substring(index).replace("[deny]","");
-            }
-            if(text.length() > 0) message.addExtra(text);
-            friend.sendMessage(message);
-             */
         }
     }
     @Override

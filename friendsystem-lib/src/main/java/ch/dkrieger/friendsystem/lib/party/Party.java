@@ -18,10 +18,16 @@ public class Party {
     private List<PartyPlayer> members;
     private List<UUID> requests;
 
+    public Party(FriendPlayer leader) {
+        this(leader.getUUID());
+    }
     public Party(OnlineFriendPlayer leader) {
+        this(leader.getUUID());
+    }
+    public Party(UUID uuid) {
         this.members = new ArrayList<>();
         this.requests = new ArrayList<>();
-        this.members.add(new PartyPlayer(leader.getUUID(),true));
+        this.members.add(new PartyPlayer(uuid,true));
     }
     public List<PartyPlayer> getMembers() {
         return members;
@@ -99,6 +105,24 @@ public class Party {
     }
     public void setTimeOut(long timeOut) {
         this.timeOut = timeOut;
+    }
+    public void addRequest(FriendPlayer player){
+        addRequest(player.getUUID());
+    }
+    public void addRequest(OnlineFriendPlayer player) {
+        addRequest(player.getUUID());
+    }
+    public void addRequest(UUID uuid){
+        this.requests.add(uuid);
+    }
+    public void addMember(FriendPlayer player){
+        addMember(player.getUUID());
+    }
+    public void addMember(OnlineFriendPlayer player) {
+        addMember(player.getUUID());
+    }
+    public void addMember(UUID uuid){
+        this.members.add(new PartyPlayer(uuid));
     }
     public void sendMessage(String message){
 
