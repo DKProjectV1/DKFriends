@@ -19,7 +19,11 @@ import java.util.List;
 public class PartyLeaveCommand extends SubFriendCommand {
 
     public PartyLeaveCommand() {
-        super("leave");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.leave.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.leave.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.leave.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.leave.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.leave.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

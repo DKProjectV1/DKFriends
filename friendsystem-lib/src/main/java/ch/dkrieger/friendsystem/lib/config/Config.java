@@ -207,7 +207,7 @@ public class Config extends SimpleConfig {
         addValue("command.party.info.name","info");
         addValue("command.party.info.description", "Get informations about your party");
         addValue("command.party.info.permission", "none");
-        addValue("command.party.info.aliases", Arrays.asList());
+        addValue("command.party.info.aliases", Arrays.asList("list"));
 
         addValue("command.party.invite.enabled",true);
         addValue("command.party.invite.name","invite");

@@ -17,12 +17,12 @@ import java.util.List;
 
 public class FriendDenyAllCommand extends SubFriendCommand {
 
-    public FriendDenyAllCommand(String name) {
-        super(name,
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".description"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".usage"),
-                FriendSystem.getInstance().getConfig().getStringListValue("command.friend."+name+".aliases"));
+    public FriendDenyAllCommand() {
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.denyall.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.denyall.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.denyall.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.denyall.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friend.denyall.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

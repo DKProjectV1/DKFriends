@@ -18,7 +18,11 @@ import java.util.List;
 public class PartyKickCommand extends SubFriendCommand {
 
     public PartyKickCommand() {
-        super("kick");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.kick.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.kick.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.kick.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.kick.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.kick.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

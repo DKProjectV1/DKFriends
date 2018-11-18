@@ -17,12 +17,12 @@ import java.util.List;
 
 public class FriendClearCommand extends SubFriendCommand {
 
-    public FriendClearCommand(String name) {
-        super(name,
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".description"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".usage"),
-                FriendSystem.getInstance().getConfig().getStringListValue("command.friend."+name+".aliases"));
+    public FriendClearCommand() {
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.clear.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.clear.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.clear.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.clear.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friend.clear.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

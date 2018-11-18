@@ -18,7 +18,11 @@ import java.util.List;
 public class PartyJoinCommand extends SubFriendCommand {
 
     public PartyJoinCommand() {
-        super("join");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.join.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.join.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.join.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.join.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.join.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

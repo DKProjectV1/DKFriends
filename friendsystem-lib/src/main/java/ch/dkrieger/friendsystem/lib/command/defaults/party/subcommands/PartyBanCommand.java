@@ -18,7 +18,11 @@ import java.util.List;
 public class PartyBanCommand extends SubFriendCommand {
 
     public PartyBanCommand() {
-        super("ban");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.ban.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.ban.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.ban.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.ban.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.ban.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

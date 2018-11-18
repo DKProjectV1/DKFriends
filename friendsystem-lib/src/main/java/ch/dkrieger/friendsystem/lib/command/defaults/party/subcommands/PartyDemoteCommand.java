@@ -18,7 +18,11 @@ import java.util.List;
 public class PartyDemoteCommand extends SubFriendCommand {
 
     public PartyDemoteCommand() {
-        super("demote");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.demote.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.demote.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.demote.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.demote.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.demote.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

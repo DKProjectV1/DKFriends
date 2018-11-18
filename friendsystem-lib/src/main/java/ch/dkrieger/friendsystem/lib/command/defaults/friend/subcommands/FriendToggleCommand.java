@@ -16,12 +16,12 @@ import java.util.List;
 
 public class FriendToggleCommand extends SubFriendCommand {
 
-    public FriendToggleCommand(String name) {
-        super(name,
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".description"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".usage"),
-                FriendSystem.getInstance().getConfig().getStringListValue("command.friend."+name+".aliases"));
+    public FriendToggleCommand() {
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.toggle.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.toggle.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.toggle.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.toggle.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friend.toggle.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

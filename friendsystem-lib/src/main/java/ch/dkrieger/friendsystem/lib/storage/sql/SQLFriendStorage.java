@@ -210,6 +210,7 @@ public abstract class SQLFriendStorage implements FriendStorage {
 
     @Override
     public void saveGameProfile(UUID uuid, String gameProfile) {
+        if(gameProfile == null)return;
         updateSettings(uuid, "gameProfile", gameProfile);
     }
 

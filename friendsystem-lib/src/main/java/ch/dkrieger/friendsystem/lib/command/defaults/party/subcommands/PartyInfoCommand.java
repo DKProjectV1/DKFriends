@@ -1,5 +1,6 @@
 package ch.dkrieger.friendsystem.lib.command.defaults.party.subcommands;
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
@@ -19,7 +20,11 @@ import java.util.List;
 public class PartyInfoCommand extends SubFriendCommand {
 
     public PartyInfoCommand() {
-        super("list");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.info.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.info.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.info.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.info.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.info.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

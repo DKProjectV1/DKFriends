@@ -18,7 +18,11 @@ import java.util.List;
 public class PartyDenyCommand extends SubFriendCommand {
 
     public PartyDenyCommand() {
-        super("deny");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.deny.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.deny.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.deny.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.deny.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.deny.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

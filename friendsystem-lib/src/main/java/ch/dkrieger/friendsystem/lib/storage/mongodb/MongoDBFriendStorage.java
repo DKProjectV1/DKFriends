@@ -95,6 +95,7 @@ public class MongoDBFriendStorage implements FriendStorage {
 
     @Override
     public void saveGameProfile(UUID uuid, String gameProfile) {
+        if(gameProfile == null)return;
         MongoDBUtil.updateOne(friendPlayerCollection, "uuid", uuid.toString(), "gameProfile", gameProfile);
     }
 

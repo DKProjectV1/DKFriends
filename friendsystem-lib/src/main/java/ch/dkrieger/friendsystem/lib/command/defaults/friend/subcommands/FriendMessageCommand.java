@@ -7,6 +7,7 @@ import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /*
@@ -17,12 +18,12 @@ import java.util.List;
 
 public class FriendMessageCommand extends SubFriendCommand {
 
-    public FriendMessageCommand(String name) {
-        super(name,
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".description"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".usage"),
-                FriendSystem.getInstance().getConfig().getStringListValue("command.friend."+name+".aliases"));
+    public FriendMessageCommand() {
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friend.message.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
@@ -73,8 +74,9 @@ public class FriendMessageCommand extends SubFriendCommand {
             friend.sendMessage(message);
         }
     }
+
     @Override
     public List<String> onTabComplete(FriendCommandSender sender, String[] args) {
-        return null;
+        return new LinkedList<>();
     }
 }

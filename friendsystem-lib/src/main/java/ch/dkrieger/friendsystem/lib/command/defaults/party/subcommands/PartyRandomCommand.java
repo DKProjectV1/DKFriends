@@ -18,7 +18,11 @@ import java.util.List;
 public class PartyRandomCommand extends SubFriendCommand {
 
     public PartyRandomCommand() {
-        super("random");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.random.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.random.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.random.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.random.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.random.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

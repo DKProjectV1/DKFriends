@@ -18,7 +18,11 @@ import java.util.List;
 public class PartyPrivateCommand extends SubFriendCommand {
 
     public PartyPrivateCommand() {
-        super("private");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.private.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.private.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.private.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.private.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.private.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

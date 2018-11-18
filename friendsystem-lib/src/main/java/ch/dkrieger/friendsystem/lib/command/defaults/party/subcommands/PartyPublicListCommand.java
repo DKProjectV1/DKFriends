@@ -21,7 +21,11 @@ import java.util.List;
 public class PartyPublicListCommand extends SubFriendCommand {
 
     public PartyPublicListCommand() {
-        super("publiclist");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.publiclist.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.publiclist.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.publiclist.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.publiclist.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.publiclist.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

@@ -18,7 +18,11 @@ import java.util.List;
 public class PartyUnbanCommand extends SubFriendCommand {
 
     public PartyUnbanCommand() {
-        super("unban");
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.unban.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.unban.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.unban.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.party.unban.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.party.unban.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {

@@ -16,12 +16,12 @@ import java.util.List;
 
 public class FriendFavoriteCommand extends SubFriendCommand {
 
-    public FriendFavoriteCommand(String name) {
-        super(name,
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".description"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".usage"),
-                FriendSystem.getInstance().getConfig().getStringListValue("command.friend."+name+".aliases"));
+    public FriendFavoriteCommand() {
+        super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.favorite.name"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.favorite.description"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.favorite.permission"),
+                FriendSystem.getInstance().getConfig().getStringValue("command.friend.favorite.usage"),
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friend.favorite.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
