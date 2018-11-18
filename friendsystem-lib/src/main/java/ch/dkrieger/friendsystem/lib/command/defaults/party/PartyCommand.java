@@ -9,8 +9,7 @@ package ch.dkrieger.friendsystem.lib.command.defaults.party;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommand;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
-import ch.dkrieger.friendsystem.lib.command.defaults.party.subCommands.PartyAcceptCommand;
-import ch.dkrieger.friendsystem.lib.command.defaults.party.subCommands.PartyInviteCommand;
+import ch.dkrieger.friendsystem.lib.command.defaults.party.subCommands.*;
 
 import java.util.List;
 
@@ -21,6 +20,10 @@ public class PartyCommand extends FriendCommand {
         setPrefix(Messages.PREFIX_PARTY);
         registerSubCommand(new PartyInviteCommand());
         registerSubCommand(new PartyAcceptCommand());
+        registerSubCommand(new PartyDenyCommand());
+        registerSubCommand(new PartyLeaveCommand());
+        registerSubCommand(new PartyInfoCommand());
+
     }
 
     @Override

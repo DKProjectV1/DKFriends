@@ -69,7 +69,6 @@ public class FriendSystem {
 
         if(this.storage != null && this.storage.connect()) return;
 
-
         this.storage = new JsonFriendStorage(this.config);
     }
     public void shutdown(){

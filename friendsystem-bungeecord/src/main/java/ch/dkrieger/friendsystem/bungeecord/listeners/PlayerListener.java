@@ -127,7 +127,7 @@ public class PlayerListener implements Listener {
         });
     }
     private String getColor(FriendPlayer friendPlayer, ProxiedPlayer player){
-        return "&8";
+        return "§8";
         /*
 
         returns colors

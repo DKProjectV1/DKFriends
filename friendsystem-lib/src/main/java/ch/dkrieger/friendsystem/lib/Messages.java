@@ -112,6 +112,7 @@ public class Messages {
     public static String PLAYER_PARTY_NOT_LEADER;
     public static String PLAYER_PARTY_NOT_PARTY;
     public static String PLAYER_PARTY_NOT_ALLOWED_INVITE;
+    public static String PLAYER_PARTY_NO_PARTY;
 
     public static String PLAYER_PARTY_REQUEST_SENDED;
     public static String PLAYER_PARTY_REQUEST_RECEIVED;
@@ -125,6 +126,20 @@ public class Messages {
     public static String PLAYER_PARTY_ALREADY_OTHER;
 
     public static String PLAYER_PARTY_JOINED;
+    public static String PLAYER_PARTY_DENIED_SELF;
+    public static String PLAYER_PARTY_DENIED_OTHER;
+    public static String PLAYER_PARTY_LEAVED;
+
+    public static String PLAYER_PARTY_INFO_HEADER;
+    public static String PLAYER_PARTY_INFO_CREATED;
+    public static String PLAYER_PARTY_INFO_PUBLIC_TEXT;
+    public static String PLAYER_PARTY_INFO_PUBLIC_ENABLED;
+    public static String PLAYER_PARTY_INFO_PUBLIC_DISABLED;
+    public static String PLAYER_PARTY_INFO_MEMBER_HEADER;
+    public static String PLAYER_PARTY_INFO_MEMBER_LIST;
+    public static String PLAYER_PARTY_INFO_MEMBER_SYMBOL_NORMAL;
+    public static String PLAYER_PARTY_INFO_MEMBER_SYMBOL_LEADER;
+    public static String PLAYER_PARTY_INFO_MEMBER_SYMBOL_MODERATOR;
 
     public static TextComponent replaceAcceptDeny(String text,String acceptCommand,String denyCommand){
         TextComponent message = new TextComponent();

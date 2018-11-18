@@ -6,20 +6,19 @@ import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
-import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 
 import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 12:43
+ *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 13:56
  *
  */
 
-public class PartyAcceptCommand extends SubFriendCommand {
+public class PartyDenyCommand extends SubFriendCommand {
 
-    public PartyAcceptCommand() {
-        super("accept");
+    public PartyDenyCommand() {
+        super("deny");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
@@ -45,14 +44,11 @@ public class PartyAcceptCommand extends SubFriendCommand {
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(FriendSystem.getInstance().getPartyManager().getParty(player) != null){
-                sender.sendMessage(Messages.PLAYER_PARTY_ALREADY_OWN
-                        .replace("[prefix]",getPrefix())
-                        .replace("[player]",friend.getColoredName()));
-                return;
-            }
-            party.addMember(player);
-            party.sendMessage(Messages.PLAYER_PARTY_JOINED
+            party.removeRequest(player);
+            sender.sendMessage(Messages.PLAYER_PARTY_DENYED_SELF
+                    .replace("[prefix]",getPrefix())
+                    .replace("[player]",friend.getColoredName()));
+            party.sendMessage(Messages.PLAYER_PARTY_DENYED_OTHER
                     .replace("[prefix]",getPrefix())
                     .replace("[player]",player.getColoredName()));
         }

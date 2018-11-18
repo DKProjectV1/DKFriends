@@ -108,12 +108,10 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_SETTING_NOTIFY_DISABLE = get("player.setting.notify.disable");
         Messages.PLAYER_SETTING_HELP = get("player.setting.help");
 
-
-
-
         Messages.PLAYER_PARTY_NOT_LEADER = get("player.party.not.leader");
         Messages.PLAYER_PARTY_NOT_PARTY = get("player.party.not.party");
         Messages.PLAYER_PARTY_NOT_ALLOWED_INVITE = get("player.party.not.allowed.invite");
+        Messages.PLAYER_PARTY_NO_PARTY = get("player.party.no.party");
 
         Messages.PLAYER_PARTY_REQUEST_SENDED = get("player.party.request.sended");
         Messages.PLAYER_PARTY_REQUEST_RECEIVED = get("player.party.request.received");
@@ -127,11 +125,26 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_PARTY_ALREADY_OTHER = get("player.party.already.other");
 
         Messages.PLAYER_PARTY_JOINED = get("player.party.joined");
+
+        Messages.PLAYER_PARTY_DENIED_SELF = get("player.party.denied.self");
+        Messages.PLAYER_PARTY_DENIED_OTHER = get("player.party.denied.other");
+        Messages.PLAYER_PARTY_LEAVED = get("player.party.leave");
+
+        Messages.PLAYER_PARTY_INFO_HEADER = get("player.party.info.header");
+        Messages.PLAYER_PARTY_INFO_CREATED = get("player.party.info.created");
+        Messages.PLAYER_PARTY_INFO_PUBLIC_TEXT = get("player.party.info.public.text");
+        Messages.PLAYER_PARTY_INFO_PUBLIC_ENABLED = get("player.party.info.public.enabled");
+        Messages.PLAYER_PARTY_INFO_PUBLIC_DISABLED = get("player.party.info.public.disabled");
+        Messages.PLAYER_PARTY_INFO_MEMBER_HEADER = get("player.party.info.member.header");
+        Messages.PLAYER_PARTY_INFO_MEMBER_LIST = get("player.party.info.member.list");
+        Messages.PLAYER_PARTY_INFO_MEMBER_SYMBOL_NORMAL = get("player.party.info.member.symbol.normal");
+        Messages.PLAYER_PARTY_INFO_MEMBER_SYMBOL_LEADER = get("player.party.info.member.symbol.leader");
+        Messages.PLAYER_PARTY_INFO_MEMBER_SYMBOL_MODERATOR = get("player.party.info.member.symbol.moderator");
     }
     @Override
     public void registerDefaults() {
-        addValue("prefix.friend", "&8» &9DKFriends &8| &f");
-        addValue("prefix.party", "&8» &9DKParties &8| &f");
+        addValue("prefix.friend", "&8» &4DKFriends &8| &f");
+        addValue("prefix.party", "&8» &5DKParties &8| &f");
 
         addValue("error", "[prefix]&cAn error occurred, please contact a network administrator");
         addValue("nopermissions", "[prefix]&4You don't have permission to execute this command.");
@@ -220,6 +233,7 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.party.not.leader","[prefix]&cYou are not the party leader.");
         addValue("player.party.not.party","[prefix]&e[player] &cdoes not have a party.");
         addValue("player.party.not.allowed.invite","[prefix]&cYou are not allowed to invite players to this party.");
+        addValue("player.party.no.party","[prefix]&cYou are not in a party.");
 
         addValue("player.party.request.sended","[prefix]&e[player] &7was invited to the party.");
         addValue("player.party.request.received","[prefix]&7You received a invitation from &e[player].\n[prefix]&7Click here: [accept] [deny]");
@@ -227,11 +241,27 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.party.request.not","[prefix]&cYou don't have a request to party from &e[player]&c.");
         addValue("player.party.already.invited","[prefix]&e[player] &cis already invited to this party.");
 
-        addValue("player.party.already.own","[prefix]&e[player] &cis already in this party.");
-        addValue("player.party.already.my","[prefix]&e[player] &cYou are already in a party.");
+        addValue("player.party.already.own","[prefix]&cYou are already in a party.");
+        addValue("player.party.already.my","[prefix]&e[player] &cis already in this party.");
         addValue("player.party.already.other","[prefix]&e[player] &cis already in a party.");
 
-        addValue("player.party.joined","[prefix]&e[player] &caJoined the party.");
+        addValue("player.party.joined","[prefix]&e[player] &7joined the party.");
+
+        addValue("player.party.denied.self","[prefix]&7You denied the party invitation from &e[player]&7.");
+        addValue("player.party.denied.other","[prefix]&e[player] &7denied the invitation to the party.");
+        addValue("player.party.leave","[prefix]&e[player] &7Leaved the party.");
+
+        addValue("player.party.info.header","[prefix]&7Party Information");
+        addValue("player.party.info.created","&8» &7Created&8: &2[time]");
+        addValue("player.party.info.public.text","&8» &7Created&8: &2[enabled]");
+        addValue("player.party.info.public.enabled","&aenabled");
+        addValue("player.party.info.public.disabled","&cdisabled");
+        addValue("player.party.info.member.header","&8» &7Members&8:");
+        addValue("player.party.info.member.list"," [symbol] &e[player] joined at [joined]");
+        addValue("player.party.info.member.symbol.normal","&8-");
+        addValue("player.party.info.member.symbol.leader","&6✦");
+        addValue("player.party.info.member.symbol.moderator","&9⚠");
+
     }
     public String get(String path){
         return getMessageValue(path);
