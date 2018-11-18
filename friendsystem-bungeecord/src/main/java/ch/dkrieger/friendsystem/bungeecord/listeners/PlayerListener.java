@@ -111,7 +111,7 @@ public class PlayerListener implements Listener {
                         .replace("[prefix]",Messages.PREFIX_FRIEND)
                         .replace("[player]",player.getColoredName()));
             }
-            player.updateInfos(event.getPlayer().getName(),getColor(player,event.getPlayer()));
+            player.updateInformations(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });
     }
     @EventHandler
@@ -130,7 +130,7 @@ public class PlayerListener implements Listener {
                         .replace("[prefix]",Messages.PREFIX_FRIEND)
                         .replace("[player]",player.getColoredName()));
             }
-            player.updateInfos(event.getPlayer().getName(),getColor(player,event.getPlayer()));
+            player.updateInformations(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });
     }
     @EventHandler
