@@ -11,14 +11,14 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 15:26
+ *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 16:42
  *
  */
 
-public class PartyDemoteCommand extends SubFriendCommand {
+public class PartyUnbanCommand extends SubFriendCommand {
 
-    public PartyDemoteCommand() {
-        super("demote");
+    public PartyUnbanCommand() {
+        super("unban");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
@@ -26,13 +26,7 @@ public class PartyDemoteCommand extends SubFriendCommand {
         if(player != null){
             Party party = player.getParty();
             if(party == null){
-                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
-                        .replace("[prefix]",getPrefix())
-                        .replace("[player]",player.getColoredName()));
-                return;
-            }
-            if(!party.isLeader(player)){
-                sender.sendMessage(Messages.PLAYER_PARTY_NOT_LEADER.replace("[prefix]",getPrefix()));
+                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_SELF.replace("[prefix]",getPrefix()));
                 return;
             }
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
@@ -42,22 +36,23 @@ public class PartyDemoteCommand extends SubFriendCommand {
                         .replace("[player]",args[0]));
                 return;
             }
-            if(!party.isMember(friend)){
-                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
+            if(!party.canIntegrate(player,friend)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_ALLOWED_UNBAN
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(party.isModerator(friend)){
-                party.setModerator(friend,false);
-                party.sendMessage(Messages.PLAYER_PARTY_MODERATOR_DEMOTED
+            if(!party.isBanned(friend)){
+                sender.sendMessage(Messages.PLAYER_PARTY_ALREADY_UNBANED
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
-            }else{
-                sender.sendMessage(Messages.PLAYER_PARTY_MODERATOR_NOT
-                        .replace("[prefix]",getPrefix())
-                        .replace("[player]",friend.getColoredName()));
+                return;
             }
+            party.sendMessage(Messages.PLAYER_PARTY_UNBANNED
+                    .replace("[prefix]",getPrefix())
+                    .replace("[player]",friend.getColoredName())
+                    .replace("[unbanner]",player.getColoredName()));
+            party.unban(friend);
         }
     }
     @Override

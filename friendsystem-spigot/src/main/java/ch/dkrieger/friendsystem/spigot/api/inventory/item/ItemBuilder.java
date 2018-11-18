@@ -5,13 +5,11 @@ import ch.dkrieger.friendsystem.spigot.util.SpigotUtil;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.block.banner.Pattern;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -215,18 +213,6 @@ public class ItemBuilder {
         lore.clear();
         itemMeta.setLore(lore);
         this.itemStack.setItemMeta(itemMeta);
-        return this;
-    }
-    public ItemBuilder setUnbreakable() {
-        return setUnbreakable(true);
-    }
-    public ItemBuilder setUnbreakable(boolean unbreakable) {
-        if(!unbreakable)return this;
-        net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(itemStack);
-        NBTTagCompound tag = stack.hasTag() ? stack.getTag() : new NBTTagCompound();
-        tag.setBoolean("Unbreakable",true);
-        stack.setTag(tag);
-        itemStack = CraftItemStack.asBukkitCopy(stack);
         return this;
     }
     public ItemBuilder setItemFlags(ItemFlag... itemFlags) {

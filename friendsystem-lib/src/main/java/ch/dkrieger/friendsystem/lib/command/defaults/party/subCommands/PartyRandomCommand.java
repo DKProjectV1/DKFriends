@@ -11,34 +11,26 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 15:33
+ *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 16:02
  *
  */
 
-public class PartyMessageCommand extends SubFriendCommand {
+public class PartyRandomCommand extends SubFriendCommand {
 
-    public PartyMessageCommand() {
-        super("message");
+    public PartyRandomCommand() {
+        super("random");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
-            Party party = player.getParty();
+            Party party = FriendSystem.getInstance().getPartyManager().getRandomPublicParty();
             if(party == null){
-                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_SELF.replace("[prefix]",getPrefix()));
+                sender.sendMessage(Messages.PLAYER_PARTY_PUBLIC_NO
+                        .replace("[prefix]",getPrefix()));
                 return;
             }
-
-            String message = "";
-            for(int i = 0; i< args.length;i++){
-                if(i > 0 ) message = message +" "+Messages.PLAYER_PARTY_MESSAGE_COLOR + args[i];
-                else message = args[i];
-            }
-            party.sendMessage(Messages.PLAYER_PARTY_MESSAGE_FORMAT
-                    .replace("[prefix]",getPrefix())
-                    .replace("[message]",message)
-                    .replace("[player]",player.getColoredName()));
+            sender.executeCommand(getMainCommand().getName()+" join "+party.getLeader().getPlayer().getName());
         }
     }
     @Override

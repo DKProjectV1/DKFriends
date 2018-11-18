@@ -31,7 +31,7 @@ public class PartyDenyCommand extends SubFriendCommand {
                         .replace("[player]",args[0]));
                 return;
             }
-            Party party = FriendSystem.getInstance().getPartyManager().getParty(friend);
+            Party party = friend.getParty();
             if(party == null){
                 sender.sendMessage(Messages.PLAYER_PARTY_NOT_PARTY
                         .replace("[prefix]",getPrefix())

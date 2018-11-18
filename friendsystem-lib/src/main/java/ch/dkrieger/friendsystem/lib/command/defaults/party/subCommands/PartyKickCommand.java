@@ -25,7 +25,7 @@ public class PartyKickCommand extends SubFriendCommand {
     public void onExecute(FriendCommandSender sender, String[] args) {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
-            Party party = FriendSystem.getInstance().getPartyManager().getParty(player);
+            Party party = player.getParty();
             if(party == null){
                 sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_SELF.replace("[prefix]",getPrefix()));
                 return;
@@ -43,20 +43,11 @@ public class PartyKickCommand extends SubFriendCommand {
                         .replace("[player]",player.getColoredName()));
                 return;
             }
-            if(!party.isLeader(player)){
-                if(party.isModerator(player)){
-                    if(party.isLeader(friend) || party.isModerator(friend)){
-                        sender.sendMessage(Messages.PLAYER_PARTY_NOT_ALLOWED_KICK
-                                .replace("[prefix]",getPrefix())
-                                .replace("[player]",friend.getColoredName()));
-                        return;
-                    }
-                }else{
-                    sender.sendMessage(Messages.PLAYER_PARTY_NOT_ALLOWED_KICK
-                            .replace("[prefix]",getPrefix())
-                            .replace("[player]",friend.getColoredName()));
-                    return;
-                }
+            if(!party.canIntegrate(player,friend)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_ALLOWED_KICK
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+                return;
             }
             party.sendMessage(Messages.PLAYER_PARTY_KICKED
                     .replace("[prefix]",getPrefix())

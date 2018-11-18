@@ -11,30 +11,19 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 15:26
+ *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 16:11
  *
  */
 
-public class PartyDemoteCommand extends SubFriendCommand {
+public class PartyJoinCommand extends SubFriendCommand {
 
-    public PartyDemoteCommand() {
-        super("demote");
+    public PartyJoinCommand() {
+        super("join");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
-            Party party = player.getParty();
-            if(party == null){
-                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
-                        .replace("[prefix]",getPrefix())
-                        .replace("[player]",player.getColoredName()));
-                return;
-            }
-            if(!party.isLeader(player)){
-                sender.sendMessage(Messages.PLAYER_PARTY_NOT_LEADER.replace("[prefix]",getPrefix()));
-                return;
-            }
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
             if(friend == null){
                 sender.sendMessage(Messages.PLAYER_NOT_FOUND
@@ -42,22 +31,35 @@ public class PartyDemoteCommand extends SubFriendCommand {
                         .replace("[player]",args[0]));
                 return;
             }
-            if(!party.isMember(friend)){
-                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
+            Party party = friend.getParty();
+            if(party == null){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_PARTY
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(party.isModerator(friend)){
-                party.setModerator(friend,false);
-                party.sendMessage(Messages.PLAYER_PARTY_MODERATOR_DEMOTED
+            if(!party.isPublic()){
+                sender.sendMessage(Messages.PLAYER_PARTY_PUBLIC_NOT
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
-            }else{
-                sender.sendMessage(Messages.PLAYER_PARTY_MODERATOR_NOT
-                        .replace("[prefix]",getPrefix())
-                        .replace("[player]",friend.getColoredName()));
+                return;
             }
+            if(party.isBanned(player)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_ALLOWED_JOIN
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+                return;
+            }
+            if(FriendSystem.getInstance().getPartyManager().getParty(player) != null){
+                sender.sendMessage(Messages.PLAYER_PARTY_ALREADY_OWN
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+                return;
+            }
+            party.addMember(player);
+            party.sendMessage(Messages.PLAYER_PARTY_JOINED
+                    .replace("[prefix]",getPrefix())
+                    .replace("[player]",player.getColoredName()));
         }
     }
     @Override

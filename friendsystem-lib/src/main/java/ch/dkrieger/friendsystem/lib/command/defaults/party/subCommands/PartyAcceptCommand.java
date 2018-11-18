@@ -32,20 +32,26 @@ public class PartyAcceptCommand extends SubFriendCommand {
                         .replace("[player]",args[0]));
                 return;
             }
-            Party party = FriendSystem.getInstance().getPartyManager().getParty(friend);
+            Party party = friend.getParty();
             if(party == null){
                 sender.sendMessage(Messages.PLAYER_PARTY_NOT_PARTY
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(!party.hasRequest(player)){
+            if(!(party.hasRequest(player)) && !(party.isPublic())){
                 sender.sendMessage(Messages.PLAYER_PARTY_REQUEST_NOT
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(FriendSystem.getInstance().getPartyManager().getParty(player) != null){
+            if(party.isBanned(player)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_ALLOWED_JOIN
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+                return;
+            }
+            if(player.getParty() != null){
                 sender.sendMessage(Messages.PLAYER_PARTY_ALREADY_OWN
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));

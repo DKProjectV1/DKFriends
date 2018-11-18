@@ -38,7 +38,7 @@ public abstract class FriendPlayerManager {
         try{
             Iterator<FriendPlayer> iterator = this.loadedPlayers.values().iterator();
             FriendPlayer player = null;
-            while((player = iterator.next()) != null) if(player.getName().equalsIgnoreCase(name)) return player;
+            while(iterator.hasNext() && (player = iterator.next()) != null) if(player.getName().equalsIgnoreCase(name)) return player;
             return FriendSystem.getInstance().getStorage().getPlayer(name);
         }catch (Exception exception){
             return null;

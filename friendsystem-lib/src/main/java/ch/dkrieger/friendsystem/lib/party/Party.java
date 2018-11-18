@@ -6,6 +6,7 @@ package ch.dkrieger.friendsystem.lib.party;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 
@@ -17,6 +18,7 @@ public class Party {
     private long timeOut;
     private List<PartyMember> members;
     private List<UUID> requests;
+    private List<UUID> bans;
 
     public Party(FriendPlayer leader) {
         this(leader.getUUID());
@@ -27,6 +29,7 @@ public class Party {
     public Party(UUID uuid) {
         this.members = new ArrayList<>();
         this.requests = new ArrayList<>();
+        this.bans = new ArrayList<>();
         this.members.add(new PartyMember(uuid,true));
     }
     public List<PartyMember> getMembers() {
@@ -38,6 +41,9 @@ public class Party {
         members.addAll(getModerators());
         members.addAll(getNormalMembers());
         return members;
+    }
+    public List<UUID> getBans() {
+        return this.bans;
     }
     public List<UUID> getRequests() {
         return requests;
@@ -96,7 +102,8 @@ public class Party {
         return isLeader(player.getUUID());
     }
     public boolean isLeader(UUID uuid) {
-        return getMember(uuid) != null;
+        PartyMember member =  getMember(uuid);
+        return member != null && member.isLeader();
     }
     public boolean isModerator(FriendPlayer player) {
         return isModerator(player.getUUID());
@@ -179,7 +186,45 @@ public class Party {
     public void setLeader(UUID uuid){
         getLeader().setLeader(false);
         PartyMember member = getMember(uuid);
-        if(member != null) member.setModerator(true);
+        if(member != null) member.setLeader(true);
+    }
+    public void ban(OnlineFriendPlayer player){
+        ban(player.getUUID());
+    }
+    public void ban(FriendPlayer player){
+        ban(player.getUUID());
+    }
+    public void ban(UUID uuid){
+        this.bans.add(uuid);
+        this.requests.remove(uuid);
+        this.members.remove(getMember(uuid));
+    }
+    public void unban(OnlineFriendPlayer player){
+        unban(player.getUUID());
+    }
+    public void unban(FriendPlayer player){
+        unban(player.getUUID());
+    }
+    public void unban(UUID uuid){
+        this.bans.remove(uuid);
+    }
+    public boolean isBanned(OnlineFriendPlayer player){
+        return isBanned(player.getUUID());
+    }
+    public boolean isBanned(FriendPlayer player){
+        return isBanned(player.getUUID());
+    }
+    public boolean isBanned(UUID uuid){
+        return this.bans.contains(uuid);
+    }
+    public boolean canIntegrate(FriendPlayer integrator, FriendPlayer player){
+        if(!isLeader(integrator)){
+            if(isModerator(integrator)){
+                if(isLeader(player) || isModerator(player)) return false;
+                else return true;
+            }else return false;
+        }
+        return true;
     }
     public void sendMessage(String message){
         for(PartyMember member : this.members){
@@ -188,6 +233,9 @@ public class Party {
         }
     }
     public void connect(String server){
-
+        for(PartyMember member : this.members){
+            OnlineFriendPlayer online = member.getOnlinePlayer();
+            if(online != null) online.connect(server);
+        }
     }
 }

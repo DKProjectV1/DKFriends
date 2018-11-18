@@ -9,6 +9,7 @@ package ch.dkrieger.friendsystem.bungeecord.listeners;
 import ch.dkrieger.friendsystem.bungeecord.BungeeCordFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
+import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
@@ -19,6 +20,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -81,12 +83,6 @@ public class PlayerListener implements Listener {
             List<Friend> friends = player.getOnlineFriends();
 
             if(friends.isEmpty()) return;
-            for(Friend friend : friends){
-                OnlineFriendPlayer online = friend.getOnlineFriendPlayer();
-                if(online != null) online.sendMessage(Messages.PLAYER_NOTIFY_ONLINE
-                        .replace("[prefix]",Messages.PREFIX_FRIEND)
-                        .replace("[player]",player.getColoredName()));
-            }
             if(friends.isEmpty()) return;
             if(friends.size() == 1){
                 player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_ONE
@@ -110,6 +106,12 @@ public class PlayerListener implements Listener {
                         .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
                         .replace("[more]",""+(friends.size()-2))));
             }
+            for(Friend friend : friends){
+                OnlineFriendPlayer online = friend.getOnlineFriendPlayer();
+                if(online != null && friend.getFriendPlayer().getSettings().isNotifyEnabled()) online.sendMessage(Messages.PLAYER_NOTIFY_ONLINE
+                        .replace("[prefix]",Messages.PREFIX_FRIEND)
+                        .replace("[player]",player.getColoredName()));
+            }
             player.updateInfos(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });
     }
@@ -118,15 +120,34 @@ public class PlayerListener implements Listener {
         BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{
             FriendPlayer player = FriendSystem.getInstance().getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
             if(player == null) return;
+            if(player.isInParty()){
+                BungeeCord.getInstance().getPluginManager().dispatchCommand(event.getPlayer(),"party leave");//change to config
+            }
             List<Friend> friends = player.getOnlineFriends();
             if(friends.isEmpty()) return;
             for(Friend friend : friends){
                 OnlineFriendPlayer online = friend.getOnlineFriendPlayer();
-                if(online != null) online.sendMessage(Messages.PLAYER_NOTIFY_OFFLINE
+                if(online != null && friend.getFriendPlayer().getSettings().isNotifyEnabled()) online.sendMessage(Messages.PLAYER_NOTIFY_OFFLINE
                         .replace("[prefix]",Messages.PREFIX_FRIEND)
                         .replace("[player]",player.getColoredName()));
             }
             player.updateInfos(event.getPlayer().getName(),getColor(player,event.getPlayer()));
+        });
+    }
+    @EventHandler
+    public void onServerConnected(ServerConnectedEvent event){
+        BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{
+            FriendPlayer player = FriendSystem.getInstance().getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
+            if(player != null){
+                Party party = player.getParty();
+                if(party != null && party.isLeader(player)){
+                    party.sendMessage(Messages.PLAYER_PARTY_CONNECTED
+                            .replace("[prefix]",Messages.PREFIX_PARTY)
+                            .replace("[server]",event.getServer().getInfo().getName())
+                            .replace("[player]",player.getColoredName()));
+                    party.connect(event.getServer().getInfo().getName());
+                }
+            }
         });
     }
     private String getColor(FriendPlayer friendPlayer, ProxiedPlayer player){

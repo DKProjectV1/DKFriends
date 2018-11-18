@@ -56,8 +56,8 @@ public class FriendMessageCommand extends SubFriendCommand {
                 return;
             }
             String message = "";
-            for(int i = 1; i< args.length;i++){
-                if(i > 2 ) message = message + " "+Messages.PLAYER_MESSAGE_COLOR + args[i];
+            for(int i = 0; i< args.length;i++){
+                if(i > 1 ) message = message + " "+Messages.PLAYER_MESSAGE_COLOR + args[i];
                 else  message = args[i];
             }
             message = Messages.PLAYER_MESSAGE_FORMAT

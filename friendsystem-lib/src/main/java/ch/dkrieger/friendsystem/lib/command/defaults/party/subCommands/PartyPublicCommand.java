@@ -11,14 +11,14 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 15:33
+ *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 16:00
  *
  */
 
-public class PartyMessageCommand extends SubFriendCommand {
+public class PartyPublicCommand extends SubFriendCommand {
 
-    public PartyMessageCommand() {
-        super("message");
+    public PartyPublicCommand() {
+        super("public");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
@@ -26,19 +26,20 @@ public class PartyMessageCommand extends SubFriendCommand {
         if(player != null){
             Party party = player.getParty();
             if(party == null){
-                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_SELF.replace("[prefix]",getPrefix()));
+                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",player.getColoredName()));
                 return;
             }
-
-            String message = "";
-            for(int i = 0; i< args.length;i++){
-                if(i > 0 ) message = message +" "+Messages.PLAYER_PARTY_MESSAGE_COLOR + args[i];
-                else message = args[i];
+            if(!party.isLeader(player)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_LEADER.replace("[prefix]",getPrefix()));
+                return;
             }
-            party.sendMessage(Messages.PLAYER_PARTY_MESSAGE_FORMAT
-                    .replace("[prefix]",getPrefix())
-                    .replace("[message]",message)
-                    .replace("[player]",player.getColoredName()));
+            if(party.isPublic()) sender.sendMessage(Messages.PLAYER_PARTY_PUBLIC_ALREADY.replace("[prefix]",getPrefix()));
+            else{
+                party.setPublic(true);
+                party.sendMessage(Messages.PLAYER_PARTY_PUBLIC_NOW.replace("[prefix]",getPrefix()));;
+            }
         }
     }
     @Override

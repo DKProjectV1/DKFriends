@@ -113,6 +113,9 @@ public class Messages {
     public static String PLAYER_PARTY_NOT_PARTY;
     public static String PLAYER_PARTY_NOT_ALLOWED_INVITE;
     public static String PLAYER_PARTY_NOT_ALLOWED_KICK;
+    public static String PLAYER_PARTY_NOT_ALLOWED_BAN;
+    public static String PLAYER_PARTY_NOT_ALLOWED_UNBAN;
+    public static String PLAYER_PARTY_NOT_ALLOWED_JOIN;
     public static String PLAYER_PARTY_NO_PARTY_SELF;
     public static String PLAYER_PARTY_NO_PARTY_OTHER;
 
@@ -127,12 +130,19 @@ public class Messages {
     public static String PLAYER_PARTY_ALREADY_MY;
     public static String PLAYER_PARTY_ALREADY_OTHER;
 
+    public static String PLAYER_PARTY_ALREADY_BANNED;
+    public static String PLAYER_PARTY_ALREADY_UNBANED;
+
     public static String PLAYER_PARTY_JOINED;
     public static String PLAYER_PARTY_DENIED_SELF;
     public static String PLAYER_PARTY_DENIED_OTHER;
     public static String PLAYER_PARTY_LEAVED;
     public static String PLAYER_PARTY_JUMPED;
     public static String PLAYER_PARTY_KICKED;
+    public static String PLAYER_PARTY_BANNED;
+    public static String PLAYER_PARTY_UNBANNED;
+    public static String PLAYER_PARTY_DELETED;
+    public static String PLAYER_PARTY_CONNECTED;
 
     public static String PLAYER_PARTY_INFO_HEADER;
     public static String PLAYER_PARTY_INFO_CREATED;
@@ -153,6 +163,16 @@ public class Messages {
 
     public static String PLAYER_PARTY_MESSAGE_FORMAT;
     public static String PLAYER_PARTY_MESSAGE_COLOR;
+
+    public static String PLAYER_PARTY_PUBLIC_NOW;
+    public static String PLAYER_PARTY_PUBLIC_ALREADY;
+    public static String PLAYER_PARTY_PUBLIC_NO;
+    public static String PLAYER_PARTY_PUBLIC_NOT;
+    public static String PLAYER_PARTY_PUBLIC_LIST_HEADER;
+    public static String PLAYER_PARTY_PUBLIC_LIST_LIST;
+
+    public static String PLAYER_PARTY_PRIVATE_NOW;
+    public static String PLAYER_PARTY_PRIVATE_ALREADY;
 
     public static TextComponent replaceAcceptDeny(String text,String acceptCommand,String denyCommand){
         TextComponent message = new TextComponent();

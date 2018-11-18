@@ -8,6 +8,7 @@ package ch.dkrieger.friendsystem.lib.party;
 
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,14 +44,27 @@ public class PartyManager {
         while(iterator.hasNext() && (party = iterator.next()) != null) if(party.isMember(uuid)) return party;
         return null;
     }
+    public Party getRandomPublicParty(){
+        List<Party> parties = getPublicParties();
+        return parties.get(GeneralUtil.RANDOM.nextInt(parties.size()));
+    }
+    public boolean isInParty(FriendPlayer player){
+        return isInParty(player.getUUID());
+    }
     public boolean isInParty(OnlineFriendPlayer player){
-        return getParty(player) != null;
+        return isInParty(player.getUUID());
+    }
+    public boolean isInParty(UUID uuid){
+        return getParty(uuid) != null;
     }
     public Party createParty(OnlineFriendPlayer player){
         return createParty(player.getUUID());
     }
     public Party createParty(FriendPlayer player){
         return createParty(player.getUUID());
+    }
+    public void delteParty(Party party){
+        this.parties.remove(party);
     }
     public Party createParty(UUID uuid){
         Party party = new Party(uuid);

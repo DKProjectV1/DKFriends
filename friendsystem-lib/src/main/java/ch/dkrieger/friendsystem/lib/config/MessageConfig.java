@@ -112,6 +112,11 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_PARTY_NOT_PARTY = get("player.party.not.party");
         Messages.PLAYER_PARTY_NOT_ALLOWED_INVITE = get("player.party.not.allowed.invite");
         Messages.PLAYER_PARTY_NOT_ALLOWED_KICK = get("player.party.not.allowed.kick");
+        Messages.PLAYER_PARTY_NOT_ALLOWED_JOIN = get("player.party.not.allowed.join");
+
+        Messages.PLAYER_PARTY_NOT_ALLOWED_BAN = get("player.party.not.allowed.ban");
+        Messages.PLAYER_PARTY_NOT_ALLOWED_UNBAN = get("player.party.not.allowed.unban");
+
         Messages.PLAYER_PARTY_NO_PARTY_SELF = get("player.party.no.party.self");
         Messages.PLAYER_PARTY_NO_PARTY_OTHER = get("player.party.no.party.other");
 
@@ -126,12 +131,20 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_PARTY_ALREADY_MY = get("player.party.already.my");
         Messages.PLAYER_PARTY_ALREADY_OTHER = get("player.party.already.other");
 
+        Messages.PLAYER_PARTY_ALREADY_BANNED = get("player.party.already.banned");
+        Messages.PLAYER_PARTY_ALREADY_UNBANED = get("player.party.already.unbanned");
+
         Messages.PLAYER_PARTY_JOINED = get("player.party.joined");
 
         Messages.PLAYER_PARTY_DENIED_SELF = get("player.party.denied.self");
         Messages.PLAYER_PARTY_DENIED_OTHER = get("player.party.denied.other");
         Messages.PLAYER_PARTY_LEAVED = get("player.party.leaved");
         Messages.PLAYER_PARTY_KICKED = get("player.party.kicked");
+        Messages.PLAYER_PARTY_JUMPED = get("player.party.jumped");
+        Messages.PLAYER_PARTY_BANNED = get("player.party.banned");
+        Messages.PLAYER_PARTY_UNBANNED = get("player.party.unbanned");
+        Messages.PLAYER_PARTY_DELETED = get("player.party.deleted");
+        Messages.PLAYER_PARTY_CONNECTED = get("player.party.connected");
 
         Messages.PLAYER_PARTY_INFO_HEADER = get("player.party.info.header");
         Messages.PLAYER_PARTY_INFO_CREATED = get("player.party.info.created");
@@ -151,6 +164,16 @@ public class MessageConfig extends SimpleConfig {
 
         Messages.PLAYER_PARTY_MESSAGE_FORMAT = get("player.party.message.format");
         Messages.PLAYER_PARTY_MESSAGE_COLOR = get("player.party.message.color");
+
+        Messages.PLAYER_PARTY_PUBLIC_NOW = get("player.party.public.now");
+        Messages.PLAYER_PARTY_PUBLIC_ALREADY = get("player.party.public.already");
+        Messages.PLAYER_PARTY_PUBLIC_LIST_HEADER = get("player.party.public.list.header");
+        Messages.PLAYER_PARTY_PUBLIC_LIST_LIST = get("player.party.public.list.list");
+        Messages.PLAYER_PARTY_PUBLIC_NO = get("player.party.public.no");
+        Messages.PLAYER_PARTY_PUBLIC_NOT = get("player.party.public.not");
+
+        Messages.PLAYER_PARTY_PRIVATE_NOW = get("player.party.private.now");
+        Messages.PLAYER_PARTY_PRIVATE_ALREADY = get("player.party.private.already");
     }
     @Override
     public void registerDefaults() {
@@ -164,7 +187,7 @@ public class MessageConfig extends SimpleConfig {
         addValue("help.header.more", "[prefix]&7Page [page]/[maxPage] &8| &7More help with &e/[command] [nextPage]");
 
         addValue("server.notfound", "[prefix]&7cThe server was not found.");
-        addValue("server.already", "[prefix]&7c You are already connected to this server.");
+        addValue("server.already", "[prefix]&cYou are already connected to this server.");
 
         addValue("world.notfound", "[prefix]&7cThe world was not found.");
         addValue("world.already", "[prefix]&7c You are already in this world.");
@@ -245,6 +268,10 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.party.not.party","[prefix]&e[player] &cdoes not have a party.");
         addValue("player.party.not.allowed.invite","[prefix]&cYou are not allowed to invite players to this party.");
         addValue("player.party.not.allowed.kick","[prefix]&cYou are not allowed to kick &e[player]&c.");
+        addValue("player.party.not.allowed.ban","[prefix]&cYou are not allowed to ban &e[player]&c.");
+        addValue("player.party.not.allowed.unban","[prefix]&cYou are not allowed to unban &e[player]&c.");
+        addValue("player.party.not.allowed.join","[prefix]&cYou can't join this party.");
+
         addValue("player.party.no.party.self","[prefix]&cYou are not in a party.");
         addValue("player.party.no.party.other","[prefix]&e[player] &cis not in your party.");
 
@@ -258,16 +285,24 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.party.already.my","[prefix]&e[player] &cis already in this party.");
         addValue("player.party.already.other","[prefix]&e[player] &cis already in a party.");
 
+        addValue("player.party.already.banned","[prefix]&e[player] &cis already banned.");
+        addValue("player.party.already.unbanned","[prefix]&e[player] &cis not banned.");
+
         addValue("player.party.joined","[prefix]&e[player] &7joined the party.");
 
         addValue("player.party.denied.self","[prefix]&7You denied the party invitation from &e[player]&7.");
         addValue("player.party.denied.other","[prefix]&e[player] &7denied the invitation to the party.");
         addValue("player.party.leaved","[prefix]&e[player] &7Leaved the party.");
-        addValue("player.party.kicked","[prefix]&e[player] &cwas kicked by &e[player] &cfrom the party.");
+        addValue("player.party.kicked","[prefix]&e[player] &cwas kicked by &e[kicker] &cfrom &cthe &cparty.");
+        addValue("player.party.jumped","[prefix]&eYou jumped to the party leader.");
+        addValue("player.party.banned","[prefix]&e[player] &cwas banned by &e[banner] &cfrom &cthe &cparty.");
+        addValue("player.party.unbanned","[prefix]&e[player] &cwas unbanned by &e[unbanner] &cfrom &cthe &cparty.");
+        addValue("player.party.deleted","[prefix]&7The party was disbanded.");
+        addValue("player.party.connected","[prefix]&7The party joined the server &e[server]&7.");
 
         addValue("player.party.info.header","[prefix]&7Party Information");
         addValue("player.party.info.created","&8» &7Created&8: &2[time]");
-        addValue("player.party.info.public.text","&8» &7Created&8: &2[enabled]");
+        addValue("player.party.info.public.text","&8» &7Public&8: &2[enabled]");
         addValue("player.party.info.public.enabled","&aenabled");
         addValue("player.party.info.public.disabled","&cdisabled");
         addValue("player.party.info.member.header","&8» &7Members&8:");
@@ -283,7 +318,19 @@ public class MessageConfig extends SimpleConfig {
 
         addValue("player.party.message.format","[prefix]&e[player]&7: §e[message]");
         addValue("player.party.message.color","&e");
+
+        addValue("player.party.public.now","[prefix]&7The party is now public.");
+        addValue("player.party.public.already","[prefix]&cThe party is already public.");
+        addValue("player.party.public.list.header","[prefix]&7Party list page [page]/[maxPages]");
+        addValue("player.party.public.list.list"," &8- &e[leader] &8| &7[amount] &8[&eJoin&8]");
+        addValue("player.party.public.no","[prefix]&cNo public parties found.");
+        addValue("player.party.public.not","[prefix]&cThis party is not public.");
+
+        addValue("player.party.private.now","[prefix]&7The party is now private.");
+        addValue("player.party.private.already","[prefix]&cThe party is already private.");
+
     }
+
     public String get(String path){
         return getMessageValue(path);
     }

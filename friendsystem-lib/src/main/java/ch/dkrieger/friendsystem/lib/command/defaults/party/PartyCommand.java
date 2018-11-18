@@ -26,8 +26,15 @@ public class PartyCommand extends FriendCommand {
         registerSubCommand(new PartyJumpCommand());
         registerSubCommand(new PartyKickCommand());
         registerSubCommand(new PartyMessageCommand());
+        registerSubCommand(new PartyJoinCommand());
+        registerSubCommand(new PartyPublicListCommand());
+        registerSubCommand(new PartyRandomCommand());
         registerSubCommand(new PartyPromoteCommand());
         registerSubCommand(new PartyDemoteCommand());
+        registerSubCommand(new PartyPublicCommand());
+        registerSubCommand(new PartyPrivateCommand());
+        registerSubCommand(new PartyBanCommand());
+        registerSubCommand(new PartyUnbanCommand());
     }
 
     @Override
