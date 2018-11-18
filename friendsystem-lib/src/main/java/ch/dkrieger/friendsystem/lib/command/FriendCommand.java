@@ -144,13 +144,18 @@ public abstract class FriendCommand {
         }
         onExecute(sender,args);
     }
-    public List<String> tabComplete(FriendCommandSender sender, String[] args){
+    public List<String> tabComplete(FriendCommandSender sender, String[] args) {
+        List<String> complete = null;
         if(args.length >= 1) {
             for(SubFriendCommand subCommand : subCommands) {
-                if(subCommand.hasAliase(args[0])) return subCommand.tabComplete(sender,Arrays.copyOfRange(args,1,args.length));
+                if(subCommand.hasAliase(args[0])) complete = subCommand.tabComplete(sender, Arrays.copyOfRange(args, 1, args.length));
             }
         }
-        return onTabComplete(sender,args);
+        if(complete == null) {
+            complete = onTabComplete(sender,args);
+            if(complete == null) complete = new LinkedList<>();
+        }
+        return complete;
     }
     public abstract void onExecute(FriendCommandSender sender, String[] args);
     public abstract List<String> onTabComplete(FriendCommandSender sender, String[] args);

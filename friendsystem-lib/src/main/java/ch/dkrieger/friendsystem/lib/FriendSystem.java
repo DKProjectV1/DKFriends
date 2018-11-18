@@ -4,6 +4,7 @@ import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.command.defaults.friend.FriendCommand;
 import ch.dkrieger.friendsystem.lib.config.Config;
 import ch.dkrieger.friendsystem.lib.config.MessageConfig;
+import ch.dkrieger.friendsystem.lib.party.PartyManager;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.storage.FriendStorage;
 import ch.dkrieger.friendsystem.lib.storage.StorageType;
@@ -25,6 +26,7 @@ public class FriendSystem {
     private final DKFriendsPlatform platform;
 
     private FriendPlayerManager playerManager;
+    private PartyManager partyManager;
     private FriendStorage storage;
     private Config config;
     private MessageConfig messageConfig;
@@ -83,13 +85,15 @@ public class FriendSystem {
     public FriendPlayerManager getPlayerManager() {
         return this.playerManager;
     }
+    public PartyManager getPartyManager() {
+        return partyManager;
+    }
     public FriendStorage getStorage() {
         return storage;
     }
 
     public void registerCommands(){
         if(this.config.isCommandFriendEnabled()){
-            System.out.println("register");
             this.platform.getCommandManager().registerCommand(new FriendCommand());
         }
     }

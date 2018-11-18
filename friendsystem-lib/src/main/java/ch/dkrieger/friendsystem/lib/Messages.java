@@ -45,6 +45,10 @@ public class Messages {
     public static String PLAYER_ALREADY_REQUEST;
     public static String PLAYER_ALREADY_FRIENDS;
 
+    public static String PLAYER_ALREADY_PARTY_OWN;
+    public static String PLAYER_ALREADY_PARTY_OTHER;
+    public static String PLAYER_ALREADY_PARTY_REQUEST;
+
     public static String PLAYER_REACHED_MAX_FRIENDS_SELF;
     public static String PLAYER_REACHED_MAX_FRIENDS_OTHER;
 
@@ -108,6 +112,8 @@ public class Messages {
     public static String PLAYER_SETTING_NOTIFY_ENABLE;
     public static String PLAYER_SETTING_NOTIFY_DISABLE;
     public static String PLAYER_SETTING_HELP;
+
+    public static String PLAYER_PARTY_NOT_LEADER;
 
     public static TextComponent replaceAcceptDeny(String text,String acceptCommand,String denyCommand){
         TextComponent message = new TextComponent();

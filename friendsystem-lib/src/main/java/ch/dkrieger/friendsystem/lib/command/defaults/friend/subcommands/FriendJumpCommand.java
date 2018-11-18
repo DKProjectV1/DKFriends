@@ -38,7 +38,9 @@ public class FriendJumpCommand extends SubFriendCommand {
                 return;
             }
             if(!friend.getSettings().isJumpEnabled()){
-                sender.sendMessage(Messages.PLAYER_JUMP_NOTALLOWED);
+                sender.sendMessage(Messages.PLAYER_JUMP_NOTALLOWED
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
                 return;
             }
             OnlineFriendPlayer online = friend.getOnlinePlayer();
@@ -49,8 +51,11 @@ public class FriendJumpCommand extends SubFriendCommand {
                 return;
             }
             if(online.getServer() == null){
-                sender.sendMessage(Messages.SERVER_NOTFOUND
-                        .replace("[prefix]",getPrefix()));
+                sender.sendMessage(Messages.SERVER_NOTFOUND.replace("[prefix]",getPrefix()));
+                return;
+            }
+            if(player.getOnlinePlayer().getServer().equalsIgnoreCase(online.getServer())){
+                sender.sendMessage(Messages.SERVER_ALREADY.replace("[prefix]",getPrefix()));
                 return;
             }
             /*
