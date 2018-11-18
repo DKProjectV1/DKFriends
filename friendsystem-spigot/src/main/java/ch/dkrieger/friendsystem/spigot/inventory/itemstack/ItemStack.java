@@ -1,28 +1,41 @@
-package ch.dkrieger.friendsystem.spigot.inventory;
+package ch.dkrieger.friendsystem.spigot.inventory.itemstack;
 
-/*
- *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 18.11.18 19:22
- *
- */
-
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
+import ch.dkrieger.friendsystem.spigot.inventory.Color;
+
 import java.util.LinkedList;
 import java.util.List;
 
+/*
+ *
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 18.11.18 21:59
+ *
+ */
+
 public class ItemStack {
 
+    private ItemStackType type;
     private String itemId, displayName, skullName;
     private int amount, durability;
     private boolean glow;
     private Color color;
     private List<String> lore;
 
-    public ItemStack(String itemId) {
-        this(itemId, 1, -1, null, null, false, null, new LinkedList<>());
+    public ItemStack(ItemStackType type) {
+        this(type, null);
     }
 
-    public ItemStack(String itemId, int amount, int durability, String displayName, String skullName, boolean glow, Color color, List<String> lore) {
+    public ItemStack(String itemId) {
+        this(ItemStackType.NORMAL, itemId);
+    }
+
+    public ItemStack(ItemStackType type, String itemId) {
+        this(type, itemId, 1, -1, null, null, false, null, new LinkedList<>());
+    }
+
+    public ItemStack(ItemStackType type, String itemId, int amount, int durability, String displayName, String skullName, boolean glow, Color color, List<String> lore) {
+        this.type = type;
         this.itemId = itemId;
         this.amount = amount;
         this.durability = durability;
@@ -98,6 +111,8 @@ public class ItemStack {
     }
 
     public org.bukkit.inventory.ItemStack toBukkitItemStack() {
+        if(this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder("160:15").build(); //Default placeholder
+        if(this.type == ItemStackType.EMPTY)return new ItemBuilder("0").build();
         ItemBuilder itemBuilder = new ItemBuilder(this.itemId);
         if(this.displayName != null)itemBuilder.setDisplayName(this.displayName);
         if(this.skullName != null)itemBuilder.setSkullOwner(this.skullName);
@@ -109,8 +124,13 @@ public class ItemStack {
         return itemBuilder.build();
     }
 
+    public org.bukkit.inventory.ItemStack toBukkitItemStack(FriendPlayer player) {
+        if(this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder(160).setDurability(player.getSettings().getDesign()).build();
+        return toBukkitItemStack();
+    }
+
     @Override
     protected ItemStack clone() {
-        return new ItemStack(this.itemId, this.amount, this.durability, this.displayName, this.skullName, this.glow, this.color, this.lore);
+        return new ItemStack(this.type, this.itemId, this.amount, this.durability, this.displayName, this.skullName, this.glow, this.color, this.lore);
     }
 }

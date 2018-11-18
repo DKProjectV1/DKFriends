@@ -10,8 +10,10 @@ import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.utils.Document;
-import ch.dkrieger.friendsystem.spigot.inventory.Inventory;
+import ch.dkrieger.friendsystem.spigot.inventory.inventory.Inventory;
 import ch.dkrieger.friendsystem.spigot.inventory.InventoryConfig;
+import ch.dkrieger.friendsystem.spigot.listener.InventoryClickListener;
+import ch.dkrieger.friendsystem.spigot.listener.InventoryCloseListener;
 import ch.dkrieger.friendsystem.spigot.listener.InventoryOpenListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -23,7 +25,7 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
 
     private static SpigotFriendSystemBootstrap instance;
     private SpigotCommandManager commandManager;
-    private Document inventoryConfig;
+    private Document advancedConfig;
 
     @Override
     public void onLoad() {
@@ -63,29 +65,32 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         return this.commandManager;
     }
 
-    public Document getInventoryConfig() {
-        return inventoryConfig;
+    public Document getAdvancedConfig() {
+        return advancedConfig;
     }
 
     public Inventory getInventory(String inventory) {
-        return getInventoryConfig().getObject("inventories", InventoryConfig.class).getInventory(inventory);
+        return getAdvancedConfig().getObject("inventories", InventoryConfig.class).getInventory(inventory);
     }
 
     private void registerListener() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new InventoryOpenListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new InventoryCloseListener(), this);
     }
 
     private void loadInventoryConfig() {
-        File file = new File(getFolder(), "inventories.json");
-        if(file.exists() && file.isFile()) this.inventoryConfig = Document.loadData(file);
-        else this.inventoryConfig = new Document();
+        File file = new File(getFolder(), "advancedspigotconfig.json");
+        if(file.exists() && file.isFile()) this.advancedConfig = Document.loadData(file);
+        else this.advancedConfig = new Document();
+
         InventoryConfig inventoryConfig = new InventoryConfig();
 
-        this.inventoryConfig.appendDefault("inventories", inventoryConfig);
+        this.advancedConfig.appendDefault("inventories", inventoryConfig);
         if(!(file.exists() && file.isFile())){
             file.delete();
-            this.inventoryConfig.saveData(file);
+            this.advancedConfig.saveData(file);
         }
     }
 

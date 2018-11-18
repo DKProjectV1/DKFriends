@@ -1,14 +1,15 @@
-package ch.dkrieger.friendsystem.spigot.inventory;
+package ch.dkrieger.friendsystem.spigot.inventory.inventory;
 
-/*
- *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 18.11.18 19:42
- *
- */
-
+import ch.dkrieger.friendsystem.spigot.inventory.itemstack.ItemStack;
 import org.bukkit.Bukkit;
 
 import java.util.Map;
+
+/*
+ *
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 18.11.18 21:59
+ *
+ */
 
 public class ConditionInventory extends Inventory {
 
@@ -42,5 +43,10 @@ public class ConditionInventory extends Inventory {
             inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack());
         }
         return inventory;
+    }
+
+    @Override
+    public ConditionInventory clone() {
+        return (ConditionInventory) new ConditionInventory(this.mainInventory, this.condition, getName(), getSize()).setItems(getItems());
     }
 }

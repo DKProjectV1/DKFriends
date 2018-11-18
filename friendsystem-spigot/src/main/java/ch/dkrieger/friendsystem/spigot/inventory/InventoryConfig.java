@@ -1,11 +1,13 @@
 package ch.dkrieger.friendsystem.spigot.inventory;
 
+import ch.dkrieger.friendsystem.spigot.inventory.inventory.Inventory;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /*
  *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 18.11.18 21:06
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 18.11.18 21:58
  *
  */
 
