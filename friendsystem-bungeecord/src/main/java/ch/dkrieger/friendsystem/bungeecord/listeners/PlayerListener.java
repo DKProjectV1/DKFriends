@@ -83,7 +83,6 @@ public class PlayerListener implements Listener {
             List<Friend> friends = player.getOnlineFriends();
 
             if(friends.isEmpty()) return;
-            if(friends.isEmpty()) return;
             if(friends.size() == 1){
                 player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_ONE
                         .replace("[prefix]",Messages.PREFIX_FRIEND)
