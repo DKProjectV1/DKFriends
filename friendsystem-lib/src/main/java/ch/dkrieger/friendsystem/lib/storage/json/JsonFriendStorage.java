@@ -181,6 +181,16 @@ public class JsonFriendStorage implements FriendStorage {
         player.setProperties(properties);
         savePlayer(player);
     }
+
+    @Override
+    public void saveInformations(UUID uuid, String color, long lastLogin, String gameProfile) {
+        FriendPlayer player = getPlayer(uuid);
+        player.setColor(color);
+        player.setLastLogin(lastLogin);
+        player.setGameProfile(gameProfile);
+        save();
+    }
+
     public void save(){
         this.data.append("players",this.players);
         this.data.saveData(this.file);
