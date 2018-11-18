@@ -110,7 +110,7 @@ public class PlayerListener implements Listener {
                         .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
                         .replace("[more]",""+(friends.size()-2))));
             }
-            player.updateInfos(event.getPlayer().getName(),getColor(player,event.getPlayer()));
+            player.updateInformations(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });
     }
     @EventHandler
@@ -126,7 +126,7 @@ public class PlayerListener implements Listener {
                         .replace("[prefix]",Messages.PREFIX_FRIEND)
                         .replace("[player]",player.getColoredName()));
             }
-            player.updateInfos(event.getPlayer().getName(),getColor(player,event.getPlayer()));
+            player.updateInformations(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });
     }
     private String getColor(FriendPlayer friendPlayer, ProxiedPlayer player){

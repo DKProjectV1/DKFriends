@@ -58,4 +58,5 @@ public interface FriendStorage {
 
     public void saveProperties(UUID uuid, Document properties);
 
+    public void saveInformations(UUID uuid, String color, long lastLogin, String gameProfile);
 }

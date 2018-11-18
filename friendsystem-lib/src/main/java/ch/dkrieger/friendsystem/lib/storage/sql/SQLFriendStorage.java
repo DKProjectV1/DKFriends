@@ -55,9 +55,6 @@ public abstract class SQLFriendStorage implements FriendStorage {
             loadDriver();
             System.out.println(Messages.SYSTEM_PREFIX+"connecting to SQL server at "+config.getHost()+":"+config.getPort());
             try {
-                /*this.connection = DriverManager.getConnection("jdbc:mysql://"+config.getHost()+":"+config.getPort()+"/"+config.getDatabase()+
-                        "?autoReconnect=true&allowMultiQueries=true&reconnectAtTxEnd=true",config.getUser(), config.getPassword());*/
-
                 connect(config);
                 this.friendPlayerTable = new Table(this, "DKFriends_players");
                 friendPlayerTable.create()
@@ -113,16 +110,11 @@ public abstract class SQLFriendStorage implements FriendStorage {
 
     private FriendPlayer getPlayer(String identifier, Object identifierObject) {
         try {
-            System.out.println("getPlayer sql");
-            System.out.println("table: " + this.friendPlayerTable);
-            System.out.println("identifier: " + identifier);
-            System.out.println("obj: " + identifierObject);
             SelectQuery query = this.friendPlayerTable.select().where(identifier,identifierObject);
             ResultSet result = query.execute();
             if(result == null) return null;
             try {
                 while (result.next()) {
-                    System.out.println(result.getString("friends"));
                     return new FriendPlayer(UUID.fromString(result.getString("uuid")),
                             result.getString("name"),
                             result.getString("color"),
@@ -152,7 +144,6 @@ public abstract class SQLFriendStorage implements FriendStorage {
 
     @Override
     public void createPlayer(FriendPlayer player) {
-        System.out.println("create player sql: " + GeneralUtil.GSON_NOT_PRETTY.toJson(player.getFriends()));
         this.friendPlayerTable.insert()
                 .insert("uuid")
                 .insert("name")
@@ -278,6 +269,15 @@ public abstract class SQLFriendStorage implements FriendStorage {
     @Override
     public void saveHiderStatus(UUID uuid, FriendPlayer.HiderStatus hiderStatus) {
         updateSettings(uuid, "hiderStatus", GeneralUtil.GSON_NOT_PRETTY.toJson(hiderStatus));
+    }
+
+    @Override
+    public void saveInformations(UUID uuid, String color, long lastLogin, String gameProfile) {
+        this.friendPlayerTable.update()
+                .set("color", color)
+                .set("lastLogin", lastLogin)
+                .set("gameProfile", gameProfile)
+                .where("uuid", uuid.toString()).execute();
     }
 
     private void updateSettings(UUID uuid, String identifier, Object value) {
