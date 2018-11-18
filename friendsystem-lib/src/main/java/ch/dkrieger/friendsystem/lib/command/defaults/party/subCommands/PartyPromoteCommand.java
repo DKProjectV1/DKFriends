@@ -1,9 +1,10 @@
-package ch.dkrieger.friendsystem.lib.command.defaults.friend.subcommands;
+package ch.dkrieger.friendsystem.lib.command.defaults.party.subCommands;
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
+import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 
@@ -11,22 +12,28 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 17.11.18 20:59
+ *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 14:52
  *
  */
 
-public class FriendMessageCommand extends SubFriendCommand {
+public class PartyPromoteCommand extends SubFriendCommand {
 
-    public FriendMessageCommand() {
-        super("message");
+    public PartyPromoteCommand() {
+        super("promote");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
-            if(!player.getSettings().isMessageEnabled()){
-                sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ENABLED
-                        .replace("[prefix]",getPrefix()));
+            Party party = FriendSystem.getInstance().getPartyManager().getParty(player);
+            if(party == null){
+                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",player.getColoredName()));
+                return;
+            }
+            if(!party.isLeader(player)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_LEADER.replace("[prefix]",getPrefix()));
                 return;
             }
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
@@ -36,37 +43,23 @@ public class FriendMessageCommand extends SubFriendCommand {
                         .replace("[player]",args[0]));
                 return;
             }
-            if(!player.isFriend(friend)){
-                sender.sendMessage(Messages.PLAYER_NOT_FRIENDS
+            if(!party.isMember(friend)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(!friend.getSettings().isMessageEnabled()){
-                sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ALLOWED
+            if(party.isModerator(friend)){
+                party.setLeader(friend);
+                party.sendMessage(Messages.PLAYER_PARTY_NEW_LEADER
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
-                return;
-            }
-            OnlineFriendPlayer online = player.getOnlinePlayer();
-            if(online == null){
-                sender.sendMessage(Messages.PLAYER_NOT_ONLINE
+            }else{
+                party.setModerator(friend,true);
+                party.sendMessage(Messages.PLAYER_PARTY_MODERATOR_PROMOTED
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
-                return;
             }
-            String message = "";
-            for(int i = 1; i< args.length;i++){
-                if(i > 2 ) message = message + " "+Messages.PLAYER_MESSAGE_COLOR + args[i];
-                else  message = args[i];
-            }
-            message = Messages.PLAYER_MESSAGE_FORMAT
-                    .replace("[message]",message)
-                    .replace("[prefix]",getPrefix())
-                    .replace("[sender]",player.getColoredName())
-                    .replace("[receiver]",friend.getColoredName());
-            sender.sendMessage(message);
-            friend.sendMessage(message);
         }
     }
     @Override

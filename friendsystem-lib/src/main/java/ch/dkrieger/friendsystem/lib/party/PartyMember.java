@@ -12,22 +12,22 @@ import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 
 import java.util.UUID;
 
-public class PartyPlayer {
+public class PartyMember {
 
     private UUID uuid;
     private boolean leader, moderator;
     private long joined;
 
-    public PartyPlayer(UUID uuid) {
+    public PartyMember(UUID uuid) {
         this(uuid,false);
     }
-    public PartyPlayer(UUID uuid, boolean leader) {
+    public PartyMember(UUID uuid, boolean leader) {
         this(uuid,leader,leader);
     }
-    public PartyPlayer(UUID uuid, boolean leader, boolean moderator) {
+    public PartyMember(UUID uuid, boolean leader, boolean moderator) {
         this(uuid,leader,moderator,System.currentTimeMillis());
     }
-    public PartyPlayer(UUID uuid, boolean leader, boolean moderator, long joined) {
+    public PartyMember(UUID uuid, boolean leader, boolean moderator, long joined) {
         this.uuid = uuid;
         this.leader = leader;
         this.moderator = moderator;
@@ -53,5 +53,16 @@ public class PartyPlayer {
 
     public long getJoined() {
         return joined;
+    }
+
+    public void setUUID(UUID uuid) {
+        this.uuid = uuid;
+    }
+    public void setLeader(boolean leader) {
+        this.leader = leader;
+    }
+
+    public void setModerator(boolean moderator) {
+        this.moderator = moderator;
     }
 }

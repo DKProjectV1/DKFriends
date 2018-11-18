@@ -43,7 +43,10 @@ public class PartyInviteCommand extends SubFriendCommand {
             check can invite
              */
             Party party = FriendSystem.getInstance().getPartyManager().getParty(player);
-            if(party == null) party = FriendSystem.getInstance().getPartyManager().createParty(player);
+            if(party == null){
+                System.out.println("create party for "+player.getName());
+                party = FriendSystem.getInstance().getPartyManager().createParty(player);
+            }
             else if(!party.isLeader(player)){
                 sender.sendMessage(Messages.PLAYER_PARTY_NOT_LEADER
                         .replace("[prefix]",getPrefix()));
@@ -74,8 +77,8 @@ public class PartyInviteCommand extends SubFriendCommand {
             online.sendMessage(Messages.replaceAcceptDeny(Messages.PLAYER_PARTY_REQUEST_RECEIVED
                     .replace("[prefix]",getPrefix())
                     .replace("[player]",player.getColoredName()),
-                    "/"+getName()+" accept "+player.getName()
-                    ,"/"+getName()+" deny "+player.getName()));
+                    "/"+getMainCommand().getName()+" accept "+player.getName()
+                    ,"/"+getMainCommand().getName()+" deny "+player.getName()));
         }
     }
     @Override
