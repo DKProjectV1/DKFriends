@@ -2,7 +2,6 @@ package ch.dkrieger.friendsystem.lib.player;
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
-import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -299,12 +298,6 @@ public class FriendPlayer {
         Friend friend = null;
         while(iterator.hasNext() && (friend= iterator.next()) != null) friend.getFriendPlayer().removeFriend(this,true);
         FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
-    }
-    public Party getParty(){
-        return FriendSystem.getInstance().getPartyManager().getParty(this);
-    }
-    public boolean isInParty(){
-        return FriendSystem.getInstance().getPartyManager().isInParty(this);
     }
     public void updateInfos(String name,String color,String gameProfile){
         updateInfos(name,color,this.gameProfile);

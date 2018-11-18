@@ -20,13 +20,8 @@ public abstract class FriendPlayerManager {
         return this.loadedPlayers.values();
     }
     public FriendPlayer getPlayer(UUID uuid) {
-        System.out.println("getPlayer");
         FriendPlayer player = this.loadedPlayers.get(uuid);
-        if(player != null) {
-            System.out.println("getPlayer cache not null");
-            return player;
-        }
-        System.out.println("getPlayerSave");
+        if(player != null) return player;
         try{
             return getPlayerSave(uuid);
         }catch (Exception exception){
@@ -45,14 +40,11 @@ public abstract class FriendPlayerManager {
         }
     }
     public FriendPlayer getPlayerSave(UUID uuid) throws Exception{
-        System.out.println("getPlayerSave");
         FriendPlayer player = FriendSystem.getInstance().getStorage().getPlayer(uuid);
-        System.out.println("player: " + player);
         if(player != null) this.loadedPlayers.put(player.getUUID(),player);
         return player;
     }
     public FriendPlayer createPlayer(UUID uuid, String name, String color, String gameProfile){
-        System.out.println("createPlayer");
         FriendPlayer player = new FriendPlayer(uuid,name,color,gameProfile);
         this.loadedPlayers.put(player.getUUID(),player);
         FriendSystem.getInstance().getStorage().createPlayer(player);

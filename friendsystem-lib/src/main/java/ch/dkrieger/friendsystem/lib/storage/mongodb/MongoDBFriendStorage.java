@@ -69,7 +69,8 @@ public class MongoDBFriendStorage implements FriendStorage {
 
     @Override
     public FriendPlayer getPlayer(String name) {
-        return MongoDBUtil.findFirst(friendPlayerCollection, Filters.eq("name", name), FriendPlayer.class);
+        return MongoDBUtil.findFirst(friendPlayerCollection,
+                new org.bson.Document().append("name", new org.bson.Document("$regex", name).append("$options","i")), FriendPlayer.class);
     }
 
     @Override
