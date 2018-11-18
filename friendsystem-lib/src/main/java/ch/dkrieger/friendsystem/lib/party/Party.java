@@ -98,6 +98,16 @@ public class Party {
     public boolean isLeader(UUID uuid) {
         return getMember(uuid) != null;
     }
+    public boolean isModerator(FriendPlayer player) {
+        return isModerator(player.getUUID());
+    }
+    public boolean isModerator(OnlineFriendPlayer player) {
+        return isModerator(player.getUUID());
+    }
+    public boolean isModerator(UUID uuid) {
+        PartyMember member =  getMember(uuid);
+        return member != null && member.isModerator();
+    }
     public boolean hasRequest(FriendPlayer player) {
         return hasRequest(player.getUUID());
     }
@@ -149,6 +159,27 @@ public class Party {
     }
     public void removeMember(UUID uuid){
         this.members.remove(getMember(uuid));
+    }
+    public void setModerator(FriendPlayer player, boolean moderator){
+        setModerator(player.getUUID(),moderator);
+    }
+    public void setModerator(OnlineFriendPlayer player, boolean moderator){
+        setModerator(player.getUUID(),moderator);
+    }
+    public void setModerator(UUID uuid, boolean moderator){
+        PartyMember member = getMember(uuid);
+        if(member != null) member.setModerator(moderator);
+    }
+    public void setLeader(FriendPlayer player){
+        setLeader(player.getUUID());
+    }
+    public void setLeader(OnlineFriendPlayer player){
+        setLeader(player.getUUID());
+    }
+    public void setLeader(UUID uuid){
+        getLeader().setLeader(false);
+        PartyMember member = getMember(uuid);
+        if(member != null) member.setModerator(true);
     }
     public void sendMessage(String message){
         for(PartyMember member : this.members){

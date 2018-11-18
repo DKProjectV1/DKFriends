@@ -11,19 +11,30 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 13:56
+ *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 15:26
  *
  */
 
-public class PartyDenyCommand extends SubFriendCommand {
+public class PartyDemoteCommand extends SubFriendCommand {
 
-    public PartyDenyCommand() {
-        super("deny");
+    public PartyDemoteCommand() {
+        super("demote");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
+            Party party = FriendSystem.getInstance().getPartyManager().getParty(player);
+            if(party == null){
+                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",player.getColoredName()));
+                return;
+            }
+            if(!party.isLeader(player)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_LEADER.replace("[prefix]",getPrefix()));
+                return;
+            }
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
             if(friend == null){
                 sender.sendMessage(Messages.PLAYER_NOT_FOUND
@@ -31,26 +42,22 @@ public class PartyDenyCommand extends SubFriendCommand {
                         .replace("[player]",args[0]));
                 return;
             }
-            Party party = FriendSystem.getInstance().getPartyManager().getParty(friend);
-            if(party == null){
-                sender.sendMessage(Messages.PLAYER_PARTY_NOT_PARTY
+            if(!party.isMember(friend)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(!party.hasRequest(player)){
-                sender.sendMessage(Messages.PLAYER_PARTY_REQUEST_NOT
+            if(party.isModerator(friend)){
+                party.setModerator(friend,false);
+                party.sendMessage(Messages.PLAYER_PARTY_MODERATOR_DEMOTED
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
-                return;
+            }else{
+                sender.sendMessage(Messages.PLAYER_PARTY_MODERATOR_NOT
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
             }
-            party.removeRequest(player);
-            sender.sendMessage(Messages.PLAYER_PARTY_DENIED_SELF
-                    .replace("[prefix]",getPrefix())
-                    .replace("[player]",friend.getColoredName()));
-            party.sendMessage(Messages.PLAYER_PARTY_DENIED_OTHER
-                    .replace("[prefix]",getPrefix())
-                    .replace("[player]",player.getColoredName()));
         }
     }
     @Override

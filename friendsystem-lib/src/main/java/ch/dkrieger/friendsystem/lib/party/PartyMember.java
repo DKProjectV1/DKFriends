@@ -54,4 +54,15 @@ public class PartyMember {
     public long getJoined() {
         return joined;
     }
+
+    public void setUUID(UUID uuid) {
+        this.uuid = uuid;
+    }
+    public void setLeader(boolean leader) {
+        this.leader = leader;
+    }
+
+    public void setModerator(boolean moderator) {
+        this.moderator = moderator;
+    }
 }

@@ -28,7 +28,7 @@ public class PartyInfoCommand extends SubFriendCommand {
         if(player != null){
             Party party = FriendSystem.getInstance().getPartyManager().getParty(player);
             if(party == null){
-                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY.replace("[prefix]",getPrefix()));
+                sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_SELF.replace("[prefix]",getPrefix()));
                 return;
             }
             sender.sendMessage(Messages.PLAYER_PARTY_INFO_HEADER
@@ -52,7 +52,7 @@ public class PartyInfoCommand extends SubFriendCommand {
                     else if(member.isModerator()) symbol = Messages.PLAYER_PARTY_INFO_MEMBER_SYMBOL_MODERATOR;
                     sender.sendMessage(Messages.PLAYER_PARTY_INFO_MEMBER_LIST
                             .replace("[prefix]",getPrefix())
-                            .replace("[player]",friend.getName())
+                            .replace("[player]",friend.getColoredName())
                             .replace("[joined]",""+member.getJoined())
                             .replace("[server]",""+online.getServer())
                             .replace("[symbol]",symbol));

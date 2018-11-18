@@ -112,7 +112,9 @@ public class Messages {
     public static String PLAYER_PARTY_NOT_LEADER;
     public static String PLAYER_PARTY_NOT_PARTY;
     public static String PLAYER_PARTY_NOT_ALLOWED_INVITE;
-    public static String PLAYER_PARTY_NO_PARTY;
+    public static String PLAYER_PARTY_NOT_ALLOWED_KICK;
+    public static String PLAYER_PARTY_NO_PARTY_SELF;
+    public static String PLAYER_PARTY_NO_PARTY_OTHER;
 
     public static String PLAYER_PARTY_REQUEST_SENDED;
     public static String PLAYER_PARTY_REQUEST_RECEIVED;
@@ -129,6 +131,8 @@ public class Messages {
     public static String PLAYER_PARTY_DENIED_SELF;
     public static String PLAYER_PARTY_DENIED_OTHER;
     public static String PLAYER_PARTY_LEAVED;
+    public static String PLAYER_PARTY_JUMPED;
+    public static String PLAYER_PARTY_KICKED;
 
     public static String PLAYER_PARTY_INFO_HEADER;
     public static String PLAYER_PARTY_INFO_CREATED;
@@ -140,6 +144,15 @@ public class Messages {
     public static String PLAYER_PARTY_INFO_MEMBER_SYMBOL_NORMAL;
     public static String PLAYER_PARTY_INFO_MEMBER_SYMBOL_LEADER;
     public static String PLAYER_PARTY_INFO_MEMBER_SYMBOL_MODERATOR;
+
+    public static String PLAYER_PARTY_NEW_LEADER;
+
+    public static String PLAYER_PARTY_MODERATOR_PROMOTED;
+    public static String PLAYER_PARTY_MODERATOR_DEMOTED;
+    public static String PLAYER_PARTY_MODERATOR_NOT;
+
+    public static String PLAYER_PARTY_MESSAGE_FORMAT;
+    public static String PLAYER_PARTY_MESSAGE_COLOR;
 
     public static TextComponent replaceAcceptDeny(String text,String acceptCommand,String denyCommand){
         TextComponent message = new TextComponent();

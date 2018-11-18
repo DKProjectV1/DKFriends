@@ -23,7 +23,11 @@ public class PartyCommand extends FriendCommand {
         registerSubCommand(new PartyDenyCommand());
         registerSubCommand(new PartyLeaveCommand());
         registerSubCommand(new PartyInfoCommand());
-
+        registerSubCommand(new PartyJumpCommand());
+        registerSubCommand(new PartyKickCommand());
+        registerSubCommand(new PartyMessageCommand());
+        registerSubCommand(new PartyPromoteCommand());
+        registerSubCommand(new PartyDemoteCommand());
     }
 
     @Override
