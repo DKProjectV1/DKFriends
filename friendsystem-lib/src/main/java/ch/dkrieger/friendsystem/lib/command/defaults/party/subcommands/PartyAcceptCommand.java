@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.lib.command.defaults.party.subCommands;
+package ch.dkrieger.friendsystem.lib.command.defaults.party.subcommands;
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
@@ -11,14 +11,14 @@ import java.util.List;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 13:56
+ *  * Copyright (c) 2018 Davide Wietlisbach on 18.11.18 12:43
  *
  */
 
-public class PartyDenyCommand extends SubFriendCommand {
+public class PartyAcceptCommand extends SubFriendCommand {
 
-    public PartyDenyCommand() {
-        super("deny");
+    public PartyAcceptCommand() {
+        super("accept");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
@@ -38,17 +38,26 @@ public class PartyDenyCommand extends SubFriendCommand {
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            if(!party.hasRequest(player)){
+            if(!(party.hasRequest(player)) && !(party.isPublic())){
                 sender.sendMessage(Messages.PLAYER_PARTY_REQUEST_NOT
                         .replace("[prefix]",getPrefix())
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            party.removeRequest(player);
-            sender.sendMessage(Messages.PLAYER_PARTY_DENIED_SELF
-                    .replace("[prefix]",getPrefix())
-                    .replace("[player]",friend.getColoredName()));
-            party.sendMessage(Messages.PLAYER_PARTY_DENIED_OTHER
+            if(party.isBanned(player)){
+                sender.sendMessage(Messages.PLAYER_PARTY_NOT_ALLOWED_JOIN
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+                return;
+            }
+            if(player.getParty() != null){
+                sender.sendMessage(Messages.PLAYER_PARTY_ALREADY_OWN
+                        .replace("[prefix]",getPrefix())
+                        .replace("[player]",friend.getColoredName()));
+                return;
+            }
+            party.addMember(player);
+            party.sendMessage(Messages.PLAYER_PARTY_JOINED
                     .replace("[prefix]",getPrefix())
                     .replace("[player]",player.getColoredName()));
         }

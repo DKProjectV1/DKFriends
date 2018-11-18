@@ -140,7 +140,7 @@ public class Config extends SimpleConfig {
         addValue("command.friend.favorite.name","favorite");
         addValue("command.friend.favorite.description", "Add a friend as favorite");
         addValue("command.friend.favorite.permission", "none");
-        addValue("command.friend.favorite.aliases", Arrays.asList());
+        addValue("command.friend.favorite.aliases", Arrays.asList("favorite","favourite","darling","fav","honey","ducky"));
 
         addValue("command.friend.jump.enabled",true);
         addValue("command.friend.jump.name","jump");

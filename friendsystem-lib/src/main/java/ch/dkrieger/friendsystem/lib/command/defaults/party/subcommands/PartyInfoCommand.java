@@ -1,6 +1,5 @@
-package ch.dkrieger.friendsystem.lib.command.defaults.party.subCommands;
+package ch.dkrieger.friendsystem.lib.command.defaults.party.subcommands;
 
-import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;

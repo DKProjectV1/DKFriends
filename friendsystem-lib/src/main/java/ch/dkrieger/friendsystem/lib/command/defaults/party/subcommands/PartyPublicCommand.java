@@ -1,6 +1,5 @@
-package ch.dkrieger.friendsystem.lib.command.defaults.party.subCommands;
+package ch.dkrieger.friendsystem.lib.command.defaults.party.subcommands;
 
-import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
@@ -15,16 +14,16 @@ import java.util.List;
  *
  */
 
-public class PartyPrivateCommand extends SubFriendCommand {
+public class PartyPublicCommand extends SubFriendCommand {
 
-    public PartyPrivateCommand() {
-        super("private");
+    public PartyPublicCommand() {
+        super("public");
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
-            Party party = FriendSystem.getInstance().getPartyManager().getParty(player);
+            Party party = player.getParty();
             if(party == null){
                 sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_OTHER
                         .replace("[prefix]",getPrefix())
@@ -35,10 +34,10 @@ public class PartyPrivateCommand extends SubFriendCommand {
                 sender.sendMessage(Messages.PLAYER_PARTY_NOT_LEADER.replace("[prefix]",getPrefix()));
                 return;
             }
-            if(!party.isPublic()) sender.sendMessage(Messages.PLAYER_PARTY_PRIVATE_ALREADY.replace("[prefix]",getPrefix()));
+            if(party.isPublic()) sender.sendMessage(Messages.PLAYER_PARTY_PUBLIC_ALREADY.replace("[prefix]",getPrefix()));
             else{
-                party.setPublic(false);
-                party.sendMessage(Messages.PLAYER_PARTY_PRIVATE_NOW.replace("[prefix]",getPrefix()));;
+                party.setPublic(true);
+                party.sendMessage(Messages.PLAYER_PARTY_PUBLIC_NOW.replace("[prefix]",getPrefix()));;
             }
         }
     }

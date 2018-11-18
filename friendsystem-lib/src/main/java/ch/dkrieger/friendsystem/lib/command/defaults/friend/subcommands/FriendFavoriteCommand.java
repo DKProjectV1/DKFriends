@@ -17,7 +17,6 @@ import java.util.List;
 public class FriendFavoriteCommand extends SubFriendCommand {
 
     public FriendFavoriteCommand(String name) {
-        //super("favorite","",null,"","favourite","darling","fav","honey","ducky");
         super(name,
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend."+name+".permission"),

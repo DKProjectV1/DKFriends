@@ -10,7 +10,7 @@ import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommand;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
-import ch.dkrieger.friendsystem.lib.command.defaults.party.subCommands.*;
+import ch.dkrieger.friendsystem.lib.command.defaults.party.subcommands.*;
 
 import java.util.List;
 
