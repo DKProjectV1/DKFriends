@@ -32,6 +32,7 @@ public class PlayerListener implements Listener {
         if(BungeeCord.getInstance().getConfig().isOnlineMode() && !(event.getConnection().isOnlineMode())) return;
         FriendPlayer player = null;
         try{
+            System.out.println("login save get");
             player = FriendSystem.getInstance().getPlayerManager().getPlayerSave(event.getConnection().getUniqueId());
         }catch (Exception exception){
             try{
@@ -46,6 +47,7 @@ public class PlayerListener implements Listener {
             }
         }
         if(player == null){
+            System.out.println("login player null");
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getConnection().getUniqueId()
                     ,event.getConnection().getName(),"§8",null);
         }//else PermissionPlayerManager.getInstance().checkName(event.getConnection().getUniqueId(),event.getConnection().getName());
@@ -64,6 +66,7 @@ public class PlayerListener implements Listener {
                 event.getPlayer().disconnect(new TextComponent(Messages.ERROR.replace("[prefix]",Messages.PREFIX_FRIEND)));
                 return;
             }
+            System.out.println(player.getFriends());
             List<Friend> requests = player.getRequests();
             if(requests.size() > 0){
                 String design = Messages.PLAYER_REQUEST_OPEN_PLURAL;

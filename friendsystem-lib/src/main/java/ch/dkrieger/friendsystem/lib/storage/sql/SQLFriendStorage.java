@@ -29,6 +29,7 @@ public abstract class SQLFriendStorage implements FriendStorage {
     private Table friendPlayerTable;
 
     public SQLFriendStorage(Config config) {
+        System.out.println("new SQLFriendStorage");
         this.config = config;
     }
     @Override
@@ -56,6 +57,7 @@ public abstract class SQLFriendStorage implements FriendStorage {
             try {
                 /*this.connection = DriverManager.getConnection("jdbc:mysql://"+config.getHost()+":"+config.getPort()+"/"+config.getDatabase()+
                         "?autoReconnect=true&allowMultiQueries=true&reconnectAtTxEnd=true",config.getUser(), config.getPassword());*/
+
                 connect(config);
                 this.friendPlayerTable = new Table(this, "DKFriends_players");
                 friendPlayerTable.create()
@@ -111,11 +113,16 @@ public abstract class SQLFriendStorage implements FriendStorage {
 
     private FriendPlayer getPlayer(String identifier, Object identifierObject) {
         try {
+            System.out.println("getPlayer sql");
+            System.out.println("table: " + this.friendPlayerTable);
+            System.out.println("identifier: " + identifier);
+            System.out.println("obj: " + identifierObject);
             SelectQuery query = this.friendPlayerTable.select().where(identifier,identifierObject);
             ResultSet result = query.execute();
             if(result == null) return null;
             try {
                 while (result.next()) {
+                    System.out.println(result.getString("friends"));
                     return new FriendPlayer(UUID.fromString(result.getString("uuid")),
                             result.getString("name"),
                             result.getString("color"),
@@ -145,6 +152,7 @@ public abstract class SQLFriendStorage implements FriendStorage {
 
     @Override
     public void createPlayer(FriendPlayer player) {
+        System.out.println("create player sql: " + GeneralUtil.GSON_NOT_PRETTY.toJson(player.getFriends()));
         this.friendPlayerTable.insert()
                 .insert("uuid")
                 .insert("name")
@@ -164,7 +172,7 @@ public abstract class SQLFriendStorage implements FriendStorage {
                 .value(player.getUUID())
                 .value(player.getName())
                 .value(player.getColor())
-                .value(player.getGameProfile())
+                .value("test")
                 .value(player.getFirstLogin())
                 .value(player.getLastLogin())
                 .value(player.getMaxFriends())
@@ -173,9 +181,10 @@ public abstract class SQLFriendStorage implements FriendStorage {
                 .value(player.getHiderStatus())
                 .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getStatus()))
                 .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getSettings()))
-                .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getFriends()))
-                .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getRequests()))
-                .value(player.getProperties().toJson());
+                .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getFriends(), new TypeToken<List<Friend>>(){}.getType()))
+                .value(GeneralUtil.GSON_NOT_PRETTY.toJson(player.getRequests(), new TypeToken<List<Friend>>(){}.getType()))
+                .value(player.getProperties().toJson())
+                .execute();
     }
 
     @Override
@@ -191,8 +200,8 @@ public abstract class SQLFriendStorage implements FriendStorage {
                 .set("hiderStatus", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getHiderStatus()))
                 .set("status", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getStatus()))
                 .set("settings", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getSettings()))
-                .set("friends", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getFriends()))
-                .set("requests", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getRequests()))
+                .set("friends", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getFriends(), new TypeToken<List<Friend>>(){}.getType()))
+                .set("requests", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getRequests(), new TypeToken<List<Friend>>(){}.getType()))
                 .set("properties", GeneralUtil.GSON_NOT_PRETTY.toJson(player.getProperties()))
                 .where("uuid", player.getUUID().toString()).execute();
 
@@ -235,17 +244,20 @@ public abstract class SQLFriendStorage implements FriendStorage {
 
     @Override
     public void saveFriends(UUID uuid, List<Friend> friends) {
-        updateSettings(uuid, "friends", GeneralUtil.GSON_NOT_PRETTY.toJson(friends));
+        updateSettings(uuid, "friends", GeneralUtil.GSON_NOT_PRETTY.toJson(friends, new TypeToken<List<Friend>>(){}.getType()));
     }
 
     @Override
     public void saveRequests(UUID uuid, List<Friend> requests) {
-        updateSettings(uuid, "requests", GeneralUtil.GSON_NOT_PRETTY.toJson(requests));
+        updateSettings(uuid, "requests", GeneralUtil.GSON_NOT_PRETTY.toJson(requests, new TypeToken<List<Friend>>(){}.getType()));
     }
 
     @Override
     public void saveFriendsAndRequests(UUID uuid, List<Friend> friends, List<Friend> requests) {
-        this.friendPlayerTable.update().set("friends", friends).set("requests", requests).where("uuid", uuid.toString()).execute();
+        this.friendPlayerTable.update()
+                .set("friends", GeneralUtil.GSON_NOT_PRETTY.toJson(friends, new TypeToken<List<Friend>>(){}.getType()))
+                .set("requests", GeneralUtil.GSON_NOT_PRETTY.toJson(requests, new TypeToken<List<Friend>>(){}.getType()))
+                .where("uuid", uuid.toString()).execute();
     }
 
     @Override

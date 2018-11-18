@@ -50,6 +50,7 @@ public class FriendSystem {
         System.out.println(Messages.SYSTEM_PREFIX+"plugin successfully started");
     }
     private void systemBootstrap() {
+
         this.platform.getFolder().mkdirs();
 
         this.config = new Config(this.platform);
@@ -67,10 +68,12 @@ public class FriendSystem {
         else if(this.config.getStorageType() == StorageType.SQLITE) this.storage = new SQLiteFriendStorage(this.config);
         else if(this.config.getStorageType() == StorageType.MONGODB) this.storage = new MongoDBFriendStorage(this.config);
 
-        if(this.storage != null && this.storage.connect()) return;
-
-
-        this.storage = new JsonFriendStorage(this.config);
+        if(this.storage != null && this.storage.connect()) {
+            System.out.println(Messages.SYSTEM_PREFIX + "Used Storage: " + this.config.getStorageType().toString());
+            return;
+        }
+        System.out.println(Messages.SYSTEM_PREFIX + "Used Backup Storage: " + this.config.getStorageType().toString());
+        this.storage = new SQLiteFriendStorage(this.config);
     }
     public void shutdown(){
         if(this.storage != null) this.storage.disconnect();
