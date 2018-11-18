@@ -63,10 +63,11 @@ public class FriendSystem {
 
         registerCommands();
     }
-    private void setupStorage(){
+    private void setupStorage() {
         if(this.config.getStorageType() == StorageType.MYSQL) this.storage = new MySQLFriendStorage(this.config);
         else if(this.config.getStorageType() == StorageType.SQLITE) this.storage = new SQLiteFriendStorage(this.config);
         else if(this.config.getStorageType() == StorageType.MONGODB) this.storage = new MongoDBFriendStorage(this.config);
+        else if(this.config.getStorageType() == StorageType.JSON) this.storage = new JsonFriendStorage(this.config);
 
         if(this.storage != null && this.storage.connect()) {
             System.out.println(Messages.SYSTEM_PREFIX + "Used Storage: " + this.config.getStorageType().toString());
