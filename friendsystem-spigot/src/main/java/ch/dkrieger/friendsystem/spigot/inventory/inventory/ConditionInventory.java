@@ -22,7 +22,7 @@ public class ConditionInventory extends Inventory {
         this.condition = condition;
     }
 
-    @SuppressWarnings("Only for other size and name")
+    @SuppressWarnings("Only for other size and name of inventory")
     public ConditionInventory(Inventory mainInventory, String condition, String name, int size) {
         super(name, size);
         this.mainInventory = mainInventory;
