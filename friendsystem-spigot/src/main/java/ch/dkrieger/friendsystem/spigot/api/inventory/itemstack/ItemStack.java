@@ -1,8 +1,8 @@
-package ch.dkrieger.friendsystem.spigot.inventory.itemstack;
+package ch.dkrieger.friendsystem.spigot.api.inventory.itemstack;
 
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
-import ch.dkrieger.friendsystem.spigot.inventory.Color;
+import ch.dkrieger.friendsystem.spigot.api.inventory.Color;
 
 import java.util.LinkedList;
 import java.util.List;

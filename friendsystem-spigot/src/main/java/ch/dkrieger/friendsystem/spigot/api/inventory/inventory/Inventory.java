@@ -1,6 +1,6 @@
-package ch.dkrieger.friendsystem.spigot.inventory.inventory;
+package ch.dkrieger.friendsystem.spigot.api.inventory.inventory;
 
-import ch.dkrieger.friendsystem.spigot.inventory.itemstack.ItemStack;
+import ch.dkrieger.friendsystem.spigot.api.inventory.itemstack.ItemStack;
 import org.bukkit.Bukkit;
 
 import java.util.LinkedHashMap;
