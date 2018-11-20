@@ -6,6 +6,8 @@ import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,13 +24,22 @@ public class FriendMessageCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.usage"),
+                "<player> <message>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.message.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
+        if(args.length <= 0){
+            getMainCommand().sendHelp(sender);
+            return;
+        }
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
+            if(args.length <= 1){
+                sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ENABLED
+                        .replace("[prefix]",getPrefix()));
+                return;
+            }
             if(!player.getSettings().isMessageEnabled()){
                 sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ENABLED
                         .replace("[prefix]",getPrefix()));
@@ -53,7 +64,7 @@ public class FriendMessageCommand extends SubFriendCommand {
                         .replace("[player]",friend.getColoredName()));
                 return;
             }
-            OnlineFriendPlayer online = player.getOnlinePlayer();
+            OnlineFriendPlayer online = friend.getOnlinePlayer();
             if(online == null){
                 sender.sendMessage(Messages.PLAYER_NOT_ONLINE
                         .replace("[prefix]",getPrefix())
@@ -61,22 +72,23 @@ public class FriendMessageCommand extends SubFriendCommand {
                 return;
             }
             String message = "";
-            for(int i = 0; i< args.length;i++){
-                if(i > 1 ) message = message + " "+Messages.PLAYER_MESSAGE_COLOR + args[i];
-                else  message = args[i];
-            }
+            for(int i = 1; i< args.length;i++) message = message + " "+Messages.PLAYER_MESSAGE_COLOR + args[i];
             message = Messages.PLAYER_MESSAGE_FORMAT
                     .replace("[message]",message)
                     .replace("[prefix]",getPrefix())
                     .replace("[sender]",player.getColoredName())
                     .replace("[receiver]",friend.getColoredName());
             sender.sendMessage(message);
-            friend.sendMessage(message);
+            online.sendPrivateMessage(sender.getName(),new TextComponent(message));
         }
     }
 
     @Override
     public List<String> onTabComplete(FriendCommandSender sender, String[] args) {
-        return new LinkedList<>();
+        FriendPlayer player = sender.getAsFriendPlayer();
+        if(player == null) return null;
+        String search = "";
+        if(args.length >= 1) search = args[0].toLowerCase();
+        return GeneralUtil.startsWith(search,player.getFriendNames());
     }
 }

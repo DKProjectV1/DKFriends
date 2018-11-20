@@ -6,30 +6,31 @@ package ch.dkrieger.friendsystem.spigot;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
+import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommand;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class SpigotCommandManager implements FriendCommandManager {
 
     private Collection<FriendCommand> commands;
 
+    public SpigotCommandManager() {
+        this.commands = new LinkedList<>();
+    }
     @Override
     public Collection<FriendCommand> getCommands() {
         return this.commands;
     }
-
     @Override
     public FriendCommand getCommand(String name) {
         for(FriendCommand command : this.commands) if(command.getName().equalsIgnoreCase(name)) return command;
@@ -38,10 +39,19 @@ public class SpigotCommandManager implements FriendCommandManager {
 
     @Override
     public void registerCommand(FriendCommand command) {
-
+        this.commands.add(command);
+        CommandMap cmap = null;
+        try{
+            final Field field = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            field.setAccessible(true);
+            cmap = (CommandMap)field.get(Bukkit.getServer());
+            cmap.register("",new SpigotFriendCommand(command));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-    public abstract class SpigotFriendCommand extends Command implements TabExecutor {
+    public class SpigotFriendCommand extends Command implements TabCompleter {
 
         private FriendCommand command;
 
@@ -49,23 +59,23 @@ public class SpigotCommandManager implements FriendCommandManager {
             super(command.getName(), command.getDescription(), command.getUsage(), command.getAliases());
             this.command = command;
         }
-
         @Override
-        public boolean execute(CommandSender commandSender, String s, String[] args) {
-            if(command.getPermission() == null || commandSender.hasPermission(command.getPermission())){
+        public boolean execute(CommandSender sender, String s, String[] args) {
+            if(command.getPermission() == null || sender.hasPermission(command.getPermission())){
                 Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), ()->{
-                    command.execute(new SpigotFriendCommandSender(commandSender), args);
+                    command.execute(new SpigotFriendCommandSender(sender), args);
                 });
-            }else commandSender.sendMessage("No Perms");
+            }else{
+                sender.sendMessage(Messages.NOPERMISSIONS
+                        .replace("[prefix]",(command.getPrefix() != null?command.getPrefix():Messages.PREFIX_FRIEND)));
+            }
             return false;
         }
-
         @Override
         public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
             return this.command.tabComplete(new SpigotFriendCommandSender(commandSender),args);
         }
     }
-
     private class SpigotFriendCommandSender implements FriendCommandSender {
 
         private final CommandSender commandSender;
@@ -81,13 +91,13 @@ public class SpigotCommandManager implements FriendCommandManager {
 
         @Override
         public UUID getUUID() {
-            if(commandSender instanceof Player)return ((Player)commandSender).getUniqueId();
+            if(this.commandSender instanceof Player)return ((Player)this.commandSender).getUniqueId();
             return null;
         }
 
         @Override
         public FriendPlayer getAsFriendPlayer() {
-            return null;
+            return FriendSystem.getInstance().getPlayerManager().getPlayer(getUUID());
         }
 
         @Override

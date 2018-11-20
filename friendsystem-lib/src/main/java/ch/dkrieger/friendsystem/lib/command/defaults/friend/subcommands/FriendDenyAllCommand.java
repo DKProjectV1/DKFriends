@@ -21,7 +21,7 @@ public class FriendDenyAllCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.denyall.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.denyall.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.denyall.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.denyall.usage"),
+                null,
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.denyall.aliases"));
     }
     @Override

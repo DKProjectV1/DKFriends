@@ -29,6 +29,7 @@ public class MessageConfig extends SimpleConfig {
 
         Messages.HELP_HEADER_ONE = get("help.header.one");
         Messages.HELP_HEADER_MORE = get("help.header.more");
+        Messages.HELP_HEADER_LINE = get("help.header.line");
 
         Messages.SERVER_NOTFOUND = get("server.notfound");
         Messages.SERVER_ALREADY = get("server.already");
@@ -89,6 +90,8 @@ public class MessageConfig extends SimpleConfig {
         Messages.PLAYER_MESSAGE_COLOR = get("player.message.color");
         Messages.PLAYER_MESSAGE_NOT_ALLOWED = get("player.message.not.allowed");
         Messages.PLAYER_MESSAGE_NOT_ENABLED = get("player.message.not.enabled");
+        Messages.PLAYER_MESSAGE_NO_RESPOND= get("player.message.no.respond");
+        Messages.PLAYER_MESSAGE_NO = get("player.message.no.respond");
 
         Messages.PLAYER_NOTIFY_ONLINE = get("player.notify.online");
         Messages.PLAYER_NOTIFY_OFFLINE = get("player.notify.offline");
@@ -185,6 +188,7 @@ public class MessageConfig extends SimpleConfig {
 
         addValue("help.header.one", "[prefix]&7Page [page]/[maxPage]");
         addValue("help.header.more", "[prefix]&7Page [page]/[maxPage] &8| &7More help with &e/[command] [nextPage]");
+        addValue("help.header.line", "&e/[name] [subCommand][_usage] &7[description]");
 
         addValue("server.notfound", "[prefix]&7cThe server was not found.");
         addValue("server.already", "[prefix]&cYou are already connected to this server.");
@@ -245,6 +249,8 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.message.color","&e");
         addValue("player.message.not.allowed","[prefix]&cYou can't send &e[player] &7a message.");
         addValue("player.message.not.enable","[prefix]&cTo send a message, enable messages with &e/friend toggle message");
+        addValue("player.message.no.respond","[prefix]&cNo player to respond found.");
+        addValue("player.message.no.respond","[prefix]&cPlease enter a message.");
 
         addValue("player.notify.online","[prefix]&e[player] &ais now online.");
         addValue("player.notify.offline","[prefix]&e[player] &cis now offline.");
@@ -328,7 +334,6 @@ public class MessageConfig extends SimpleConfig {
 
         addValue("player.party.private.now","[prefix]&7The party is now private.");
         addValue("player.party.private.already","[prefix]&cThe party is already private.");
-
     }
 
     public String get(String path){

@@ -2,7 +2,10 @@ package ch.dkrieger.friendsystem.lib;
 
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.command.defaults.friend.FriendCommand;
+import ch.dkrieger.friendsystem.lib.command.defaults.friend.FriendMessageCommand;
+import ch.dkrieger.friendsystem.lib.command.defaults.friend.FriendRespondCommand;
 import ch.dkrieger.friendsystem.lib.command.defaults.party.PartyCommand;
+import ch.dkrieger.friendsystem.lib.command.defaults.party.PartyMessageCommand;
 import ch.dkrieger.friendsystem.lib.config.Config;
 import ch.dkrieger.friendsystem.lib.config.MessageConfig;
 import ch.dkrieger.friendsystem.lib.party.PartyManager;
@@ -103,11 +106,24 @@ public class FriendSystem {
         return storage;
     }
 
+    public void setPlayerManager(FriendPlayerManager playerManager) {
+        this.playerManager = playerManager;
+    }
+
+    public void setPartyManager(PartyManager partyManager) {
+        this.partyManager = partyManager;
+    }
+
+    public void setStorage(FriendStorage storage) {
+        this.storage = storage;
+    }
+
     public void registerCommands(){
-        if(this.config.isCommandFriendEnabled()){
-            this.platform.getCommandManager().registerCommand(new FriendCommand());
-        }
-        this.platform.getCommandManager().registerCommand(new PartyCommand());
+        if(config.getBooleanValue("command.friend.deny.enabled")) new FriendCommand(config);
+        if(config.getBooleanValue("command.friendmessage.enabled")) new FriendMessageCommand();
+        if(config.getBooleanValue("command.friendrespond.enabled")) new FriendRespondCommand();
+        if(config.getBooleanValue("command.party.enabled")) new PartyCommand(config);
+        if(config.getBooleanValue("command.partymessage.enabled")) new PartyMessageCommand();
     }
 
     public static FriendSystem getInstance() {

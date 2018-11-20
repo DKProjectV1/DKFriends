@@ -25,7 +25,7 @@ public class FriendListCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.list.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.list.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.list.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.list.usage"),
+                null,
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.list.aliases"));
     }
     @Override

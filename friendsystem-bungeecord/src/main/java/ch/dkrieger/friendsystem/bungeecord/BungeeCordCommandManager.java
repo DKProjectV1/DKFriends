@@ -52,7 +52,8 @@ public class BungeeCordCommandManager implements FriendCommandManager {
         }
         @Override
         public void execute(CommandSender sender, String[] args) {
-            if(command.getPermission() == null || sender.hasPermission(command.getPermission())){
+            if(command.getPermission() == null || command.getPermission().equalsIgnoreCase("none")
+                    ||sender.hasPermission(command.getPermission())){
                 BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{
                     command.execute(new BungeeCordFriendCommandSender(sender),args);
                 });
@@ -63,7 +64,11 @@ public class BungeeCordCommandManager implements FriendCommandManager {
         }
         @Override
         public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-            return this.command.tabComplete(new BungeeCordFriendCommandSender(sender),args);
+            if(command.getPermission() == null || command.getPermission().equalsIgnoreCase("none")
+                    ||sender.hasPermission(command.getPermission())){
+                return this.command.tabComplete(new BungeeCordFriendCommandSender(sender),args);
+            }
+            return new LinkedHashSet<>();
         }
     }
     private class BungeeCordFriendCommandSender implements FriendCommandSender {

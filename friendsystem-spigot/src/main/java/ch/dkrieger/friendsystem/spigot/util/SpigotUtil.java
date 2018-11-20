@@ -1,5 +1,9 @@
 package ch.dkrieger.friendsystem.spigot.util;
 
+import ch.dkrieger.friendsystem.spigot.api.Reflection;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,8 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 
+import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.List;
+import static ch.dkrieger.friendsystem.spigot.api.Reflection.*;
 
 /*
  *
@@ -136,6 +142,74 @@ public class SpigotUtil {
     public static void dropItems(List<ItemStack> items, Location location){
         for(ItemStack item : items) location.getWorld().dropItemNaturally(location,item);
     }
+
+    public void sendMessage(Player player, ChatMessageType position,BaseComponent... components){
+        //ComponentSerializer.toString(components)
+
+
+        IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components));
+        PacketPlayOutChat packet = new PacketPlayOutChat(component, (byte) position.ordinal());
+        ((Class.forName("")) player).1117getHandle().playerConnection.sendPacket(packet);
+
+        Object enumSubTitle = getNMSClass("PacketPlayOutTitle.EnumTitleAction").getField("SUBTITLE").get(null);
+        Class<?> IComponent = getMinecraftClass("IChatBaseComponent.PacketPlayOutChat");
+        IComponent.getConstructor(getMinecraftClass(".IChatBaseComponent.PacketPlayOutChat"))
+
+
+
+
+
+        try {
+            Constructor<?> chatConstructor = getMinecraftClass("PacketPlayOutChat").getConstructor(int[].class);
+            Object chat = chatConstructor.newInstance(new int[]{(int)this.player.getClass().getMethod("getEntityId").invoke(this.player)});
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        /*
+
+        IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components));
+        PacketPlayOutChat packet = new PacketPlayOutChat(component, (byte) position.ordinal());
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+
+
+public void sendMessage(Player player, ChatMessageType position, BaseComponent... components) {
+        if (player == null) {
+            return;
+        }
+        IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components));
+        PacketPlayOutChat packet = new PacketPlayOutChat(component, (byte) position.ordinal());
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+    }
+
+
+
+        import net.minecraft.server.v1_11_R1.IChatBaseComponent;
+import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
+
+        private static ChatComponentPacket getPacket() {
+        String packageName = Bukkit.getServer().getClass().getPackage().getName();
+        String version = packageName.substring(packageName.lastIndexOf('.') + 1);
+        String path = ComponentSender.class.getPackage().getName() + ".nms." + version;
+
+        try {
+            final Class<?> clazz = Class.forName(path + ".ChatComponentPacketHandler");
+            if (ChatComponentPacket.class.isAssignableFrom(clazz)) {
+                return (ChatComponentPacket) clazz.getConstructor().newInstance();
+            }
+        } catch (Exception ignore) {
+            Bukkit.getLogger().info("[ERROR] This plugin is not compatible with this server version (" + version + ").");
+            Bukkit.getLogger().info("[ERROR] Could not send chat packet!");
+            ignore.printStackTrace();
+        }
+        return null;
+
+        IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components));
+        PacketPlayOutChat packet = new PacketPlayOutChat(component, (byte) position.ordinal());
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+    }
+         */
+    }
+
     public enum SpeedType {
         WALK("Wal Speed"),
         FLY("Fly Speed"),

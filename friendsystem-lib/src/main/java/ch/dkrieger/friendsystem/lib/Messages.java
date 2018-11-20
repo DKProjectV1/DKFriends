@@ -27,6 +27,7 @@ public class Messages {
 
     public static String HELP_HEADER_ONE;
     public static String HELP_HEADER_MORE;
+    public static String HELP_HEADER_LINE;
 
     public static String SERVER_ALREADY;
     public static String SERVER_NOTFOUND;
@@ -87,6 +88,8 @@ public class Messages {
     public static String PLAYER_MESSAGE_COLOR;
     public static String PLAYER_MESSAGE_NOT_ALLOWED;
     public static String PLAYER_MESSAGE_NOT_ENABLED;
+    public static String PLAYER_MESSAGE_NO_RESPOND;
+    public static String PLAYER_MESSAGE_NO;
 
     public static String PLAYER_NOTIFY_ONLINE;
     public static String PLAYER_NOTIFY_OFFLINE;

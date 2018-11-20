@@ -24,7 +24,6 @@ import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerListener implements Listener {
@@ -34,7 +33,6 @@ public class PlayerListener implements Listener {
         if(BungeeCord.getInstance().getConfig().isOnlineMode() && !(event.getConnection().isOnlineMode())) return;
         FriendPlayer player = null;
         try{
-            System.out.println("login save get");
             player = FriendSystem.getInstance().getPlayerManager().getPlayerSave(event.getConnection().getUniqueId());
         }catch (Exception exception){
             try{
@@ -49,7 +47,6 @@ public class PlayerListener implements Listener {
             }
         }
         if(player == null){
-            System.out.println("login player null");
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getConnection().getUniqueId()
                     ,event.getConnection().getName(),"§8",null);
         }//else PermissionPlayerManager.getInstance().checkName(event.getConnection().getUniqueId(),event.getConnection().getName());
@@ -60,6 +57,10 @@ public class PlayerListener implements Listener {
             });
         }
     }
+    /*
+    addValue("join.requestinfo.enabled", true);
+        addValue("join.friendinfo.enabled", true);
+     */
     @EventHandler(priority=100)
     public void onPostLogin(PostLoginEvent event){
         BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{
@@ -68,48 +69,51 @@ public class PlayerListener implements Listener {
                 event.getPlayer().disconnect(new TextComponent(Messages.ERROR.replace("[prefix]",Messages.PREFIX_FRIEND)));
                 return;
             }
-            System.out.println(player.getFriends());
-            List<Friend> requests = player.getRequests();
-            if(requests.size() > 0){
-                String design = Messages.PLAYER_REQUEST_OPEN_PLURAL;
-                if(requests.size() == 1) design = Messages.PLAYER_REQUEST_OPEN_SINGULAR;
-                TextComponent message = new TextComponent(Messages.PLAYER_REQUEST_OPEN_MESSAGE
-                        .replace("[prefix]",Messages.PREFIX_FRIEND)
-                        .replace("[amount]",""+requests.size())
-                        .replace("[design]",design));
-                message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend requests"));
-                player.sendMessage(message);
+            if(FriendSystem.getInstance().getConfig().getBooleanValue("join.requestinfo.enabled")){
+                List<Friend> requests = player.getRequests();
+                if(requests.size() > 0){
+                    String design = Messages.PLAYER_REQUEST_OPEN_PLURAL;
+                    if(requests.size() == 1) design = Messages.PLAYER_REQUEST_OPEN_SINGULAR;
+                    TextComponent message = new TextComponent(Messages.PLAYER_REQUEST_OPEN_MESSAGE
+                            .replace("[prefix]",Messages.PREFIX_FRIEND)
+                            .replace("[amount]",""+requests.size())
+                            .replace("[design]",design));
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend requests"));
+                    player.sendMessage(message);
+                }
             }
-            List<Friend> friends = player.getOnlineFriends();
+            if(FriendSystem.getInstance().getConfig().getBooleanValue("join.friendinfo.enabled")){
+                List<Friend> friends = player.getOnlineFriends();
 
-            if(friends.isEmpty()) return;
-            if(friends.size() == 1){
-                player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_ONE
-                        .replace("[prefix]",Messages.PREFIX_FRIEND)
-                        .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())));
-            }else if(friends.size() == 2){
-                player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_TWO
-                        .replace("[prefix]",Messages.PREFIX_FRIEND)
-                        .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
-                        .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())));
-            }else if(friends.size() == 3){
-                player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_THREE
-                        .replace("[prefix]",Messages.PREFIX_FRIEND)
-                        .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
-                        .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
-                        .replace("[player-3]",friends.get(2).getFriendPlayer().getColoredName())));
-            }else{
-                player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_THREE
-                        .replace("[prefix]",Messages.PREFIX_FRIEND)
-                        .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
-                        .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
-                        .replace("[more]",""+(friends.size()-2))));
-            }
-            for(Friend friend : friends){
-                OnlineFriendPlayer online = friend.getOnlineFriendPlayer();
-                if(online != null && friend.getFriendPlayer().getSettings().isNotifyEnabled()) online.sendMessage(Messages.PLAYER_NOTIFY_ONLINE
-                        .replace("[prefix]",Messages.PREFIX_FRIEND)
-                        .replace("[player]",player.getColoredName()));
+                if(friends.isEmpty()) return;
+                if(friends.size() == 1){
+                    player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_ONE
+                            .replace("[prefix]",Messages.PREFIX_FRIEND)
+                            .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())));
+                }else if(friends.size() == 2){
+                    player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_TWO
+                            .replace("[prefix]",Messages.PREFIX_FRIEND)
+                            .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
+                            .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())));
+                }else if(friends.size() == 3){
+                    player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_THREE
+                            .replace("[prefix]",Messages.PREFIX_FRIEND)
+                            .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
+                            .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
+                            .replace("[player-3]",friends.get(2).getFriendPlayer().getColoredName())));
+                }else{
+                    player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_THREE
+                            .replace("[prefix]",Messages.PREFIX_FRIEND)
+                            .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
+                            .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
+                            .replace("[more]",""+(friends.size()-2))));
+                }
+                for(Friend friend : friends){
+                    OnlineFriendPlayer online = friend.getOnlineFriendPlayer();
+                    if(online != null && friend.getFriendPlayer().getSettings().isNotifyEnabled()) online.sendMessage(Messages.PLAYER_NOTIFY_ONLINE
+                            .replace("[prefix]",Messages.PREFIX_FRIEND)
+                            .replace("[player]",player.getColoredName()));
+                }
             }
             player.updateInformations(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });

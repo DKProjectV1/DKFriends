@@ -98,6 +98,11 @@ public abstract class FriendCommand {
     public void sendHelp(FriendCommandSender sender){
         sendHelp(sender,1);
     }
+    public void sendHelp(FriendCommandSender sender,String[] args){
+        int page = 1;
+        if(args.length > 0 && GeneralUtil.isNumber(args[0])) page = Integer.valueOf(args[0]);
+        sendHelp(sender,page);
+    }
 
     //finish and set message
     public void sendHelp(FriendCommandSender sender, int page) {
@@ -124,14 +129,12 @@ public abstract class FriendCommand {
             if(h > subCommands.size()) break;
             SubFriendCommand subCommand = subCommands.get(h - 1);
             if(subCommand.getPermission() == null || sender.hasPermission(subCommand.getPermission())) {
-                sender.sendMessage(getName()+(subCommand.getUsage() != null ? " " + subCommand.getUsage() : "") + (subCommand.getDescription() != null ? " " + subCommand.getDescription() : ""));
-                if(!subCommand.getSubCommands().isEmpty()){
-                    String helpMessage = "";
-                    for(SubFriendCommand nextSubCommand : subCommand.getSubCommands()) {
-                        helpMessage+=getName() +" "+ subCommand.getName()+(nextSubCommand.getUsage() != null ? " " + nextSubCommand.getUsage() : "")+(nextSubCommand.getDescription() != null ? " " + nextSubCommand.getDescription() : "")+"\n";
-                    }
-                    sender.sendMessage(helpMessage);
-                }
+                sender.sendMessage(Messages.HELP_HEADER_LINE
+                        .replace("[name]",getName())
+                        .replace("[usage]",(subCommand.getUsage() != null?subCommand.getUsage():""))
+                        .replace("[_usage]",(subCommand.getUsage() != null?" "+subCommand.getUsage():""))
+                        .replace("[subCommand]",subCommand.getName())
+                        .replace("[description]",subCommand.getDescription()));
             }
         }
     }

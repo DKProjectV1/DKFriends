@@ -103,6 +103,12 @@ public class FriendPlayer {
     public List<Friend> getFriends() {
         return friends;
     }
+    public List<String> getFriendNames() {
+        List<String> names = new LinkedList<>();
+        for(Friend friend : this.friends) names.add(friend.getFriendPlayer().getName());
+        return names;
+    }
+
     public List<Friend> getSortedFriends(){
         List<Friend> online = new ArrayList<>();
         List<Friend> online_favorite = new ArrayList<>();
@@ -135,6 +141,11 @@ public class FriendPlayer {
     }
     public List<Friend> getRequests() {
         return requests;
+    }
+    public List<String> getRequestNames() {
+        List<String> names = new LinkedList<>();
+        for(Friend request : this.requests) names.add(request.getFriendPlayer().getName());
+        return names;
     }
 
     public Document getProperties() {
@@ -262,6 +273,9 @@ public class FriendPlayer {
         FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
     }
     public boolean isFriend(FriendPlayer player){
+        return isFriend(player.getUUID());
+    }
+    public boolean isFriend(OnlineFriendPlayer player){
         return isFriend(player.getUUID());
     }
     public boolean isFriend(UUID uuid){

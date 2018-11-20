@@ -6,48 +6,52 @@ package ch.dkrieger.friendsystem.lib.command.defaults.party;
  *
  */
 
-import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommand;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.defaults.party.subcommands.*;
+import ch.dkrieger.friendsystem.lib.command.defaults.party.subcommands.PartyMessageCommand;
+import ch.dkrieger.friendsystem.lib.config.Config;
 
 import java.util.List;
 
 public class PartyCommand extends FriendCommand {
 
-    public PartyCommand() {
-        super(FriendSystem.getInstance().getConfig().getStringValue("command.party.name"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.name"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.usage"),
-                FriendSystem.getInstance().getConfig().getStringListValue("command.party.aliases"));
-        setPrefix(Messages.PREFIX_PARTY);
-        registerSubCommand(new PartyInviteCommand());
-        registerSubCommand(new PartyAcceptCommand());
-        registerSubCommand(new PartyDenyCommand());
-        registerSubCommand(new PartyLeaveCommand());
-        registerSubCommand(new PartyInfoCommand());
-        registerSubCommand(new PartyJumpCommand());
-        registerSubCommand(new PartyKickCommand());
-        registerSubCommand(new PartyMessageCommand());
-        registerSubCommand(new PartyJoinCommand());
-        registerSubCommand(new PartyPublicListCommand());
-        registerSubCommand(new PartyRandomCommand());
-        registerSubCommand(new PartyPromoteCommand());
-        registerSubCommand(new PartyDemoteCommand());
-        registerSubCommand(new PartyPublicCommand());
-        registerSubCommand(new PartyPrivateCommand());
-        registerSubCommand(new PartyBanCommand());
-        registerSubCommand(new PartyUnbanCommand());
-    }
+    private static PartyCommand instance;
 
+    public PartyCommand(Config config) {
+        super(config.getStringValue("command.party.name"),
+                config.getStringValue("command.party.name"),
+                config.getStringValue("command.party.permission"),
+                config.getStringValue("command.party.usage"),
+                config.getStringListValue("command.party.aliases"));
+        setPrefix(Messages.PREFIX_PARTY);
+        instance = this;
+        if(config.getBooleanValue("command.party.info.enabled")) registerSubCommand(new PartyInfoCommand());
+        if(config.getBooleanValue("command.party.invite.enabled")) registerSubCommand(new PartyInviteCommand());
+        if(config.getBooleanValue("command.party.accept.enabled")) registerSubCommand(new PartyAcceptCommand());
+        if(config.getBooleanValue("command.party.deny.enabled")) registerSubCommand(new PartyDenyCommand());
+        registerSubCommand(new PartyLeaveCommand());
+        if(config.getBooleanValue("command.party.jump.enabled")) registerSubCommand(new PartyJumpCommand());
+        if(config.getBooleanValue("command.party.message.enabled"))  registerSubCommand(new PartyMessageCommand());
+        if(config.getBooleanValue("command.party.join.enabled")) registerSubCommand(new PartyJoinCommand());
+        if(config.getBooleanValue("command.party.publiclist.enabled")) registerSubCommand(new PartyPublicListCommand());
+        if(config.getBooleanValue("command.party.random.enabled"))  registerSubCommand(new PartyRandomCommand());
+        if(config.getBooleanValue("command.party.promote.enabled"))  registerSubCommand(new PartyPromoteCommand());
+        if(config.getBooleanValue("command.party.demote.enabled")) registerSubCommand(new PartyDemoteCommand());
+        if(config.getBooleanValue("command.party.public.enabled")) registerSubCommand(new PartyPublicCommand());
+        if(config.getBooleanValue("command.party.private.enabled"))  registerSubCommand(new PartyPrivateCommand());
+        if(config.getBooleanValue("command.party.kick.enabled")) registerSubCommand(new PartyKickCommand());
+        if(config.getBooleanValue("command.party.ban.enabled"))  registerSubCommand(new PartyBanCommand());
+        if(config.getBooleanValue("command.party.unban.enabled")) registerSubCommand(new PartyUnbanCommand());
+    }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
-        sendHelp(sender);
+        sendHelp(sender,args);
     }
     @Override
     public List<String> onTabComplete(FriendCommandSender sender, String[] args) {
         return null;
     }
+
 }

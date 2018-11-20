@@ -20,7 +20,7 @@ public class FriendToggleCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.toggle.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.toggle.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.toggle.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.toggle.usage"),
+                "<setting>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.toggle.aliases"));
     }
     @Override

@@ -16,11 +16,15 @@ public interface OnlineFriendPlayer {
 
     public String getName();
 
+    public String getLastMessenger();
+
     public String getServer();
 
     public void sendMessage(String message);
 
     public void sendMessage(TextComponent component);
+
+    public void sendPrivateMessage(String lastMessenger, TextComponent component);
 
     public void connect(String server);
 

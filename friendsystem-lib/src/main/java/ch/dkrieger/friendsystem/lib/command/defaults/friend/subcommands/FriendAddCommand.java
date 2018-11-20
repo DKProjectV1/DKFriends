@@ -23,11 +23,15 @@ public class FriendAddCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.add.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.add.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.add.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.add.usage"),
+                "<player>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.add.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
+        if(args.length <= 0){
+            getMainCommand().sendHelp(sender);
+            return;
+        }
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
             if(player.getFriends().size() >= player.getMaxFriends()){

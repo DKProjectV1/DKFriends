@@ -6,13 +6,17 @@ package ch.dkrieger.friendsystem.lib.party;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
+import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 
 import java.util.*;
 
 public class Party {
+
+    //add created and uuid
 
     private boolean public0;
     private long timeOut;
@@ -35,6 +39,11 @@ public class Party {
     public List<PartyMember> getMembers() {
         return members;
     }
+    public List<String> getMemberNames() {
+        List<String> names = new LinkedList<>();
+        for(PartyMember member : this.members) names.add(member.getOnlinePlayer().getName());
+        return names;
+    }
     public List<PartyMember> getSortedMembers() {
         List<PartyMember> members = new ArrayList<>();
         members.add(getLeader());
@@ -44,6 +53,11 @@ public class Party {
     }
     public List<UUID> getBans() {
         return this.bans;
+    }
+    public List<String> getBanNames() {
+        List<String> names = new LinkedList<>();
+        for(UUID ban : this.bans) names.add(FriendSystem.getInstance().getPlayerManager().getPlayer(ban).getOnlinePlayer().getName());
+        return names;
     }
     public List<UUID> getRequests() {
         return requests;

@@ -6,6 +6,7 @@ import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 
 import java.util.List;
 
@@ -21,11 +22,15 @@ public class FriendJumpCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.jump.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.jump.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.jump.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.jump.usage"),
+                "<player>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.jump.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
+        if(args.length <= 0){
+            getMainCommand().sendHelp(sender);
+            return;
+        }
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
@@ -77,6 +82,10 @@ public class FriendJumpCommand extends SubFriendCommand {
     }
     @Override
     public List<String> onTabComplete(FriendCommandSender sender, String[] args) {
-        return null;
+        FriendPlayer player = sender.getAsFriendPlayer();
+        if(player == null) return null;
+        String search = "";
+        if(args.length >= 1) search = args[0].toLowerCase();
+        return GeneralUtil.startsWith(search,player.getFriendNames());
     }
 }

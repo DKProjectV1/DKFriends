@@ -63,12 +63,18 @@ public class PartyManager {
     public Party createParty(FriendPlayer player){
         return createParty(player.getUUID());
     }
-    public void delteParty(Party party){
+    public void deleteParty(Party party){
         this.parties.remove(party);
     }
     public Party createParty(UUID uuid){
         Party party = new Party(uuid);
         this.parties.add(party);
         return party;
+    }
+    public void update(Party party){
+
+    }
+    public void replaceParty(Party party){
+
     }
 }

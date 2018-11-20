@@ -21,11 +21,15 @@ public class PartyAcceptCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.party.accept.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.accept.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.accept.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.accept.usage"),
+                "<player>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.party.accept.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
+        if(args.length <= 0){
+            getMainCommand().sendHelp(sender);
+            return;
+        }
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);

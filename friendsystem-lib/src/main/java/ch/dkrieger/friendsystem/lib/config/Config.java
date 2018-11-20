@@ -158,7 +158,13 @@ public class Config extends SimpleConfig {
         addValue("command.friend.message.name","message");
         addValue("command.friend.message.description", "Send a message to a friend");
         addValue("command.friend.message.permission", "none");
-        addValue("command.friend.message.aliases", Arrays.asList("msg"));
+        addValue("command.friend.message.aliases", Arrays.asList("msg","nachricht"));
+
+        addValue("command.friend.respond.enabled",true);
+        addValue("command.friend.respond.name","respond");
+        addValue("command.friend.respond.description", "Respond to a message");
+        addValue("command.friend.respond.permission", "none");
+        addValue("command.friend.respond.aliases",Arrays.asList("r"));
 
         addValue("command.friend.remove.enabled",true);
         addValue("command.friend.remove.name","remove");
@@ -177,6 +183,18 @@ public class Config extends SimpleConfig {
         addValue("command.friend.toggle.description", "Toggle settings");
         addValue("command.friend.toggle.permission", "none");
         addValue("command.friend.toggle.aliases", Arrays.asList());
+
+        addValue("command.friendmessage.enabled",true);
+        addValue("command.friendmessage.name","message");
+        addValue("command.friendmessage.description", "Send a message to a friend");
+        addValue("command.friendmessage.permission", "none");
+        addValue("command.friendmessage.aliases", Arrays.asList("msg","nachricht"));
+
+        addValue("command.friendrespond.enabled",true);
+        addValue("command.friendrespond.name","respond");
+        addValue("command.friendrespond.description", "Respond to a message");
+        addValue("command.friendrespond.permission", "none");
+        addValue("command.friendrespond.aliases",Arrays.asList("r"));
 
         //Party commands
         addValue("command.party.enabled",true);
@@ -237,12 +255,21 @@ public class Config extends SimpleConfig {
         addValue("command.party.message.name","message");
         addValue("command.party.message.description", "Send a message to your party members");
         addValue("command.party.message.permission", "none");
-        addValue("command.party.message.aliases", Arrays.asList());
+        addValue("command.party.message.aliases", Arrays.asList("msg","nachricht","chat"));
 
         addValue("command.party.promote.enabled",true);
         addValue("command.party.promote.name","promote");
         addValue("command.party.promote.description", "Promote a party member");
         addValue("command.party.promote.permission", "none");
         addValue("command.party.promote.aliases", Arrays.asList());
+
+        addValue("command.partymessage.enabled",true);
+        addValue("command.partymessage.name","pmessage");
+        addValue("command.partymessage.description", "Send a message to your party members");
+        addValue("command.partymessage.permission", "none");
+        addValue("command.partymessage.aliases", Arrays.asList("pmsg","pnachricht","pchat","partychat"));
+
+        addValue("join.requestinfo.enabled", true);
+        addValue("join.friendinfo.enabled", true);
     }
 }

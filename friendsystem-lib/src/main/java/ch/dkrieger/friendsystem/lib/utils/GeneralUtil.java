@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -94,5 +95,11 @@ public class GeneralUtil {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+    public static List<String> startsWith(String search, List<String> list){
+        Iterator<String> iterator = list.iterator();
+        String name = null;
+        while(iterator.hasNext() && (name= iterator.next()) != null) if(!name.toLowerCase().startsWith(search)) iterator.remove();
+        return list;
     }
 }

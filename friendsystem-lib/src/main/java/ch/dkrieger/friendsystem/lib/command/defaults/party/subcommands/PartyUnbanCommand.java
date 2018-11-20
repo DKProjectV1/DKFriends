@@ -6,6 +6,7 @@ import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 
 import java.util.List;
 
@@ -21,11 +22,15 @@ public class PartyUnbanCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.party.unban.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.unban.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.unban.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.unban.usage"),
+                "<player>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.party.unban.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
+        if(args.length <= 0){
+            getMainCommand().sendHelp(sender);
+            return;
+        }
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
             Party party = player.getParty();
@@ -61,6 +66,12 @@ public class PartyUnbanCommand extends SubFriendCommand {
     }
     @Override
     public List<String> onTabComplete(FriendCommandSender sender, String[] args) {
-        return null;
+        FriendPlayer player = sender.getAsFriendPlayer();
+        if(player == null) return null;
+        Party party = player.getParty();
+        if(party == null || !(party.isLeader(player)) || !(party.isModerator(player))) return null;
+        String search = "";
+        if(args.length >= 1) search = args[0].toLowerCase();
+        return GeneralUtil.startsWith(search,party.getBanNames());
     }
 }

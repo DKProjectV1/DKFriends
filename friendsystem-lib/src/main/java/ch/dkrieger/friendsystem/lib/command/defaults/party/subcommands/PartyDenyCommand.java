@@ -21,11 +21,15 @@ public class PartyDenyCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.party.deny.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.deny.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.deny.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.deny.usage"),
+                "<player>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.party.deny.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
+        if(args.length <= 0){
+            getMainCommand().sendHelp(sender);
+            return;
+        }
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);

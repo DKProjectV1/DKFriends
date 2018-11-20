@@ -6,8 +6,9 @@ import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
 import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import com.google.common.collect.ImmutableSet;
 
-import java.util.List;
+import java.util.*;
 
 /*
  *
@@ -21,7 +22,7 @@ public class FriendAcceptAllCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.acceptall.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.acceptall.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.acceptall.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.acceptall.usage"),
+                null,
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.acceptall.aliases"));
     }
     @Override

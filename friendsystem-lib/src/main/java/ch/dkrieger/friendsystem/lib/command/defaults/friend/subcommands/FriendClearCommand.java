@@ -21,7 +21,7 @@ public class FriendClearCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.clear.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.clear.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.clear.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.clear.usage"),
+                null,
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.clear.aliases"));
     }
     @Override

@@ -5,7 +5,9 @@ import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandSender;
 import ch.dkrieger.friendsystem.lib.command.SubFriendCommand;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 
+import java.util.Iterator;
 import java.util.List;
 
 /*
@@ -20,11 +22,15 @@ public class FriendFavoriteCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.friend.favorite.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.favorite.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friend.favorite.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.friend.favorite.usage"),
+                "<player>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.friend.favorite.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
+        if(args.length <= 0){
+            getMainCommand().sendHelp(sender);
+            return;
+        }
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
             FriendPlayer friend = FriendSystem.getInstance().getPlayerManager().getPlayer(args[0]);
@@ -55,6 +61,10 @@ public class FriendFavoriteCommand extends SubFriendCommand {
     }
     @Override
     public List<String> onTabComplete(FriendCommandSender sender, String[] args) {
-        return null;
+        FriendPlayer player = sender.getAsFriendPlayer();
+        if(player == null) return null;
+        String search = "";
+        if(args.length >= 1) search = args[0].toLowerCase();
+        return GeneralUtil.startsWith(search,player.getFriendNames());
     }
 }

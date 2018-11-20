@@ -23,7 +23,7 @@ public class PartyInfoCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.party.info.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.info.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.info.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.info.usage"),
+                null,
                 FriendSystem.getInstance().getConfig().getStringListValue("command.party.info.aliases"));
     }
     @Override

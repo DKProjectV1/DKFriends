@@ -21,24 +21,26 @@ public class PartyMessageCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.party.message.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.message.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.message.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.message.usage"),
+                "<message>",
                 FriendSystem.getInstance().getConfig().getStringListValue("command.party.message.aliases"));
     }
     @Override
     public void onExecute(FriendCommandSender sender, String[] args) {
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
+            if(args.length <= 0){
+                sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ENABLED
+                        .replace("[prefix]",getPrefix()));
+                return;
+            }
             Party party = player.getParty();
             if(party == null){
                 sender.sendMessage(Messages.PLAYER_PARTY_NO_PARTY_SELF.replace("[prefix]",getPrefix()));
                 return;
             }
-
             String message = "";
-            for(int i = 0; i< args.length;i++){
-                if(i > 0 ) message = message +" "+Messages.PLAYER_PARTY_MESSAGE_COLOR + args[i];
-                else message = args[i];
-            }
+            for(int i = 1; i< args.length;i++) message = message +" "+Messages.PLAYER_PARTY_MESSAGE_COLOR + args[i];
+
             party.sendMessage(Messages.PLAYER_PARTY_MESSAGE_FORMAT
                     .replace("[prefix]",getPrefix())
                     .replace("[message]",message)

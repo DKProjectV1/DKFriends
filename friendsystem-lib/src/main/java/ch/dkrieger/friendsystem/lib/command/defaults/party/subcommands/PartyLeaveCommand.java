@@ -22,7 +22,7 @@ public class PartyLeaveCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.party.leave.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.leave.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.leave.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.leave.usage"),
+                null,
                 FriendSystem.getInstance().getConfig().getStringListValue("command.party.leave.aliases"));
     }
     @Override
@@ -45,7 +45,7 @@ public class PartyLeaveCommand extends SubFriendCommand {
                             .replace("[player]",member.getPlayer().getColoredName()));
                 }else{
                     party.sendMessage(Messages.PLAYER_PARTY_DELETED.replace("[prefix]",getPrefix()));
-                    FriendSystem.getInstance().getPartyManager().delteParty(party);
+                    FriendSystem.getInstance().getPartyManager().deleteParty(party);
                     return;
                 }
             }

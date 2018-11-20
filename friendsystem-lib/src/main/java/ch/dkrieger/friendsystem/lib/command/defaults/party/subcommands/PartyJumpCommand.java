@@ -22,7 +22,7 @@ public class PartyJumpCommand extends SubFriendCommand {
         super(FriendSystem.getInstance().getConfig().getStringValue("command.party.jump.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.jump.description"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.party.jump.permission"),
-                FriendSystem.getInstance().getConfig().getStringValue("command.party.jump.usage"),
+                null,
                 FriendSystem.getInstance().getConfig().getStringListValue("command.party.jump.aliases"));
     }
     @Override
