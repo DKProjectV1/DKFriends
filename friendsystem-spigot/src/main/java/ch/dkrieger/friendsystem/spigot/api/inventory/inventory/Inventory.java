@@ -19,13 +19,13 @@ public class Inventory {
     private String name;
     private int size;
     private Map<Integer, ItemStack> items;
-    private List<ConditionInventory> conditionInventories;
+    private Map<String, ConditionInventory> conditionInventories;
 
     public Inventory(String name, int size) {
         this.name = name;
         this.size = size;
         this.items = new LinkedHashMap<>();
-        this.conditionInventories = new LinkedList<>();
+        this.conditionInventories = new LinkedHashMap<>();
     }
 
     public String getName() {
@@ -40,6 +40,15 @@ public class Inventory {
         return items.get(slot);
     }
 
+    public ItemStack getItem(org.bukkit.inventory.ItemStack item) {
+        for(ItemStack itemStack : this.items.values()) {
+            if(itemStack.toBukkitItemStack().equals(item)) {
+                return itemStack;
+            }
+        }
+        return null;
+    }
+
     public Map<Integer, ItemStack> getItems() {
         return items;
     }
@@ -50,11 +59,15 @@ public class Inventory {
         return itemStacks;
     }
 
-    public List<ConditionInventory> getConditionInventories() {
+    public Map<String, ConditionInventory> getConditionInventories() {
         return conditionInventories;
     }
 
-    public Inventory setConditionInventories(List<ConditionInventory> conditionInventories) {
+    public ConditionInventory getConditionInventory(String condition) {
+        return getConditionInventories().get(condition);
+    }
+
+    public Inventory setConditionInventories(Map<String, ConditionInventory> conditionInventories) {
         this.conditionInventories = conditionInventories;
         return this;
     }
@@ -68,7 +81,7 @@ public class Inventory {
     }
 
     public void addConditionInventory(ConditionInventory inventory) {
-        this.conditionInventories.add(inventory);
+        this.conditionInventories.put(inventory.getCondition(), inventory);
     }
 
     public Inventory setItems(Map<Integer, ItemStack> items) {
@@ -91,14 +104,15 @@ public class Inventory {
 
     public org.bukkit.inventory.Inventory toBukkitInventory() {
         org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(null, this.size, this.name);
+
         for(Map.Entry<Integer, ItemStack> entry : this.items.entrySet()) {
-            inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack());
+            inventory.setItem(entry.getKey()-1, entry.getValue().toBukkitItemStack());
         }
         return inventory;
     }
 
     @Override
     public Inventory clone() {
-        return new Inventory(this.name, this.size).setConditionInventories(this.conditionInventories).setItems(this.items);
+        return new Inventory(this.name, this.size).setItems(this.items).setConditionInventories(this.conditionInventories);
     }
 }

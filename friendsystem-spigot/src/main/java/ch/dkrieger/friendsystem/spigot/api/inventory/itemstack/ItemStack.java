@@ -4,8 +4,10 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Color;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /*
  *
@@ -21,6 +23,7 @@ public class ItemStack {
     private boolean glow;
     private Color color;
     private List<String> lore;
+    private Map<String, ItemStackListener> listeners;
 
     public ItemStack(ItemStackType type) {
         this(type, null);
@@ -44,6 +47,7 @@ public class ItemStack {
         this.glow = glow;
         this.color = color;
         this.lore = lore;
+        this.listeners = new LinkedHashMap<>();
     }
 
     public String getItemId() {
@@ -76,6 +80,10 @@ public class ItemStack {
 
     public List<String> getLore() {
         return lore;
+    }
+
+    public Map<String, ItemStackListener> getListeners() {
+        return listeners;
     }
 
     public void setItemId(String itemId) {
@@ -127,6 +135,11 @@ public class ItemStack {
     public org.bukkit.inventory.ItemStack toBukkitItemStack(FriendPlayer player) {
         if(this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder(160).setDurability(player.getSettings().getDesign()).build();
         return toBukkitItemStack();
+    }
+
+    public ItemStack addListener(String event, ItemStackListener listener) {
+        this.listeners.put(event, listener);
+        return this;
     }
 
     @Override

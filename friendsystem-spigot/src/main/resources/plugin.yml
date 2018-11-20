@@ -1,0 +1,6 @@
+name: DKFriends
+author: Dkrieger & FridiousHD
+description:
+version: 1.0.0
+main: ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap
+commands:
