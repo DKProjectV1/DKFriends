@@ -1,12 +1,12 @@
-package ch.dkrieger.friendsystem.spigot.inventory;
+package ch.dkrieger.friendsystem.spigot.api.inventory;
+
+import org.apache.commons.lang.Validate;
 
 /*
  *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 18.11.18 19:49
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 20.11.18 15:28
  *
  */
-
-import org.apache.commons.lang.Validate;
 
 public class Color {
 

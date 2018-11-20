@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.inventory.itemstack;
+package ch.dkrieger.friendsystem.spigot.api.inventory.itemstack;
 
 /*
  *

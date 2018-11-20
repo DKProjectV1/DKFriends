@@ -1,11 +1,14 @@
-package ch.dkrieger.friendsystem.spigot.inventory.itemstack;
+package ch.dkrieger.friendsystem.spigot.api.inventory.itemstack;
 
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
-import ch.dkrieger.friendsystem.spigot.inventory.Color;
+import ch.dkrieger.friendsystem.spigot.api.inventory.Color;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /*
  *
@@ -21,6 +24,7 @@ public class ItemStack {
     private boolean glow;
     private Color color;
     private List<String> lore;
+    private List<Listener> listeners;
 
     public ItemStack(ItemStackType type) {
         this(type, null);
@@ -44,6 +48,7 @@ public class ItemStack {
         this.glow = glow;
         this.color = color;
         this.lore = lore;
+        this.listeners = new LinkedList<>();
     }
 
     public String getItemId() {
@@ -76,6 +81,10 @@ public class ItemStack {
 
     public List<String> getLore() {
         return lore;
+    }
+
+    public List<Listener> getListeners() {
+        return listeners;
     }
 
     public void setItemId(String itemId) {
@@ -127,6 +136,11 @@ public class ItemStack {
     public org.bukkit.inventory.ItemStack toBukkitItemStack(FriendPlayer player) {
         if(this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder(160).setDurability(player.getSettings().getDesign()).build();
         return toBukkitItemStack();
+    }
+
+    public ItemStack addListener(Listener listener) {
+        this.listeners.add(listener);
+        return this;
     }
 
     @Override
