@@ -1,6 +1,7 @@
 package ch.dkrieger.friendsystem.spigot.api.inventory.itemstack;
 
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Color;
 
@@ -23,7 +24,7 @@ public class ItemStack {
     private boolean glow;
     private Color color;
     private List<String> lore;
-    private Map<String, ItemStackListener> listeners;
+    private List<Listener> listeners;
 
     public ItemStack(ItemStackType type) {
         this(type, null);
@@ -47,7 +48,7 @@ public class ItemStack {
         this.glow = glow;
         this.color = color;
         this.lore = lore;
-        this.listeners = new LinkedHashMap<>();
+        this.listeners = new LinkedList<>();
     }
 
     public String getItemId() {
@@ -82,7 +83,7 @@ public class ItemStack {
         return lore;
     }
 
-    public Map<String, ItemStackListener> getListeners() {
+    public List<Listener> getListeners() {
         return listeners;
     }
 
@@ -137,8 +138,8 @@ public class ItemStack {
         return toBukkitItemStack();
     }
 
-    public ItemStack addListener(String event, ItemStackListener listener) {
-        this.listeners.put(event, listener);
+    public ItemStack addListener(Listener listener) {
+        this.listeners.add(listener);
         return this;
     }
 

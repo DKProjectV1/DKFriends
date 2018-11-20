@@ -9,12 +9,11 @@ package ch.dkrieger.friendsystem.spigot;
 import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
-import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConditionInventory;
-import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.Inventory;
+import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
 import ch.dkrieger.friendsystem.spigot.api.inventory.itemstack.ItemStack;
-import ch.dkrieger.friendsystem.spigot.api.inventory.itemstack.ItemStackListener;
+import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.listener.InventoryClickListener;
 import ch.dkrieger.friendsystem.spigot.listener.InventoryCloseListener;
 import ch.dkrieger.friendsystem.spigot.listener.InventoryOpenListener;
@@ -27,19 +26,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriendsPlatform {
 
     private static SpigotFriendSystemBootstrap instance;
     private SpigotCommandManager commandManager;
+    private InventoryManager inventoryManager;
     private Document advancedConfig;
 
     @Override
     public void onLoad() {
         instance = this;
         loadInventoryConfig();
+        this.inventoryManager = new InventoryManager();
         this.commandManager = new SpigotCommandManager();
         new FriendSystem(this, new SpigotFriendPlayerManager());
     }
@@ -78,14 +78,8 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         return advancedConfig;
     }
 
-    public Inventory getInventory(String inventory) {
-        Map<String, Inventory> inventoryMap = getAdvancedConfig().getObject("inventories", new TypeToken<Map<String, Inventory>>(){}.getType());
-        return inventoryMap.get(inventory);
-    }
-
-    public Collection<Inventory> getInventories() {
-        Map<String, Inventory> inventoryMap = getAdvancedConfig().getObject("inventories", new TypeToken<Map<String, Inventory>>(){}.getType());
-        return inventoryMap.values();
+    public InventoryManager getInventoryManager() {
+        return inventoryManager;
     }
 
     private void registerListener() {
@@ -101,22 +95,24 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         if(file.exists() && file.isFile()) this.advancedConfig = Document.loadData(file);
         else this.advancedConfig = new Document();
 
-        Map<String, Inventory> inventories = new LinkedHashMap<>();
-        Inventory test1 = new Inventory("test1", 27);
+        Map<String, MainInventory> inventories = new LinkedHashMap<>();
+        /*MainInventory test1 = new MainInventory("test1", 27);
 
-        test1.addItem(new ItemStack("1:0").addListener("click", new ItemStackListener("me ist cool", ItemStackListener.ConsoleSender.PLAYER)));
+        test1.addItem(new ItemStack("1:0").addListener(new Listener(Listener.DefaultEvent.CLICK, "me ist der beste", Listener.CommandRunner.PLAYER)));
         test1.addItem(new ItemStack("2:0"));
 
         ConditionInventory ctest1 = new ConditionInventory(test1, "ctest1");
         ctest1.addItem(new ItemStack("3:0"));
         ctest1.addItem(new ItemStack("4:0"));
         ctest1.addItem(new ItemStack("5:0"));
-        ctest1.addItem(new ItemStack("7:0").addListener("click", new ItemStackListener("say hallo test", ItemStackListener.ConsoleSender.CONSOLE)));
-
+        ctest1.addItem(new ItemStack("7:0").addListener(new Listener(Listener.DefaultEvent.CLICK, "say hello from server", Listener.CommandRunner.CONSOLE)));
 
         test1.addConditionInventory(ctest1);
+        test1.addListener(new Listener(Listener.DefaultEvent.INVENTORY_OPEN, "say inventory open", Listener.CommandRunner.CONSOLE));
+        test1.addListener(new Listener(Listener.DefaultEvent.INVENTORY_CLOSE, "me closed inventory", Listener.CommandRunner.PLAYER));
 
-        inventories.put("test1", test1);
+        inventories.put("test1", test1);*/
+
 
         this.advancedConfig.appendDefault("inventories", inventories);
         if(!(file.exists() && file.isFile())){

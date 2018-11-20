@@ -16,14 +16,14 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        System.out.println("Join: " + event.getPlayer().getName());
+        /*
         Bukkit.getScheduler().runTaskLater(SpigotFriendSystemBootstrap.getInstance(), () -> {
             System.out.println("open normal inventory");
-            event.getPlayer().openInventory(SpigotFriendSystemBootstrap.getInstance().getInventory("test1").toBukkitInventory());
+            event.getPlayer().openInventory(SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory("test1").toBukkitInventory());
             Bukkit.getScheduler().runTaskLater(SpigotFriendSystemBootstrap.getInstance(), () -> {
                 System.out.println("open condition inventory");
-                event.getPlayer().openInventory(SpigotFriendSystemBootstrap.getInstance().getInventory("test1").getConditionInventory("ctest1").toBukkitInventory());
+                event.getPlayer().openInventory(SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory("test1").getConditionInventory("ctest1").toBukkitInventory());
             }, 20*10);
-        }, 20*10);
+        }, 20*10);*/
     }
 }

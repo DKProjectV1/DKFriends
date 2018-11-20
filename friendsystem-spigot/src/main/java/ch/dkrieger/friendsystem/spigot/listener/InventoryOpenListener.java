@@ -1,9 +1,13 @@
 package ch.dkrieger.friendsystem.spigot.listener;
 
+import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.api.inventory.GUI;
+import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
+import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
 /*
@@ -12,11 +16,24 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
  *
  */
 
-public class InventoryOpenListener implements Listener {
+public class InventoryOpenListener implements org.bukkit.event.Listener {
 
     @EventHandler(priority= EventPriority.HIGH)
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if(event.getInventory() == null || event.getInventory().getHolder() == null) return;
-        if(event.getInventory().getHolder() instanceof GUI) ((GUI)event.getInventory().getHolder()).handleOpen(event);
+        if(event.getInventory() == null) return;
+        if(event.getInventory().getHolder() == null && event.getInventory().getHolder() instanceof GUI) ((GUI)event.getInventory().getHolder()).handleOpen(event);
+        final Player player = (Player)event.getPlayer();
+        Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), () -> {
+            MainInventory mainInventory = SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(event.getInventory().getName());
+            if(mainInventory != null) {
+                for(Listener listener : mainInventory.getListeners()) {
+                    if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.INVENTORY_OPEN.getName())) {
+                        if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
+                        else player.chat("/" + listener.getCommand());
+                        break;
+                    }
+                }
+            }
+        });
     }
 }
