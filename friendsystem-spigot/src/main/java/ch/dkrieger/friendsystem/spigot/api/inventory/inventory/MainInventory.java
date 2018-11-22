@@ -1,12 +1,9 @@
 package ch.dkrieger.friendsystem.spigot.api.inventory.inventory;
 
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
-import ch.dkrieger.friendsystem.spigot.api.inventory.itemstack.ItemStack;
-import org.bukkit.Bukkit;
-import java.util.LinkedHashMap;
+import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /*
  *
@@ -19,8 +16,8 @@ public class MainInventory extends Inventory {
     private List<ConditionInventory> conditionInventories;
     private List<Listener> listeners;
 
-    public MainInventory(String name, int size) {
-        super(name, size);
+    public MainInventory(String title, int size) {
+        super(title, size);
         this.conditionInventories = new LinkedList<>();
         this.listeners = new LinkedList<>();
     }
@@ -30,7 +27,20 @@ public class MainInventory extends Inventory {
     }
 
     public ConditionInventory getConditionInventory(String condition) {
-        for(ConditionInventory conditionInventory : getConditionInventories())if(conditionInventory.getCondition().equals(condition))return conditionInventory;
+        for(ConditionInventory conditionInventory : getConditionInventories()) {
+            if(conditionInventory.getCondition().equalsIgnoreCase(condition)) return conditionInventory;
+        }
+        return null;
+    }
+
+    public ItemStack getItem(String defaultKey, boolean withConditionInventories) {
+        for(ItemStack itemStack : getItems().values())
+            if(itemStack.getKey() != null && itemStack.getKey().equalsIgnoreCase(defaultKey))
+                return itemStack;
+        if(withConditionInventories)
+            for(ConditionInventory conditionInventory : getConditionInventories())
+                for(ItemStack itemStack : conditionInventory.getItems().values())
+                    if(itemStack.getKey() != null && itemStack.getKey().equalsIgnoreCase(defaultKey)) return itemStack;
         return null;
     }
 
@@ -57,16 +67,12 @@ public class MainInventory extends Inventory {
         return this;
     }
 
-    public org.bukkit.inventory.Inventory toBukkitInventory() {
-        org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
-        for(Map.Entry<Integer, ItemStack> entry : getItems().entrySet()) {
-            inventory.setItem(entry.getKey()-1, entry.getValue().toBukkitItemStack());
-        }
-        return inventory;
+    public void setContent(ConditionInventory inventory) {
+
     }
 
     @Override
     public MainInventory clone() {
-        return (MainInventory) new MainInventory(getName(), getSize()).setConditionInventories(this.conditionInventories).setListeners(this.listeners).setItems(getItems());
+        return (MainInventory) new MainInventory(getTitle(), getSize()).setConditionInventories(this.conditionInventories).setListeners(this.listeners).setItems(getItems());
     }
 }

@@ -29,7 +29,6 @@ public abstract class SQLFriendStorage implements FriendStorage {
     private Table friendPlayerTable;
 
     public SQLFriendStorage(Config config) {
-        System.out.println("new SQLFriendStorage");
         this.config = config;
     }
     @Override

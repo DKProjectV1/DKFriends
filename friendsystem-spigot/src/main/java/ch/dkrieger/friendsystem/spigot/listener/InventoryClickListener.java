@@ -4,7 +4,7 @@ import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.api.inventory.GUI;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConditionInventory;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
-import ch.dkrieger.friendsystem.spigot.api.inventory.itemstack.ItemStack;
+import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

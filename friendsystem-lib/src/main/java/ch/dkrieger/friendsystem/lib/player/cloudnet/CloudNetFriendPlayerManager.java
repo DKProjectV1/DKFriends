@@ -24,6 +24,12 @@ public class CloudNetFriendPlayerManager implements OnlineFriendPlayer {
     public String getName() {
         return this.cloudPlayer.getName();
     }
+
+    @Override
+    public String getLastMessenger() {
+        return null;
+    }
+
     @Override
     public String getServer() {
         return this.cloudPlayer.getServer();
@@ -42,6 +48,12 @@ public class CloudNetFriendPlayerManager implements OnlineFriendPlayer {
     public void sendMessage(TextComponent component) {
         this.cloudPlayer.getPlayerExecutor().sendMessage(this.cloudPlayer,component.toString());//https://github.com/Bukkit/mc-dev/blob/master/net/minecraft/server/ChatSerializer.java
     }
+
+    @Override
+    public void sendPrivateMessage(String lastMessenger, TextComponent component) {
+
+    }
+
     @Override
     public void connect(String server) {
         this.cloudPlayer.getPlayerExecutor().sendPlayer(this.cloudPlayer,server);

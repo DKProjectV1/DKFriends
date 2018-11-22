@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -70,6 +71,13 @@ public class SpigotUtil {
             return null;
         }
     }
+
+    public static int getFreeInventoryPlaces(Inventory inventory) {
+        int freePlaces = 0;
+        for(ItemStack itemStack : inventory.getContents()) if(itemStack == null || itemStack.getType() == Material.AIR) freePlaces++;
+        return freePlaces;
+    }
+
     public static double getArmorPoints(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack boots = inventory.getBoots();
@@ -144,7 +152,7 @@ public class SpigotUtil {
     }
 
     public void sendMessage(Player player, ChatMessageType position,BaseComponent... components){
-        //ComponentSerializer.toString(components)
+        /*ComponentSerializer.toString(components)
 
 
         IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components));

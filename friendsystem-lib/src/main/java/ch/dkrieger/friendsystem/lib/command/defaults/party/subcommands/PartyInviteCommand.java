@@ -53,7 +53,6 @@ public class PartyInviteCommand extends SubFriendCommand {
              */
             Party party = player.getParty();
             if(party == null){
-                System.out.println("create party for "+player.getName());
                 party = FriendSystem.getInstance().getPartyManager().createParty(player);
             }
             else if(!party.isLeader(player) && !party.isModerator(player)){

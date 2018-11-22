@@ -42,7 +42,6 @@ public class MongoDBFriendStorage implements FriendStorage {
         //(login.hasSSL()) uri+= "&ssl=true";
 
         this.mongoClient = new MongoClient(new MongoClientURI(uri));
-        System.out.println(uri);
         this.database = this.mongoClient.getDatabase(config.getDatabase());
         this.friendPlayerCollection = database.getCollection("DKFriends_players");
         return true;

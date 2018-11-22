@@ -10,21 +10,16 @@ import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.utils.Document;
+import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConditionInventory;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
-import ch.dkrieger.friendsystem.spigot.api.inventory.itemstack.ItemStack;
-import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
-import ch.dkrieger.friendsystem.spigot.listener.InventoryClickListener;
-import ch.dkrieger.friendsystem.spigot.listener.InventoryCloseListener;
-import ch.dkrieger.friendsystem.spigot.listener.InventoryOpenListener;
-import ch.dkrieger.friendsystem.spigot.listener.PlayerListener;
-import com.google.gson.reflect.TypeToken;
+import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
+import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStackType;
+import ch.dkrieger.friendsystem.spigot.listener.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -87,7 +82,8 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         pluginManager.registerEvents(new InventoryOpenListener(), this);
         pluginManager.registerEvents(new InventoryClickListener(), this);
         pluginManager.registerEvents(new InventoryCloseListener(), this);
-        pluginManager.registerEvents(new PlayerListener(), this);
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new PlayerLeaveListener(), this);
     }
 
     private void loadInventoryConfig() {
@@ -96,26 +92,38 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         else this.advancedConfig = new Document();
 
         Map<String, MainInventory> inventories = new LinkedHashMap<>();
-        /*MainInventory test1 = new MainInventory("test1", 27);
 
-        test1.addItem(new ItemStack("1:0").addListener(new Listener(Listener.DefaultEvent.CLICK, "me ist der beste", Listener.CommandRunner.PLAYER)));
-        test1.addItem(new ItemStack("2:0"));
+        MainInventory friendInventory = new MainInventory("§eFriends", 54);
 
-        ConditionInventory ctest1 = new ConditionInventory(test1, "ctest1");
-        ctest1.addItem(new ItemStack("3:0"));
-        ctest1.addItem(new ItemStack("4:0"));
-        ctest1.addItem(new ItemStack("5:0"));
-        ctest1.addItem(new ItemStack("7:0").addListener(new Listener(Listener.DefaultEvent.CLICK, "say hello from server", Listener.CommandRunner.CONSOLE)));
+        for(int i = 37; i < 46; i++) friendInventory.setItem(i, new ItemStack(ItemStackType.PLACEHOLDER));
+        for(int i = 49; i <= 54; i++) friendInventory.setItem(i, new ItemStack(ItemStackType.PLACEHOLDER));
+        friendInventory.setItem(46, new ItemStack("friends","314:0").setDisplayName("§eFriends"));
+        friendInventory.setItem(47, new ItemStack("parties", "401:0").setDisplayName("§5Party"));
+        friendInventory.setItem(48, new ItemStack("settings", "356:0").setDisplayName("§cSettings"));
 
-        test1.addConditionInventory(ctest1);
-        test1.addListener(new Listener(Listener.DefaultEvent.INVENTORY_OPEN, "say inventory open", Listener.CommandRunner.CONSOLE));
-        test1.addListener(new Listener(Listener.DefaultEvent.INVENTORY_CLOSE, "me closed inventory", Listener.CommandRunner.PLAYER));
+        ConditionInventory friendRequests = new ConditionInventory("friends", friendInventory, "friendRequests");
+        friendRequests.setItem(51, new ItemStack("friendRequests","358:0").setDisplayName("§6Friend Requests"));
+        friendInventory.addConditionInventory(friendRequests);
 
-        inventories.put("test1", test1);*/
+        ConditionInventory nextPage = new ConditionInventory("friends", friendInventory, "nextFriendPage");
+        nextPage.setItem(45, new ItemStack("nextPage", "262:0").setDisplayName("§aNext Page"));
+        friendInventory.addConditionInventory(nextPage);
+
+        ConditionInventory previousPage = new ConditionInventory("friends", friendInventory, "previousFriendPage");
+        previousPage.setItem(44, new ItemStack("previousPage", "262:0").setDisplayName("§cPrevious Page"));
+        friendInventory.addConditionInventory(previousPage);
+
+        MainInventory partyInventory = new MainInventory("§5Party", 54);
 
 
+        MainInventory settingsInventory = new MainInventory("§cSettings", 54);
+
+        inventories.put("friends", friendInventory);
+        inventories.put("parties", partyInventory);
+        inventories.put("settings", settingsInventory);
         this.advancedConfig.appendDefault("inventories", inventories);
-        if(!(file.exists() && file.isFile())){
+
+        if(!(file.exists() && file.isFile())) {
             file.delete();
             this.advancedConfig.saveData(file);
         }

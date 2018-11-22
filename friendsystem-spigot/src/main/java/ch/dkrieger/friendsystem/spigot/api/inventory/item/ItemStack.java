@@ -1,25 +1,23 @@
-package ch.dkrieger.friendsystem.spigot.api.inventory.itemstack;
+package ch.dkrieger.friendsystem.spigot.api.inventory.item;
 
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
-import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Color;
+import de.tr7zw.itemnbtapi.NBTItem;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /*
  *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 18.11.18 21:59
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 20.11.18 20:21
  *
  */
 
 public class ItemStack {
 
     private ItemStackType type;
-    private String itemId, displayName, skullName;
+    private String key, itemId, displayName, skullName;
     private int amount, durability;
     private boolean glow;
     private Color color;
@@ -30,16 +28,25 @@ public class ItemStack {
         this(type, null);
     }
 
+    public ItemStack(String key, String itemId) {
+        this(key, ItemStackType.NORMAL, itemId);
+    }
+
+    public ItemStack(String key, ItemStackType type, String itemId) {
+        this(type, key, itemId, 1, -1, null, null, false, null, new LinkedList<>());
+    }
+
     public ItemStack(String itemId) {
         this(ItemStackType.NORMAL, itemId);
     }
 
     public ItemStack(ItemStackType type, String itemId) {
-        this(type, itemId, 1, -1, null, null, false, null, new LinkedList<>());
+        this(null, type, itemId);
     }
 
-    public ItemStack(ItemStackType type, String itemId, int amount, int durability, String displayName, String skullName, boolean glow, Color color, List<String> lore) {
+    public ItemStack(ItemStackType type, String key, String itemId, int amount, int durability, String displayName, String skullName, boolean glow, Color color, List<String> lore) {
         this.type = type;
+        this.key = key;
         this.itemId = itemId;
         this.amount = amount;
         this.durability = durability;
@@ -49,6 +56,10 @@ public class ItemStack {
         this.color = color;
         this.lore = lore;
         this.listeners = new LinkedList<>();
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getItemId() {
@@ -99,8 +110,9 @@ public class ItemStack {
         this.durability = durability;
     }
 
-    public void setDisplayName(String displayName) {
+    public ItemStack setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
     }
 
     public void setSkullName(String skullName) {
@@ -130,11 +142,16 @@ public class ItemStack {
         itemBuilder.setGlowing(this.glow);
         if(this.color != null)itemBuilder.setLeatherColor(org.bukkit.Color.fromBGR(this.color.getBlue(), this.color.getGreen(), this.color.getRed()));
         if(!this.lore.isEmpty())itemBuilder.setLore(this.lore);
-        return itemBuilder.build();
+
+        if(this.key == null)return itemBuilder.build();
+        NBTItem nbtItem = new NBTItem(itemBuilder.build());
+        nbtItem.setString("defaultitem", this.key);
+        return nbtItem.getItem();
     }
 
     public org.bukkit.inventory.ItemStack toBukkitItemStack(FriendPlayer player) {
-        if(this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder(160).setDurability(player.getSettings().getDesign()).build();
+        if(player == null && this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder(160).setDurability(15).build();
+        if(player != null && this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder(160).setDurability(player.getSettings().getDesign()).build();
         return toBukkitItemStack();
     }
 
@@ -145,6 +162,6 @@ public class ItemStack {
 
     @Override
     protected ItemStack clone() {
-        return new ItemStack(this.type, this.itemId, this.amount, this.durability, this.displayName, this.skullName, this.glow, this.color, this.lore);
+        return new ItemStack(this.type, this.key, this.itemId, this.amount, this.durability, this.displayName, this.skullName, this.glow, this.color, this.lore);
     }
 }

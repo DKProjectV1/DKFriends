@@ -1,8 +1,10 @@
 package ch.dkrieger.friendsystem.spigot.api.inventory.inventory;
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.api.inventory.itemstack.ItemStack;
+import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+
 import java.util.Map;
 
 /*
@@ -15,10 +17,10 @@ public class ConditionInventory extends Inventory {
 
     private String condition, mainInventory;
 
-    public ConditionInventory(MainInventory mainInventory, String condition) {
-        super(mainInventory.getName(), mainInventory.getSize());
+    public ConditionInventory(String mainInventoryName, MainInventory mainInventory, String condition) {
+        super(mainInventory.getTitle(), mainInventory.getSize());
         this.condition = condition;
-        this.mainInventory = mainInventory.getName();
+        this.mainInventory = mainInventoryName;
     }
 
     public MainInventory getMainInventory() {
@@ -31,19 +33,35 @@ public class ConditionInventory extends Inventory {
 
 
     @Override
-    public org.bukkit.inventory.ItemStack[] getContentAsArray() {
-        org.bukkit.inventory.ItemStack[] itemStacks = new org.bukkit.inventory.ItemStack[getSize()];
-        for(int i = 1; i < getSize(); i++) itemStacks[i-1] = getMainInventory().getItem(i).toBukkitItemStack();
-        for(int i = 1; i < getSize(); i++) itemStacks[i-1] = getItem(i).toBukkitItemStack();
+    public org.bukkit.inventory.ItemStack[] getContent() {
+        org.bukkit.inventory.ItemStack[] itemStacks = new org.bukkit.inventory.ItemStack[getSize()-1];
+        for(int i = 1; i < getSize(); i++) {
+            ItemStack itemStack = getMainInventory().getItem(i);
+            if(itemStack != null)itemStacks[i - 1] = getMainInventory().getItem(i).toBukkitItemStack();
+        }
+        for(int i = 1; i < getSize(); i++) {
+            ItemStack itemStack = getItem(i);
+            if(itemStack != null) itemStacks[i-1] = getItem(i).toBukkitItemStack();
+        }
+
         return itemStacks;
+    }
+
+    public void setContent(org.bukkit.inventory.Inventory inventory) {
+        for(int i = 1; i < getSize(); i++) {
+            ItemStack itemStack = getMainInventory().getItem(i);
+            if(itemStack != null) inventory.setItem(i-1, itemStack.toBukkitItemStack());
+        }
+        for(int i = 1; i < getSize(); i++) {
+            ItemStack itemStack = getItem(i);
+            if(itemStack != null && itemStack.getKey() != null) System.out.println(itemStack.getKey());
+            if(itemStack != null) inventory.setItem(i-1, itemStack.toBukkitItemStack());
+        }
     }
 
     @Override
     public org.bukkit.inventory.Inventory toBukkitInventory() {
-        System.out.println(getMainInventory());
-        System.out.println(getMainInventory().getName());
-        System.out.println(getMainInventory().getSize());
-        org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(null, getMainInventory().getSize(), getMainInventory().getName());
+        org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(null, getMainInventory().getSize(), getMainInventory().getTitle());
         for(Map.Entry<Integer, ItemStack> entry : getMainInventory().getItems().entrySet()) {
             inventory.setItem(entry.getKey()-1, entry.getValue().toBukkitItemStack());
         }
@@ -55,6 +73,6 @@ public class ConditionInventory extends Inventory {
 
     @Override
     public ConditionInventory clone() {
-        return (ConditionInventory) new ConditionInventory(getMainInventory(), getCondition()).setItems(getItems());
+        return (ConditionInventory) new ConditionInventory(mainInventory, getMainInventory(), getCondition()).setItems(getItems());
     }
 }

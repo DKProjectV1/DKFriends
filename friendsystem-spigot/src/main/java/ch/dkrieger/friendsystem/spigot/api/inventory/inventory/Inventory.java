@@ -6,26 +6,27 @@ package ch.dkrieger.friendsystem.spigot.api.inventory.inventory;
  *
  */
 
-import ch.dkrieger.friendsystem.spigot.api.inventory.itemstack.ItemStack;
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
 import org.bukkit.Bukkit;
-
+import org.bukkit.inventory.InventoryHolder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Inventory {
 
-    private String name;
+    private String title;
     private int size;
     private Map<Integer, ItemStack> items;
 
-    public Inventory(String name, int size) {
-        this.name = name;
+    public Inventory(String title, int size) {
+        this.title = title;
         this.size = size;
         this.items = new LinkedHashMap<>();
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public int getSize() {
@@ -36,11 +37,20 @@ public class Inventory {
         return items;
     }
 
-    public org.bukkit.inventory.ItemStack[] getContentAsArray() {
+    public org.bukkit.inventory.ItemStack[] getContent() {
         org.bukkit.inventory.ItemStack[] itemStacks = new org.bukkit.inventory.ItemStack[getSize()];
         for(int i = 1; i < this.size; i++) itemStacks[i-1] = getItem(i).toBukkitItemStack();
         return itemStacks;
     }
+
+    public ItemStack getItem(String defaultKey) {
+        for(ItemStack itemStack : this.items.values()) {
+            if(itemStack.getKey() != null && itemStack.getKey().equalsIgnoreCase(defaultKey)) return itemStack;
+        }
+        return null;
+    }
+
+
 
     public ItemStack getItem(int slot) {
         return items.get(slot);
@@ -74,17 +84,25 @@ public class Inventory {
         }
     }
 
-    public org.bukkit.inventory.Inventory toBukkitInventory() {
-        org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(null, this.size, this.name);
+    public org.bukkit.inventory.Inventory toBukkitInventory(InventoryHolder inventoryHolder, FriendPlayer player) {
+        org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
         for(Map.Entry<Integer, ItemStack> entry : this.items.entrySet()) {
-            inventory.setItem(entry.getKey()-1, entry.getValue().toBukkitItemStack());
+            inventory.setItem(entry.getKey()-1, entry.getValue().toBukkitItemStack(player));
         }
         return inventory;
     }
 
+    public org.bukkit.inventory.Inventory toBukkitInventory(InventoryHolder inventoryHolder) {
+        return toBukkitInventory(inventoryHolder);
+    }
+
+    public org.bukkit.inventory.Inventory toBukkitInventory() {
+        return toBukkitInventory(null, null);
+    }
+
     @Override
     public Inventory clone() {
-        return new Inventory(this.name, this.size).setItems(this.items);
+        return new Inventory(this.title, this.size).setItems(this.items);
     }
 
 }
