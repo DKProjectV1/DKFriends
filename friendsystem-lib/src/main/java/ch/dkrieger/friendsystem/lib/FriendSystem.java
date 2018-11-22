@@ -35,7 +35,7 @@ public class FriendSystem {
     private Config config;
     private MessageConfig messageConfig;
 
-    public FriendSystem(DKFriendsPlatform platform, FriendPlayerManager playerManager) {
+    public FriendSystem(DKFriendsPlatform platform, FriendPlayerManager playerManager, PartyManager partyManager) {
         if(instance != null) throw new IllegalArgumentException("DKFriends is already running!");
         instance = this;
         this.version = "1.0.0";
@@ -46,7 +46,7 @@ public class FriendSystem {
         System.out.println(Messages.SYSTEM_PREFIX+"FriendSystem "+this.version+" by Davide Wietlisbach & Philipp Elvin Friedhoff");
 
         this.playerManager = playerManager;
-        this.partyManager = new PartyManager();
+        this.partyManager = partyManager;
 
         systemBootstrap();
 

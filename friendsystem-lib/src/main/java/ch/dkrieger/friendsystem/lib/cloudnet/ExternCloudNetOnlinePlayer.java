@@ -1,28 +1,25 @@
-package ch.dkrieger.friendsystem.bungeecord.player.online;
+package ch.dkrieger.friendsystem.lib.cloudnet;
 
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
 import de.dytanic.cloudnet.lib.utility.document.Document;
-import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 20.11.18 20:10
+ *  * Copyright (c) 2018 Davide Wietlisbach on 21.11.18 19:52
  *
  */
 
-public class ExternBungeeCordOnlinePlayer implements OnlineFriendPlayer {
+public class ExternCloudNetOnlinePlayer implements OnlineFriendPlayer {
 
     private CloudPlayer cloudPlayer;
     private String lastMessenger;
 
-    public ExternBungeeCordOnlinePlayer(CloudPlayer cloudPlayer) {
+    public ExternCloudNetOnlinePlayer(CloudPlayer cloudPlayer) {
         this.cloudPlayer = cloudPlayer;
     }
     @Override
@@ -47,7 +44,7 @@ public class ExternBungeeCordOnlinePlayer implements OnlineFriendPlayer {
     }
     @Override
     public void sendMessage(TextComponent component) {
-        CloudAPI.getInstance().sendCustomSubProxyMessage("DKFriends","message"
+        CloudAPI.getInstance().sendCustomSubProxyMessage("DKFriends","sendMessage"
                 ,new Document().append("player",getUUID()).append("message",component),this.cloudPlayer.getProxy());
     }
     @Override

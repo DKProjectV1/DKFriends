@@ -1,14 +1,11 @@
 package ch.dkrieger.friendsystem.bungeecord.player;
 
-import ch.dkrieger.friendsystem.bungeecord.player.online.LocalBungeeCordOnlinePlayer;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /*
  *
@@ -23,6 +20,12 @@ public class BungeeCordPlayerManager extends FriendPlayerManager {
     public BungeeCordPlayerManager() {
         this.onlinePlayers = new LinkedHashMap<>();
     }
+
+    @Override
+    public List<OnlineFriendPlayer> getLoadedOnlinePlayers() {
+        return new LinkedList<>(this.onlinePlayers.values());
+    }
+
     @Override
     public OnlineFriendPlayer getOnlinePlayer(UUID uuid) {
         return getOnlinePlayer(BungeeCord.getInstance().getPlayer(uuid));

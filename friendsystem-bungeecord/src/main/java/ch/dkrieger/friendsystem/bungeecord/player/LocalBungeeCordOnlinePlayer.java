@@ -1,4 +1,4 @@
-package ch.dkrieger.friendsystem.bungeecord.player.online;
+package ch.dkrieger.friendsystem.bungeecord.player;
 
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import net.md_5.bungee.BungeeCord;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 20.11.18 20:10
+ *  * Copyright (c) 2018 Davide Wietlisbach on 21.11.18 19:52
  *
  */
 

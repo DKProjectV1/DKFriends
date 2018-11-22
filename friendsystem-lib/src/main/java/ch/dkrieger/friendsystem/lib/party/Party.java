@@ -16,25 +16,29 @@ import java.util.*;
 
 public class Party {
 
-    //add created and uuid
-
+    private UUID uuid;
     private boolean public0;
-    private long timeOut;
+    private long created, timeOut;
     private List<PartyMember> members;
     private List<UUID> requests;
     private List<UUID> bans;
 
-    public Party(FriendPlayer leader) {
-        this(leader.getUUID());
+    public Party(UUID uuid, FriendPlayer leader) {
+        this(uuid,leader.getUUID());
     }
-    public Party(OnlineFriendPlayer leader) {
-        this(leader.getUUID());
+    public Party(UUID uuid, OnlineFriendPlayer leader) {
+        this(uuid,leader.getUUID());
     }
-    public Party(UUID uuid) {
+    public Party(UUID uuid, UUID player) {
+        this.uuid = uuid;
         this.members = new ArrayList<>();
         this.requests = new ArrayList<>();
         this.bans = new ArrayList<>();
-        this.members.add(new PartyMember(uuid,true));
+        this.created = System.currentTimeMillis();
+        this.members.add(new PartyMember(player,true));
+    }
+    public UUID getUUID() {
+        return uuid;
     }
     public List<PartyMember> getMembers() {
         return members;
@@ -64,6 +68,9 @@ public class Party {
     }
     public long getTimeOut() {
         return timeOut;
+    }
+    public long getCreated() {
+        return created;
     }
     public PartyMember getLeader(){
         Iterator<PartyMember> iterator = new ArrayList<>(this.members).iterator();
@@ -140,9 +147,11 @@ public class Party {
     }
     public void setPublic(boolean public0) {
         this.public0 = public0;
+        update();
     }
     public void setTimeOut(long timeOut) {
         this.timeOut = timeOut;
+        update();
     }
     public void addRequest(FriendPlayer player){
         addRequest(player.getUUID());
@@ -152,6 +161,7 @@ public class Party {
     }
     public void addRequest(UUID uuid){
         this.requests.add(uuid);
+        update();
     }
     public void removeRequest(FriendPlayer player){
         removeRequest(player.getUUID());
@@ -161,6 +171,7 @@ public class Party {
     }
     public void removeRequest(UUID uuid){
         this.requests.remove(uuid);
+        update();
     }
     public void addMember(FriendPlayer player){
         addMember(player.getUUID());
@@ -171,6 +182,7 @@ public class Party {
     public void addMember(UUID uuid){
         this.requests.remove(uuid);
         this.members.add(new PartyMember(uuid));
+        update();
     }
     public void removeMember(FriendPlayer player){
         removeMember(player.getUUID());
@@ -180,6 +192,7 @@ public class Party {
     }
     public void removeMember(UUID uuid){
         this.members.remove(getMember(uuid));
+        update();
     }
     public void setModerator(FriendPlayer player, boolean moderator){
         setModerator(player.getUUID(),moderator);
@@ -189,7 +202,10 @@ public class Party {
     }
     public void setModerator(UUID uuid, boolean moderator){
         PartyMember member = getMember(uuid);
-        if(member != null) member.setModerator(moderator);
+        if(member != null){
+            member.setModerator(moderator);
+            update();
+        }
     }
     public void setLeader(FriendPlayer player){
         setLeader(player.getUUID());
@@ -200,7 +216,10 @@ public class Party {
     public void setLeader(UUID uuid){
         getLeader().setLeader(false);
         PartyMember member = getMember(uuid);
-        if(member != null) member.setLeader(true);
+        if(member != null){
+            member.setLeader(true);
+            update();
+        }
     }
     public void ban(OnlineFriendPlayer player){
         ban(player.getUUID());
@@ -212,6 +231,7 @@ public class Party {
         this.bans.add(uuid);
         this.requests.remove(uuid);
         this.members.remove(getMember(uuid));
+        update();
     }
     public void unban(OnlineFriendPlayer player){
         unban(player.getUUID());
@@ -221,6 +241,7 @@ public class Party {
     }
     public void unban(UUID uuid){
         this.bans.remove(uuid);
+        update();
     }
     public boolean isBanned(OnlineFriendPlayer player){
         return isBanned(player.getUUID());
@@ -251,5 +272,8 @@ public class Party {
             OnlineFriendPlayer online = member.getOnlinePlayer();
             if(online != null) online.connect(server);
         }
+    }
+    public void update(){
+        FriendSystem.getInstance().getPartyManager().update(this);
     }
 }

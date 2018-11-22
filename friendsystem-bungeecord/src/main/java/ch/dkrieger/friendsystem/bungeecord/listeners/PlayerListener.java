@@ -41,15 +41,13 @@ public class PlayerListener implements Listener {
                 event.setCancelled(true);
                 event.setCancelReason(new TextComponent(Messages.ERROR.replace("[prefix]",Messages.PREFIX_FRIEND)));
                 exception.printStackTrace();
-                //PermissionSystem.getInstance().debug(PermissionSystem.PermissionInfoLevel.ERROR,null,"Could not load player "+event.getConnection().getName());
-                //PermissionSystem.getInstance().debug(PermissionSystem.PermissionInfoLevel.ERROR,null,exception2.getMessage());
                 return;
             }
         }
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getConnection().getUniqueId()
                     ,event.getConnection().getName(),"§8",null);
-        }//else PermissionPlayerManager.getInstance().checkName(event.getConnection().getUniqueId(),event.getConnection().getName());
+        }
         if(BungeeCord.getInstance().getPlayers().size() == 0){
             BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{
 
@@ -57,10 +55,6 @@ public class PlayerListener implements Listener {
             });
         }
     }
-    /*
-    addValue("join.requestinfo.enabled", true);
-        addValue("join.friendinfo.enabled", true);
-     */
     @EventHandler(priority=100)
     public void onPostLogin(PostLoginEvent event){
         BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{

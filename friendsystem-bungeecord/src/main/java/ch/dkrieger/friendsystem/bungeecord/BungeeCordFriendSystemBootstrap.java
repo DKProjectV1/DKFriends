@@ -2,6 +2,9 @@ package ch.dkrieger.friendsystem.bungeecord;
 
 import ch.dkrieger.friendsystem.bungeecord.listeners.CloudNetMessageChannelListener;
 import ch.dkrieger.friendsystem.bungeecord.listeners.PlayerListener;
+import ch.dkrieger.friendsystem.bungeecord.listeners.PluginMessageChannelListener;
+import ch.dkrieger.friendsystem.bungeecord.party.BungeeCordCloudNetPartyManager;
+import ch.dkrieger.friendsystem.bungeecord.party.BungeeCordPartyManager;
 import ch.dkrieger.friendsystem.bungeecord.player.BungeeCordCloudNetPlayerManager;
 import ch.dkrieger.friendsystem.bungeecord.player.BungeeCordPlayerManager;
 import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
@@ -34,16 +37,18 @@ public class BungeeCordFriendSystemBootstrap extends Plugin implements DKFriends
         instance = this;
         this.commandManager = new BungeeCordCommandManager();
 
-        new FriendSystem(this,new BungeeCordPlayerManager());
+        new FriendSystem(this,new BungeeCordPlayerManager(),new BungeeCordPartyManager());
     }
     @Override
     public void onEnable() {
         BungeeCord.getInstance().getPluginManager().registerListener(this,new PlayerListener());
+        BungeeCord.getInstance().getPluginManager().registerListener(this,new PluginMessageChannelListener());
 
         BungeeCord.getInstance().getScheduler().schedule(this,()->{
             if(isCloudNet()){
                 BungeeCord.getInstance().getPluginManager().registerListener(this,new CloudNetMessageChannelListener());
                 FriendSystem.getInstance().setPlayerManager(new BungeeCordCloudNetPlayerManager());
+                FriendSystem.getInstance().setPartyManager(new BungeeCordCloudNetPartyManager());
             }
         },3L,TimeUnit.SECONDS);
     }

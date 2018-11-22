@@ -10,24 +10,21 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-public class PartyManager {
+public abstract class PartyManager {
 
-    private List<Party> parties;
+    private Map<UUID,Party> parties;
 
     public PartyManager() {
-        this.parties = new ArrayList<>();
+        this.parties = new HashMap<>();
     }
-    public List<Party> getParties() {
-        return parties;
+    public Collection<Party> getParties() {
+        return parties.values();
     }
     public List<Party> getPublicParties(){
         List<Party> parties = new ArrayList<>();
-        Iterator<Party> iterator = new ArrayList<>(this.parties).iterator();
+        Iterator<Party> iterator = new ArrayList<>(this.parties.values()).iterator();
         Party party = null;
         while(iterator.hasNext() && (party = iterator.next()) != null) if(party.isPublic()) parties.add(party);
         return parties;
@@ -38,10 +35,10 @@ public class PartyManager {
     public Party getParty(OnlineFriendPlayer player){
         return getParty(player.getUUID());
     }
-    public Party getParty(UUID uuid){
-        Iterator<Party> iterator = new ArrayList<>(this.parties).iterator();
+    public Party getParty(UUID player){
+        Iterator<Party> iterator = new ArrayList<>(this.parties.values()).iterator();
         Party party = null;
-        while(iterator.hasNext() && (party = iterator.next()) != null) if(party.isMember(uuid)) return party;
+        while(iterator.hasNext() && (party = iterator.next()) != null) if(party.isMember(player)) return party;
         return null;
     }
     public Party getRandomPublicParty(){
@@ -54,8 +51,8 @@ public class PartyManager {
     public boolean isInParty(OnlineFriendPlayer player){
         return isInParty(player.getUUID());
     }
-    public boolean isInParty(UUID uuid){
-        return getParty(uuid) != null;
+    public boolean isInParty(UUID player){
+        return getParty(player) != null;
     }
     public Party createParty(OnlineFriendPlayer player){
         return createParty(player.getUUID());
@@ -64,17 +61,17 @@ public class PartyManager {
         return createParty(player.getUUID());
     }
     public void deleteParty(Party party){
-        this.parties.remove(party);
+        this.parties.remove(party.getUUID());
     }
-    public Party createParty(UUID uuid){
-        Party party = new Party(uuid);
-        this.parties.add(party);
+    public Party createParty(UUID player){
+        UUID uuid = UUID.randomUUID();
+        while(this.parties.containsKey(uuid)) uuid = UUID.randomUUID();
+        Party party = new Party(uuid,player);
+        this.parties.put(uuid,party);
         return party;
     }
-    public void update(Party party){
-
-    }
+    public abstract void update(Party party);
     public void replaceParty(Party party){
-
+        this.parties.put(party.getUUID(),party);
     }
 }

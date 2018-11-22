@@ -8,15 +8,22 @@ package ch.dkrieger.friendsystem.spigot;
 
 import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
+import ch.dkrieger.friendsystem.lib.Messages;
+import ch.dkrieger.friendsystem.lib.cloudnet.CloudNetPartyManager;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.utils.Document;
-import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConditionInventory;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStackType;
 import ch.dkrieger.friendsystem.spigot.listener.*;
+import ch.dkrieger.friendsystem.spigot.party.SpigotBungeeCordPartyManager;
+import ch.dkrieger.friendsystem.spigot.party.SpigotPartyManager;
+import ch.dkrieger.friendsystem.spigot.player.SpigotCloudNetPlayerManager;
+import ch.dkrieger.friendsystem.spigot.player.bungeecord.SpigotBungeeCordPlayerManager;
+import ch.dkrieger.friendsystem.spigot.player.local.SpigotFriendPlayerManager;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
@@ -27,6 +34,9 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
 
     private static SpigotFriendSystemBootstrap instance;
     private SpigotCommandManager commandManager;
+
+    private BungeeCordConnection bungeeCordConnection;
+
     private InventoryManager inventoryManager;
     private Document advancedConfig;
 
@@ -36,12 +46,34 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         loadInventoryConfig();
         this.inventoryManager = new InventoryManager();
         this.commandManager = new SpigotCommandManager();
-        new FriendSystem(this, new SpigotFriendPlayerManager());
+        this.bungeeCordConnection = new BungeeCordConnection();
+        new FriendSystem(this, new SpigotFriendPlayerManager(),new SpigotPartyManager());
+    }
+
+    public BungeeCordConnection getBungeeCordConnection() {
+        return this.bungeeCordConnection;
     }
 
     @Override
     public void onEnable() {
-        registerListener();
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new InventoryOpenListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new InventoryCloseListener(), this);
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new PlayerLeaveListener(), this);
+
+        Bukkit.getScheduler().runTaskLater(this,()->{
+            if(isCloudNet()){
+                FriendSystem.getInstance().setPlayerManager(new SpigotCloudNetPlayerManager());
+                FriendSystem.getInstance().setPartyManager(new CloudNetPartyManager());
+            }else{
+                Bukkit.getMessenger().registerOutgoingPluginChannel(this,"DKFriends");
+                Bukkit.getMessenger().registerIncomingPluginChannel(this,"DKFriends",this.bungeeCordConnection);
+                FriendSystem.getInstance().setPlayerManager(new SpigotBungeeCordPlayerManager());
+                FriendSystem.getInstance().setPartyManager(new SpigotBungeeCordPartyManager());
+            }
+        },20L);
     }
 
     @Override
@@ -76,14 +108,15 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
     public InventoryManager getInventoryManager() {
         return inventoryManager;
     }
-
-    private void registerListener() {
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new InventoryOpenListener(), this);
-        pluginManager.registerEvents(new InventoryClickListener(), this);
-        pluginManager.registerEvents(new InventoryCloseListener(), this);
-        pluginManager.registerEvents(new PlayerJoinListener(), this);
-        pluginManager.registerEvents(new PlayerLeaveListener(), this);
+    private boolean isCloudNet(){
+        Plugin cloudnet = getServer().getPluginManager().getPlugin("CloudNetAPI");
+        if(cloudnet != null){
+            if(cloudnet.getDescription() != null){
+                System.out.println(Messages.SYSTEM_PREFIX+"CloudNet found");
+                return true;
+            }
+        }
+        return false;
     }
 
     private void loadInventoryConfig() {

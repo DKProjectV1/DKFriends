@@ -16,8 +16,8 @@ public abstract class FriendPlayerManager {
     public FriendPlayerManager() {
         this.loadedPlayers = new HashMap<>();
     }
-    public Collection<FriendPlayer> getLoadedPlayers() {
-        return this.loadedPlayers.values();
+    public List<FriendPlayer> getLoadedPlayers() {
+        return new LinkedList<>(this.loadedPlayers.values());
     }
     public FriendPlayer getPlayer(UUID uuid) {
         FriendPlayer player = this.loadedPlayers.get(uuid);
@@ -50,6 +50,8 @@ public abstract class FriendPlayerManager {
         FriendSystem.getInstance().getStorage().createPlayer(player);
         return player;
     }
+    public abstract Collection<OnlineFriendPlayer> getLoadedOnlinePlayers();
+
     public abstract OnlineFriendPlayer getOnlinePlayer(UUID uuid);
 
     public abstract OnlineFriendPlayer getOnlinePlayer(String name);

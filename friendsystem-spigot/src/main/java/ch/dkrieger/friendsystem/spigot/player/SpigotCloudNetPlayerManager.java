@@ -1,63 +1,50 @@
-package ch.dkrieger.friendsystem.bungeecord.player;
+package ch.dkrieger.friendsystem.spigot.player;
 
+import ch.dkrieger.friendsystem.lib.cloudnet.ExternCloudNetOnlinePlayer;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
-import ch.dkrieger.friendsystem.lib.cloudnet.ExternCloudNetOnlinePlayer;
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
-import net.md_5.bungee.BungeeCord;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 20.11.18 19:48
+ *  * Copyright (c) 2018 Davide Wietlisbach on 21.11.18 19:49
  *
  */
 
-public class BungeeCordCloudNetPlayerManager extends FriendPlayerManager {
+public class SpigotCloudNetPlayerManager extends FriendPlayerManager {
 
-    private Map<ProxiedPlayer, LocalBungeeCordOnlinePlayer> onlinePlayers;
     private Map<UUID, ExternCloudNetOnlinePlayer> onlineCloudPlayers;
 
-    public BungeeCordCloudNetPlayerManager() {
-        this.onlinePlayers = new LinkedHashMap<>();
+    public SpigotCloudNetPlayerManager() {
         this.onlineCloudPlayers = new LinkedHashMap<>();
     }
-
     @Override
     public List<OnlineFriendPlayer> getLoadedOnlinePlayers() {
-        List<OnlineFriendPlayer> player = new LinkedList<>();
-        player.addAll(this.onlineCloudPlayers.values());
-        player.addAll(this.onlineCloudPlayers.values());
-        return player;
+        return new LinkedList<>(this.onlineCloudPlayers.values());
     }
     @Override
     public OnlineFriendPlayer getOnlinePlayer(UUID uuid) {
-        OnlineFriendPlayer player = getOnlinePlayer(BungeeCord.getInstance().getPlayer(uuid));
+        OnlineFriendPlayer player = getOnlinePlayer(Bukkit.getPlayer(uuid));
         if(player == null) return getOnlinePlayer(CloudAPI.getInstance().getOnlinePlayer(uuid));
         return player;
     }
     @Override
     public OnlineFriendPlayer getOnlinePlayer(String name) {
-        OnlineFriendPlayer player = getOnlinePlayer(BungeeCord.getInstance().getPlayer(name));
+        OnlineFriendPlayer player = getOnlinePlayer(Bukkit.getPlayer(name));
         if(player == null){
             FriendPlayer friendPlayer = getPlayer(name);
             if(friendPlayer != null) player = getOnlinePlayer(CloudAPI.getInstance().getOnlinePlayer(friendPlayer.getUUID()));
         }
         return player;
     }
-    public OnlineFriendPlayer getOnlinePlayer(ProxiedPlayer player){
-        if(player != null){
-            LocalBungeeCordOnlinePlayer online = this.onlinePlayers.get(player);
-            if(online == null){
-                online = new LocalBungeeCordOnlinePlayer(player);
-                this.onlinePlayers.put(player,online);
-            }
-            return online;
-        }
+    public OnlineFriendPlayer getOnlinePlayer(Player player){
+        if(player != null) return this.onlineCloudPlayers.get(player.getUniqueId());
         return null;
     }
     public OnlineFriendPlayer getOnlinePlayer(CloudPlayer player){

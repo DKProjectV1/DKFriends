@@ -154,6 +154,7 @@ public class SpigotUtil {
     public void sendMessage(Player player, ChatMessageType position,BaseComponent... components){
         /*ComponentSerializer.toString(components)
 
+        /*
 
         IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components));
         PacketPlayOutChat packet = new PacketPlayOutChat(component, (byte) position.ordinal());
@@ -173,7 +174,6 @@ public class SpigotUtil {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-        /*
 
         IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components));
         PacketPlayOutChat packet = new PacketPlayOutChat(component, (byte) position.ordinal());
