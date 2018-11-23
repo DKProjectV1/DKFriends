@@ -49,7 +49,7 @@ public class BungeeCordFriendSystemBootstrap extends Plugin implements DKFriends
                 BungeeCord.getInstance().getPluginManager().registerListener(this,new CloudNetMessageChannelListener());
                 FriendSystem.getInstance().setPlayerManager(new BungeeCordCloudNetPlayerManager());
                 FriendSystem.getInstance().setPartyManager(new BungeeCordCloudNetPartyManager());
-            }
+            }else BungeeCord.getInstance().getPluginManager().registerListener(this,new BungeeCordPartyManager());
         },1L,TimeUnit.SECONDS);
     }
     @Override

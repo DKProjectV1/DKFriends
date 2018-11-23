@@ -7,6 +7,7 @@ package ch.dkrieger.friendsystem.bungeecord.listeners;
  */
 
 import ch.dkrieger.friendsystem.bungeecord.BungeeCordFriendSystemBootstrap;
+import ch.dkrieger.friendsystem.bungeecord.player.BungeeCordPlayerManager;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.party.Party;
@@ -127,6 +128,9 @@ public class PlayerListener implements Listener {
                 if(online != null && friend.getFriendPlayer().getSettings().isNotifyEnabled()) online.sendMessage(Messages.PLAYER_NOTIFY_OFFLINE
                         .replace("[prefix]",Messages.PREFIX_FRIEND)
                         .replace("[player]",player.getColoredName()));
+            }
+            if(FriendSystem.getInstance().getPlayerManager() instanceof BungeeCordPlayerManager){
+                ((BungeeCordPlayerManager)FriendSystem.getInstance().getPlayerManager()).unregisterOnlinePlayer(event.getPlayer().getUniqueId());
             }
             player.updateInformations(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });

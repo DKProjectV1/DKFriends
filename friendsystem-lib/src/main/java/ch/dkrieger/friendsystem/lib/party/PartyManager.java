@@ -22,6 +22,9 @@ public abstract class PartyManager {
     public Collection<Party> getParties() {
         return parties.values();
     }
+    public Map<UUID,Party> getMapedParties(){
+        return this.parties;
+    }
     public List<Party> getPublicParties(){
         List<Party> parties = new ArrayList<>();
         Iterator<Party> iterator = new ArrayList<>(this.parties.values()).iterator();

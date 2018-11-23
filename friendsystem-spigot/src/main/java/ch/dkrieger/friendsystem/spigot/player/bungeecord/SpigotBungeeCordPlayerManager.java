@@ -39,7 +39,8 @@ public class SpigotBungeeCordPlayerManager extends FriendPlayerManager {
     }
     @Override
     public void updatePlayerSync(FriendPlayer player) {
-        SpigotFriendSystemBootstrap.getInstance().getBungeeCordConnection().send("updatePlayer",new Document().append("uuid",player.getUUID()));
+        SpigotFriendSystemBootstrap.getInstance().getBungeeCordConnection()
+                .send("updatePlayer",new Document().append("uuid",player.getUUID()));
     }
     @Override
     public void removeFromCache(UUID uuid) {

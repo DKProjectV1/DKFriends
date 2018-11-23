@@ -9,19 +9,27 @@ package ch.dkrieger.friendsystem.spigot;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.party.Party;
+import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import ch.dkrieger.friendsystem.spigot.player.bungeecord.SpigotBungeeCordOnlinePlayer;
 import ch.dkrieger.friendsystem.spigot.player.bungeecord.SpigotBungeeCordPlayerManager;
+import com.google.gson.reflect.TypeToken;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class BungeeCordConnection implements PluginMessageListener {
 
     private FriendSystem friendSystem;
+
+    public BungeeCordConnection() {
+        this.friendSystem = FriendSystem.getInstance();
+    }
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
@@ -32,22 +40,39 @@ public class BungeeCordConnection implements PluginMessageListener {
                 DataInputStream input = new DataInputStream(byteStream);
                 Document document = Document.loadData(input.readUTF());
                 if(document.getString("action").equalsIgnoreCase("syncData")){
-
+                    Map<UUID,Party> parties = document.getObject("parties",new TypeToken<Map<UUID,Party>>(){}.getType());
+                    friendSystem.getPartyManager().getMapedParties().clear();
+                    friendSystem.getPartyManager().getMapedParties().putAll(parties);
+                    List<Document> players = document.getObject("onlinePlayers",new TypeToken<List<Party>>(){}.getType());
+                    for(Document player0 : players) updateOnlinePlayer(player0);
                 }else if(document.getString("action").equalsIgnoreCase("syncParty")){
                     Party party = document.getObject("party",Party.class);
                     if(party != null) this.friendSystem.getPartyManager().replaceParty(party);
                 }else if(document.getString("action").equalsIgnoreCase("syncOnlinePlayer")){
-
+                    updateOnlinePlayer(document);
                 }else if(document.getString("action").equalsIgnoreCase("playerLogout")){
-                    
+                    ((SpigotBungeeCordPlayerManager)friendSystem.getPlayerManager())
+                            .unregisterOnlinePlayer(document.getObject("uuid",UUID.class));
                 }else if(document.getString("action").equalsIgnoreCase("updatePlayer")){
                     UUID uuid = document.getObject("uuid",UUID.class);
-                    if(uuid != null) FriendSystem.getInstance().getPlayerManager().removeFromCache(uuid);
+                    if(uuid != null) friendSystem.getPlayerManager().removeFromCache(uuid);
                 }
             }catch (Exception exception){
                 exception.printStackTrace();
             }
         }
+    }
+    public void updateOnlinePlayer(Document document){
+        UUID uuid = document.getObject("uuid",UUID.class);
+        if(uuid == null) return;
+        SpigotBungeeCordOnlinePlayer online = (SpigotBungeeCordOnlinePlayer)friendSystem.getPlayerManager()
+                .getOnlinePlayer(uuid);
+        if(online == null) online = new SpigotBungeeCordOnlinePlayer(uuid,document.getString("name"),document.getString("server"));
+        else{
+            online.setName(document.getString("name"));
+            online.setServer(document.getString("server"));
+        }
+        ((SpigotBungeeCordPlayerManager)friendSystem.getPlayerManager()).updateOnlinePlayers(online);
     }
     /*
     new Document().append("parties",getParties())

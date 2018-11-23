@@ -59,4 +59,12 @@ public class BungeeCordPlayerManager extends FriendPlayerManager {
         }
         return null;
     }
+    public void syncOnlinePlayer(OnlineFriendPlayer player){
+        if(player == null) return;
+        BungeeCordPartyManager.sendToAllSpigotServers("syncOnlinePlayer"
+                ,new Document().append("uuid",player.getUUID()).append("name",player.getName()).append("server",player.getServer()));
+    }
+    public void unregisterOnlinePlayer(UUID uuid){
+        BungeeCordPartyManager.sendToAllSpigotServers("playerLogout",new Document().append("uuid",uuid));
+    }
 }

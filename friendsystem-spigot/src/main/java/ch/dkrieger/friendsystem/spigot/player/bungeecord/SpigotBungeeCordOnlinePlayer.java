@@ -70,4 +70,11 @@ public class SpigotBungeeCordOnlinePlayer implements OnlineFriendPlayer {
         SpigotFriendSystemBootstrap.getInstance().getBungeeCordConnection()
                 .send("executeCommand",new Document().append("server",server));
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setServer(String server) {
+        this.server = server;
+    }
 }
