@@ -45,4 +45,10 @@ public class SpigotBungeeCordPlayerManager extends FriendPlayerManager {
     public void removeFromCache(UUID uuid) {
         this.onlinePlayers.remove(uuid);
     }
+    public void updateOnlinePlayers(SpigotBungeeCordOnlinePlayer player){
+        this.onlinePlayers.put(player.getUUID(),player);
+    }
+    public void unregisterOnlinePlayer(UUID uuid){
+        this.onlinePlayers.remove(uuid);
+    }
 }

@@ -10,6 +10,8 @@ import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.utils.Document;
+import ch.dkrieger.friendsystem.spigot.player.bungeecord.SpigotBungeeCordOnlinePlayer;
+import ch.dkrieger.friendsystem.spigot.player.bungeecord.SpigotBungeeCordPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -23,26 +25,28 @@ public class BungeeCordConnection implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
-        try{
-            if(Bukkit.getOnlineMode()) return;
-            ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
-            DataInputStream input = new DataInputStream(byteStream);
-            Document document = Document.loadData(input.readUTF());
-            if(document.getString("action").equalsIgnoreCase("syncData")){
+        if(channel.equalsIgnoreCase("DKFriends")){
+            try{
+                if(Bukkit.getOnlineMode()) return;
+                ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
+                DataInputStream input = new DataInputStream(byteStream);
+                Document document = Document.loadData(input.readUTF());
+                if(document.getString("action").equalsIgnoreCase("syncData")){
 
-            }else if(document.getString("action").equalsIgnoreCase("syncParty")){
-                Party party = document.getObject("party",Party.class);
-                if(party != null) this.friendSystem.getPartyManager().replaceParty(party);
-            }else if(document.getString("action").equalsIgnoreCase("syncOnlinePlayer")){
+                }else if(document.getString("action").equalsIgnoreCase("syncParty")){
+                    Party party = document.getObject("party",Party.class);
+                    if(party != null) this.friendSystem.getPartyManager().replaceParty(party);
+                }else if(document.getString("action").equalsIgnoreCase("syncOnlinePlayer")){
 
-            }else if(document.getString("action").equalsIgnoreCase("playerLogout")){
-                FriendSystem.getInstance().getPlayerManager().r
-            }else if(document.getString("action").equalsIgnoreCase("updatePlayer")){
-                UUID uuid = document.getObject("uuid",UUID.class);
-                if(uuid != null) FriendSystem.getInstance().getPlayerManager().removeFromCache(uuid);
+                }else if(document.getString("action").equalsIgnoreCase("playerLogout")){
+                    
+                }else if(document.getString("action").equalsIgnoreCase("updatePlayer")){
+                    UUID uuid = document.getObject("uuid",UUID.class);
+                    if(uuid != null) FriendSystem.getInstance().getPlayerManager().removeFromCache(uuid);
+                }
+            }catch (Exception exception){
+                exception.printStackTrace();
             }
-        }catch (Exception exception){
-            exception.printStackTrace();
         }
     }
     /*

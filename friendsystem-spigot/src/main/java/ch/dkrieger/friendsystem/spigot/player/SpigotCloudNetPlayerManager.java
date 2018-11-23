@@ -68,7 +68,7 @@ public class SpigotCloudNetPlayerManager extends FriendPlayerManager {
             if(online == null){
                 online = new ExternCloudNetOnlinePlayer(player);
                 this.onlineCloudPlayers.put(player.getUniqueId(),online);
-            }
+            }else online.setCloudPlayer(player);
             return online;
         }
         return null;

@@ -66,4 +66,7 @@ public class ExternCloudNetOnlinePlayer implements OnlineFriendPlayer {
         CloudAPI.getInstance().sendCustomSubProxyMessage("DKFriends","connect"
                 ,new Document().append("player",getUUID()).append("server",server),this.cloudPlayer.getProxy());
     }
+    public void setCloudPlayer(CloudPlayer cloudPlayer) {
+        this.cloudPlayer = cloudPlayer;
+    }
 }
