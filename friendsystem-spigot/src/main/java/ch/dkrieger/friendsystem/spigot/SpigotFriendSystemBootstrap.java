@@ -12,10 +12,11 @@ import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.cloudnet.CloudNetPartyManager;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
 import ch.dkrieger.friendsystem.lib.utils.Document;
-import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConditionInventory;
-import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
-import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
-import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStackType;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
+import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.NextPageFriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.OpenFriendPageAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.PreviousPageFriendAdapter;
 import ch.dkrieger.friendsystem.spigot.listener.*;
 import ch.dkrieger.friendsystem.spigot.party.SpigotBungeeCordPartyManager;
 import ch.dkrieger.friendsystem.spigot.party.SpigotPartyManager;
@@ -27,42 +28,35 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriendsPlatform {
 
     private static SpigotFriendSystemBootstrap instance;
     private SpigotCommandManager commandManager;
-
     private BungeeCordConnection bungeeCordConnection;
-
     private InventoryManager inventoryManager;
-    private Document advancedConfig;
+    private List<Adapter> adapters;
+    private Document document;
 
     @Override
     public void onLoad() {
         instance = this;
-        loadInventoryConfig();
-        this.inventoryManager = new InventoryManager();
-        this.commandManager = new SpigotCommandManager();
+        new FriendSystem(this, new SpigotFriendPlayerManager(), new SpigotPartyManager());
         this.bungeeCordConnection = new BungeeCordConnection();
-        new FriendSystem(this, new SpigotFriendPlayerManager(),new SpigotPartyManager());
-    }
-
-    public BungeeCordConnection getBungeeCordConnection() {
-        return this.bungeeCordConnection;
+        this.adapters = new LinkedList<>();
+        registerAdapter(new NextPageFriendAdapter());
+        registerAdapter(new PreviousPageFriendAdapter());
+        registerAdapter(new OpenFriendPageAdapter());
+        loadAdvancedConfig();
+        this.inventoryManager = new InventoryManager(getAdvancedConfig().getInventories());
+        this.commandManager = new SpigotCommandManager();
     }
 
     @Override
     public void onEnable() {
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new InventoryOpenListener(), this);
-        pluginManager.registerEvents(new InventoryClickListener(), this);
-        pluginManager.registerEvents(new InventoryCloseListener(), this);
-        pluginManager.registerEvents(new PlayerJoinListener(), this);
-        pluginManager.registerEvents(new PlayerLeaveListener(), this);
-
+        registerListener();
         Bukkit.getScheduler().runTaskLater(this,()->{
             if(isCloudNet()){
                 FriendSystem.getInstance().setPlayerManager(new SpigotCloudNetPlayerManager());
@@ -101,13 +95,27 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         return this.commandManager;
     }
 
-    public Document getAdvancedConfig() {
-        return advancedConfig;
+    public BungeeCordConnection getBungeeCordConnection() {
+        return this.bungeeCordConnection;
+    }
+
+    public AdvancedConfig getAdvancedConfig() {
+        return document.getObject("config", AdvancedConfig.class);
     }
 
     public InventoryManager getInventoryManager() {
         return inventoryManager;
     }
+
+    public Adapter getAdapter(String name) {
+        for(Adapter adapter : this.adapters) if(adapter.getName().equalsIgnoreCase(name))return adapter;
+        return null;
+    }
+
+    public FriendAdapter getFriendAdapter(String name) {
+        return (FriendAdapter)getAdapter(name);
+    }
+
     private boolean isCloudNet(){
         Plugin cloudnet = getServer().getPluginManager().getPlugin("CloudNetAPI");
         if(cloudnet != null){
@@ -119,47 +127,28 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         return false;
     }
 
-    private void loadInventoryConfig() {
+    private void registerListener() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new InventoryOpenListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new InventoryCloseListener(), this);
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new PlayerLeaveListener(), this);
+    }
+
+    private void loadAdvancedConfig() {
         File file = new File(getFolder(), "advancedspigotconfig.json");
-        if(file.exists() && file.isFile()) this.advancedConfig = Document.loadData(file);
-        else this.advancedConfig = new Document();
-
-        Map<String, MainInventory> inventories = new LinkedHashMap<>();
-
-        MainInventory friendInventory = new MainInventory("§eFriends", 54);
-
-        for(int i = 37; i < 46; i++) friendInventory.setItem(i, new ItemStack(ItemStackType.PLACEHOLDER));
-        for(int i = 49; i <= 54; i++) friendInventory.setItem(i, new ItemStack(ItemStackType.PLACEHOLDER));
-        friendInventory.setItem(46, new ItemStack("friends","314:0").setDisplayName("§eFriends"));
-        friendInventory.setItem(47, new ItemStack("parties", "401:0").setDisplayName("§5Party"));
-        friendInventory.setItem(48, new ItemStack("settings", "356:0").setDisplayName("§cSettings"));
-
-        ConditionInventory friendRequests = new ConditionInventory("friends", friendInventory, "friendRequests");
-        friendRequests.setItem(51, new ItemStack("friendRequests","358:0").setDisplayName("§6Friend Requests"));
-        friendInventory.addConditionInventory(friendRequests);
-
-        ConditionInventory nextPage = new ConditionInventory("friends", friendInventory, "nextFriendPage");
-        nextPage.setItem(45, new ItemStack("nextPage", "262:0").setDisplayName("§aNext Page"));
-        friendInventory.addConditionInventory(nextPage);
-
-        ConditionInventory previousPage = new ConditionInventory("friends", friendInventory, "previousFriendPage");
-        previousPage.setItem(44, new ItemStack("previousPage", "262:0").setDisplayName("§cPrevious Page"));
-        friendInventory.addConditionInventory(previousPage);
-
-        MainInventory partyInventory = new MainInventory("§5Party", 54);
-
-
-        MainInventory settingsInventory = new MainInventory("§cSettings", 54);
-
-        inventories.put("friends", friendInventory);
-        inventories.put("parties", partyInventory);
-        inventories.put("settings", settingsInventory);
-        this.advancedConfig.appendDefault("inventories", inventories);
-
+        if(file.exists() && file.isFile()) this.document = Document.loadData(file);
+        else this.document = new Document();
+        this.document.appendDefault("config", new AdvancedConfig());
         if(!(file.exists() && file.isFile())) {
             file.delete();
-            this.advancedConfig.saveData(file);
+            this.document.saveData(file);
         }
+    }
+
+    public void registerAdapter(Adapter adapter) {
+        this.adapters.add(adapter);
     }
 
     public static SpigotFriendSystemBootstrap getInstance() {

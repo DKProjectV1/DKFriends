@@ -53,15 +53,15 @@ public abstract class GUI implements InventoryHolder {
     }
 
     public void setItem(int place, ItemStack item){
-        this.inventory.setItem(place-1,item);
+        this.inventory.setItem(place,item);
     }
 
     public void setItem(int place, ItemBuilder itembuilder){
-        this.inventory.setItem(place-1,itembuilder.build());
+        this.inventory.setItem(place,itembuilder.build());
     }
 
     public void removeItem(int place){
-        this.inventory.setItem(place-1,null);
+        this.inventory.setItem(place,null);
     }
 
     public void addItem(ItemStack item){
@@ -100,8 +100,7 @@ public abstract class GUI implements InventoryHolder {
     }
 
     public void clear(int startPlace, int lastPlace){
-        if(lastPlace > inventory.getContents().length) lastPlace = inventory.getContents().length;
-        for(int i = startPlace; i < lastPlace;i++) removeItem(i);
+        for(int i = startPlace; i <= lastPlace;i++) removeItem(i);
     }
 
     public void open(Player player){

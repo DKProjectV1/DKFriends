@@ -39,7 +39,7 @@ public class Inventory {
 
     public org.bukkit.inventory.ItemStack[] getContent() {
         org.bukkit.inventory.ItemStack[] itemStacks = new org.bukkit.inventory.ItemStack[getSize()];
-        for(int i = 1; i < this.size; i++) itemStacks[i-1] = getItem(i).toBukkitItemStack();
+        for(int i = 0; i < this.size; i++) itemStacks[i] = getItem(i).toBukkitItemStack();
         return itemStacks;
     }
 
@@ -76,7 +76,7 @@ public class Inventory {
     }
 
     public void addItem(ItemStack itemStack) {
-        for(int i = 1; i <= this.size; i++) {
+        for(int i = 0; i <= this.size; i++) {
             if(!this.items.containsKey(i)) {
                 this.items.put(i, itemStack);
                 return;

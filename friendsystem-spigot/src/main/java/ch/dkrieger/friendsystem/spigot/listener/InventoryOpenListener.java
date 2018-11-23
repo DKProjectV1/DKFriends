@@ -1,6 +1,8 @@
 package ch.dkrieger.friendsystem.spigot.listener;
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
+import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
 import ch.dkrieger.friendsystem.spigot.api.inventory.GUI;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
@@ -27,10 +29,16 @@ public class InventoryOpenListener implements org.bukkit.event.Listener {
             MainInventory mainInventory = SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(event.getInventory().getName());
             if(mainInventory != null) {
                 for(Listener listener : mainInventory.getListeners()) {
-                    if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.INVENTORY_OPEN.getName())) {
-                        if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
-                        else player.chat("/" + listener.getCommand());
-                        break;
+                    if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
+                        if(listener.getCommand() != null && listener.getCommandRunner() != null) {
+                            if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
+                            else player.chat("/" + listener.getCommand());
+                        }
+                        if(listener.getAdapter() != null) {
+                            Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(listener.getAdapter());
+                            if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player);
+                        }
+                        return;
                     }
                 }
             }

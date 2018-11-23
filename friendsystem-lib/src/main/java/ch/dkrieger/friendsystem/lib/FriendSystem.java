@@ -57,6 +57,10 @@ public class FriendSystem {
         return config;
     }
 
+    public MessageConfig getMessageConfig() {
+        return messageConfig;
+    }
+
     private void systemBootstrap() {
 
         this.platform.getFolder().mkdirs();

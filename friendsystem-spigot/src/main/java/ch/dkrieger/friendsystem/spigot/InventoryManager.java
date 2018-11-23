@@ -18,11 +18,10 @@ public class InventoryManager {
     private Map<Player, Profile> playerProfiles;
     private Map<String, MainInventory> inventories;
 
-    public InventoryManager() {
+    public InventoryManager(Map<String, MainInventory> inventoryMap) {
         this.playerProfiles = new LinkedHashMap<>();
         this.inventories = new LinkedHashMap<>();
-        Map<String, MainInventory> inventoryMap = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getObject("inventories", new TypeToken<Map<String, MainInventory>>(){}.getType());
-        inventories.putAll(inventoryMap);
+        this.inventories = inventoryMap;
     }
 
     public Profile getProfile(Player player) {

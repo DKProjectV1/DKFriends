@@ -8,8 +8,9 @@ package ch.dkrieger.friendsystem.spigot.api.inventory;
 
 public class Listener {
 
-    private final String event, command;
-    private final CommandRunner commandRunner;
+    private final String event;
+    private String command, adapter;
+    private CommandRunner commandRunner;
 
     public Listener(String event, String command, CommandRunner commandRunner) {
         this.event = event;
@@ -21,12 +22,26 @@ public class Listener {
         this(event.getName(), command, commandRunner);
     }
 
+    public Listener(String event, String adapter) {
+        this.event = event;
+        this.adapter = adapter;
+    }
+
+    public Listener(DefaultEvent event, String adapter) {
+        this.event = event.getName();
+        this.adapter = adapter;
+    }
+
     public String getEvent() {
         return event;
     }
 
     public String getCommand() {
         return command;
+    }
+
+    public String getAdapter() {
+        return adapter;
     }
 
     public CommandRunner getCommandRunner() {

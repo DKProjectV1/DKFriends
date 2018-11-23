@@ -1,6 +1,8 @@
 package ch.dkrieger.friendsystem.spigot.listener;
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
+import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
 import ch.dkrieger.friendsystem.spigot.api.inventory.GUI;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConditionInventory;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
@@ -34,8 +36,14 @@ public class InventoryClickListener implements org.bukkit.event.Listener {
                     if(itemStack1 != null) {
                         for(Listener listener : itemStack1.getListeners()) {
                             if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
-                                if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
-                                else player.chat("/" + listener.getCommand());
+                                if(listener.getCommand() != null && listener.getCommandRunner() != null) {
+                                    if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
+                                    else player.chat("/" + listener.getCommand());
+                                }
+                                if(listener.getAdapter() != null) {
+                                    Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(listener.getAdapter());
+                                    if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player);
+                                }
                                 return;
                             }
                         }
@@ -45,9 +53,15 @@ public class InventoryClickListener implements org.bukkit.event.Listener {
                 if(itemStack != null) {
                     for(Listener listener : itemStack.getListeners()) {
                         if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
-                            if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
-                            else player.chat("/" + listener.getCommand());
-                            break;
+                            if(listener.getCommand() != null && listener.getCommandRunner() != null) {
+                                if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
+                                else player.chat("/" + listener.getCommand());
+                            }
+                            if(listener.getAdapter() != null) {
+                                Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(listener.getAdapter());
+                                if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player);
+                            }
+                            return;
                         }
                     }
                 }

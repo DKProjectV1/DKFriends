@@ -35,27 +35,26 @@ public class ConditionInventory extends Inventory {
     @Override
     public org.bukkit.inventory.ItemStack[] getContent() {
         org.bukkit.inventory.ItemStack[] itemStacks = new org.bukkit.inventory.ItemStack[getSize()-1];
-        for(int i = 1; i < getSize(); i++) {
+        for(int i = 0; i < getSize(); i++) {
             ItemStack itemStack = getMainInventory().getItem(i);
-            if(itemStack != null)itemStacks[i - 1] = getMainInventory().getItem(i).toBukkitItemStack();
+            if(itemStack != null)itemStacks[i] = getMainInventory().getItem(i).toBukkitItemStack();
         }
-        for(int i = 1; i < getSize(); i++) {
+        for(int i = 0; i < getSize(); i++) {
             ItemStack itemStack = getItem(i);
-            if(itemStack != null) itemStacks[i-1] = getItem(i).toBukkitItemStack();
+            if(itemStack != null) itemStacks[i] = getItem(i).toBukkitItemStack();
         }
 
         return itemStacks;
     }
 
     public void setContent(org.bukkit.inventory.Inventory inventory) {
-        for(int i = 1; i < getSize(); i++) {
+        for(int i = 0; i < getSize(); i++) {
             ItemStack itemStack = getMainInventory().getItem(i);
-            if(itemStack != null) inventory.setItem(i-1, itemStack.toBukkitItemStack());
+            if(itemStack != null) inventory.setItem(i, itemStack.toBukkitItemStack());
         }
-        for(int i = 1; i < getSize(); i++) {
+        for(int i = 0; i < getSize(); i++) {
             ItemStack itemStack = getItem(i);
-            if(itemStack != null && itemStack.getKey() != null) System.out.println(itemStack.getKey());
-            if(itemStack != null) inventory.setItem(i-1, itemStack.toBukkitItemStack());
+            if(itemStack != null) inventory.setItem(i, itemStack.toBukkitItemStack());
         }
     }
 
@@ -63,10 +62,10 @@ public class ConditionInventory extends Inventory {
     public org.bukkit.inventory.Inventory toBukkitInventory() {
         org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(null, getMainInventory().getSize(), getMainInventory().getTitle());
         for(Map.Entry<Integer, ItemStack> entry : getMainInventory().getItems().entrySet()) {
-            inventory.setItem(entry.getKey()-1, entry.getValue().toBukkitItemStack());
+            inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack());
         }
         for(Map.Entry<Integer, ItemStack> entry : getItems().entrySet()) {
-            inventory.setItem(entry.getKey()-1, entry.getValue().toBukkitItemStack());
+            inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack());
         }
         return inventory;
     }

@@ -7,7 +7,6 @@ package ch.dkrieger.friendsystem.spigot.listener;
  */
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.inventories.FriendPage;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +18,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         SpigotFriendSystemBootstrap.getInstance().getInventoryManager().createProfile(event.getPlayer());
         Bukkit.getScheduler().runTaskLater(SpigotFriendSystemBootstrap.getInstance(), ()-> {
-            SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getProfile(event.getPlayer()).getFriendPage().open();
+            SpigotFriendSystemBootstrap.getInstance().getFriendAdapter("openFriendPage").execute(event.getPlayer());
         }, 20*5);
     }
 }

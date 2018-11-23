@@ -25,7 +25,7 @@ public class SettingsPage extends PrivateGUI {
 
     @Override
     protected void onClick(InventoryClickEvent event) {
-
+        event.setCancelled(true);
     }
 
     @Override

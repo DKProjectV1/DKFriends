@@ -25,7 +25,7 @@ public class PartyPage extends PrivateGUI {
 
     @Override
     protected void onClick(InventoryClickEvent event) {
-
+        event.setCancelled(true);
     }
 
     @Override

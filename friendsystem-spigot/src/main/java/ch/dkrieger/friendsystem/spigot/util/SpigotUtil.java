@@ -72,11 +72,16 @@ public class SpigotUtil {
         }
     }
 
-    public static int getFreeInventoryPlaces(Inventory inventory) {
+    public static int getFreeInventoryPlaces(Inventory inventory, int startSlot, int lastSlot) {
         int freePlaces = 0;
-        for(ItemStack itemStack : inventory.getContents()) if(itemStack == null || itemStack.getType() == Material.AIR) freePlaces++;
+        for(int i = startSlot; i <= lastSlot; i++) if(inventory.getItem(i) == null || inventory.getItem(i).getType() == Material.AIR) freePlaces++;
         return freePlaces;
     }
+
+    public static int getFreeInventoryPlaces(Inventory inventory) {
+        return getFreeInventoryPlaces(inventory, 0, inventory.getSize()-1);
+    }
+
 
     public static double getArmorPoints(Player player) {
         PlayerInventory inventory = player.getInventory();
