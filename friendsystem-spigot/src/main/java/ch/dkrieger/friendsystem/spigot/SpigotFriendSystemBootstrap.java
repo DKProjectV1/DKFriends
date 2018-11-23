@@ -49,7 +49,6 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         this.bungeeCordConnection = new BungeeCordConnection();
         new FriendSystem(this, new SpigotFriendPlayerManager(),new SpigotPartyManager());
     }
-
     public BungeeCordConnection getBungeeCordConnection() {
         return this.bungeeCordConnection;
     }

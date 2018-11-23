@@ -36,7 +36,6 @@ public class PluginMessageChannelListener implements Listener {
                 if(document.getString("action").equalsIgnoreCase("syncOnlinePlayers")){
 
 
-
                 }else if(document.getString("action").equalsIgnoreCase("sendMessage")){
                     ProxiedPlayer player = BungeeCord.getInstance().getPlayer(document.getObject("player", UUID.class));
                     if(player != null) player.sendMessage(document.getObject("message", TextComponent.class));
@@ -68,5 +67,4 @@ public class PluginMessageChannelListener implements Listener {
             }
         }
     }
-
 }

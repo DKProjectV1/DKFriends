@@ -35,6 +35,8 @@ public class BungeeCordConnection implements PluginMessageListener {
                 if(party != null) this.friendSystem.getPartyManager().replaceParty(party);
             }else if(document.getString("action").equalsIgnoreCase("syncOnlinePlayer")){
 
+            }else if(document.getString("action").equalsIgnoreCase("playerLogout")){
+                FriendSystem.getInstance().getPlayerManager().r
             }else if(document.getString("action").equalsIgnoreCase("updatePlayer")){
                 UUID uuid = document.getObject("uuid",UUID.class);
                 if(uuid != null) FriendSystem.getInstance().getPlayerManager().removeFromCache(uuid);
