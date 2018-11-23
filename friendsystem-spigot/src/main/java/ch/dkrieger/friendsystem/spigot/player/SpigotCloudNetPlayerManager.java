@@ -6,6 +6,7 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
+import de.dytanic.cloudnet.lib.utility.document.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -47,6 +48,20 @@ public class SpigotCloudNetPlayerManager extends FriendPlayerManager {
         if(player != null) return this.onlineCloudPlayers.get(player.getUniqueId());
         return null;
     }
+
+    @Override
+    public void updatePlayerSync(FriendPlayer player) {
+        CloudAPI.getInstance().sendCustomSubServerMessage("DKFriends","updatePlayer"
+                ,new Document().append("uuid",player.getUUID()));
+        CloudAPI.getInstance().sendCustomSubProxyMessage("DKFriends","updatePlayer"
+                ,new Document().append("uuid",player.getUUID()));
+    }
+
+    @Override
+    public void removeFromCache(UUID uuid) {
+        this.onlineCloudPlayers.remove(uuid);
+    }
+
     public OnlineFriendPlayer getOnlinePlayer(CloudPlayer player){
         if(player != null){
             ExternCloudNetOnlinePlayer online = this.onlineCloudPlayers.get(player.getUniqueId());

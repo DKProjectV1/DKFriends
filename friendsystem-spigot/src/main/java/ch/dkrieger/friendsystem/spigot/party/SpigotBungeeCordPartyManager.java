@@ -6,7 +6,6 @@ package ch.dkrieger.friendsystem.spigot.party;
  *
  */
 
-import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.party.PartyManager;
 import ch.dkrieger.friendsystem.lib.utils.Document;

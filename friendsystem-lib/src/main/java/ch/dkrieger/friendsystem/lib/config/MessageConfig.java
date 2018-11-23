@@ -250,7 +250,7 @@ public class MessageConfig extends SimpleConfig {
         addValue("player.message.not.allowed","[prefix]&cYou can't send &e[player] &7a message.");
         addValue("player.message.not.enable","[prefix]&cTo send a message, enable messages with &e/friend toggle message");
         addValue("player.message.no.respond","[prefix]&cNo player to respond found.");
-        addValue("player.message.no.respond","[prefix]&cPlease enter a message.");
+        addValue("player.message.no","[prefix]&cPlease enter a message.");
 
         addValue("player.notify.online","[prefix]&e[player] &ais now online.");
         addValue("player.notify.offline","[prefix]&e[player] &cis now offline.");

@@ -62,4 +62,8 @@ public class LocalSpigotOnlinePlayer implements OnlineFriendPlayer {
         World world = Bukkit.getWorld(server);
         if(world != null && !(player.getWorld().equals(world))) player.teleport(world.getSpawnLocation());
     }
+    @Override
+    public void executeCommand(String command) {
+        Bukkit.dispatchCommand(this.player,command);
+    }
 }

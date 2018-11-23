@@ -40,7 +40,7 @@ public class PartyInfoCommand extends SubFriendCommand {
                     .replace("[leader]",party.getLeader().getPlayer().getColoredName()));
             sender.sendMessage(Messages.PLAYER_PARTY_INFO_CREATED
                     .replace("[prefix]",getPrefix())
-                    .replace("[time]","time"));
+                    .replace("[time]",FriendSystem.getInstance().getConfig().getDateFormat().format(party.getCreated())));
             sender.sendMessage(Messages.PLAYER_PARTY_INFO_PUBLIC_TEXT
                     .replace("[prefix]",getPrefix())
                     .replace("[enabled]",(party.isPublic()?Messages.PLAYER_PARTY_INFO_PUBLIC_ENABLED:Messages.PLAYER_PARTY_INFO_PUBLIC_DISABLED)));
@@ -57,7 +57,7 @@ public class PartyInfoCommand extends SubFriendCommand {
                     sender.sendMessage(Messages.PLAYER_PARTY_INFO_MEMBER_LIST
                             .replace("[prefix]",getPrefix())
                             .replace("[player]",friend.getColoredName())
-                            .replace("[joined]",""+member.getJoined())
+                            .replace("[joined]",FriendSystem.getInstance().getConfig().getDateFormat().format(member.getJoined()))
                             .replace("[server]",""+online.getServer())
                             .replace("[symbol]",symbol));
                 }

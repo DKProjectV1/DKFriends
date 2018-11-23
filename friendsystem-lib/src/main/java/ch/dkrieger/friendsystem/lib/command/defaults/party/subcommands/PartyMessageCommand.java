@@ -39,7 +39,7 @@ public class PartyMessageCommand extends SubFriendCommand {
                 return;
             }
             String message = "";
-            for(int i = 1; i< args.length;i++) message = message +" "+Messages.PLAYER_PARTY_MESSAGE_COLOR + args[i];
+            for(int i = 1; i< args.length;i++) message += args[i]+" "+Messages.PLAYER_PARTY_MESSAGE_COLOR;
 
             party.sendMessage(Messages.PLAYER_PARTY_MESSAGE_FORMAT
                     .replace("[prefix]",getPrefix())

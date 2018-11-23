@@ -1,5 +1,6 @@
 package ch.dkrieger.friendsystem.spigot.player.local;
 
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import org.bukkit.Bukkit;
@@ -43,4 +44,9 @@ public class SpigotFriendPlayerManager extends FriendPlayerManager {
         }
         return null;
     }
+
+    @Override
+    public void updatePlayerSync(FriendPlayer player) {}
+    @Override
+    public void removeFromCache(UUID uuid) {}
 }

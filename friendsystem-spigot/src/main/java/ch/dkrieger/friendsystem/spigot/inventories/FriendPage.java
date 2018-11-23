@@ -14,7 +14,6 @@ import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
 import ch.dkrieger.friendsystem.spigot.util.SpigotUtil;
 import de.tr7zw.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -38,7 +37,7 @@ public class FriendPage extends PrivateGUI {
             friends.add(new Friend(UUID.randomUUID(), 0, false));
         }
         int freePlaces = SpigotUtil.getFreeInventoryPlaces(getInventory());
-        for(int i = 0; i < freePlaces; i++) getInventory().addItem(buildSkull());
+        //for(int i = 0; i < freePlaces; i++) getInventory().addItem(buildSkull());
     }
 
     @Override
@@ -81,7 +80,8 @@ public class FriendPage extends PrivateGUI {
     }
 
     private org.bukkit.inventory.ItemStack buildSkull(Player player) {
-        ItemBuilder itemBuilder = new ItemBuilder(((CraftPlayer)player).getProfile(), "");//Get gameprofile by friendplayer
-        return itemBuilder.build();
+        //ItemBuilder itemBuilder = new ItemBuilder(((CraftPlayer)player).getProfile(), "");//Get gameprofile by friendplayer
+        //return itemBuilder.build();
+        return null;
     }
 }

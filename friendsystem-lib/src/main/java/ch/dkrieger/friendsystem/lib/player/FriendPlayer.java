@@ -229,6 +229,7 @@ public class FriendPlayer {
     public void addRequest(FriendPlayer player){
         this.requests.add(new Friend(player.getUUID(),System.currentTimeMillis(),false));
         FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
+        updateSync();
     }
     public void removeRequest(FriendPlayer player){
         removeRequest(player.getUUID());
@@ -236,6 +237,7 @@ public class FriendPlayer {
     public void removeRequest(UUID uuid){
         this.requests.remove(getRequest(uuid));
         FriendSystem.getInstance().getStorage().saveRequests(this.uuid,this.requests);
+        updateSync();
     }
     public boolean hasRequest(FriendPlayer player){
         return hasRequest(player.getUUID());
@@ -263,6 +265,7 @@ public class FriendPlayer {
         this.requests.remove(friend);
         if(!noRepeat) player.addFriend(this,true);
         FriendSystem.getInstance().getStorage().saveFriendsAndRequests(this.uuid,this.friends,this.requests);
+        updateSync();
     }
     public void removeFriend(FriendPlayer player){
         removeFriend(player,false);
@@ -271,6 +274,7 @@ public class FriendPlayer {
         this.friends.remove(getFriend(player.getUUID()));
         if(!noRepeat) player.removeFriend(this,true);
         FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
+        updateSync();
     }
     public boolean isFriend(FriendPlayer player){
         return isFriend(player.getUUID());
@@ -292,6 +296,7 @@ public class FriendPlayer {
         Friend friend = getFriend(player.getUUID());
         if(friend != null) friend.setFavorite(favorite);
         FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
+        updateSync();
     }
     public void acceptAll(){
         Iterator<Friend> iterator = new ArrayList<>(this.requests).iterator();
@@ -302,6 +307,7 @@ public class FriendPlayer {
             request.getFriendPlayer().addFriend(this,true);
         }
         FriendSystem.getInstance().getStorage().saveFriendsAndRequests(this.uuid,this.friends,this.requests);
+        updateSync();
     }
     public void denyAll(){
         this.requests.clear();
@@ -313,6 +319,7 @@ public class FriendPlayer {
         Friend friend = null;
         while(iterator.hasNext() && (friend= iterator.next()) != null) friend.getFriendPlayer().removeFriend(this,true);
         FriendSystem.getInstance().getStorage().saveFriends(this.uuid,this.friends);
+        updateSync();
     }
     public Party getParty(){
         return FriendSystem.getInstance().getPartyManager().getParty(this);
@@ -324,12 +331,14 @@ public class FriendPlayer {
         updateInformations(name,color);
         this.gameProfile = gameProfile;
         updateInformations(name,color,this.gameProfile);
+        updateSync();
     }
     public void updateInformations(String name,String color){
         this.name = name;
         this.color = color;
         this.lastLogin = System.currentTimeMillis();
         FriendSystem.getInstance().getStorage().saveInformations(this.uuid, this.color, this.lastLogin, this.gameProfile);
+        updateSync();
     }
     public static class Settings {
 
@@ -408,6 +417,9 @@ public class FriendPlayer {
         public void setDesign(short design) {
             this.design = design;
         }
+    }
+    public void updateSync(){
+        FriendSystem.getInstance().getPlayerManager().updatePlayerSync(this);
     }
     public static class Status {
 

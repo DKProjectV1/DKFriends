@@ -1,7 +1,10 @@
 package ch.dkrieger.friendsystem.bungeecord.player;
 
+import ch.dkrieger.friendsystem.bungeecord.party.BungeeCordPartyManager;
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
+import ch.dkrieger.friendsystem.lib.utils.Document;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -34,6 +37,17 @@ public class BungeeCordPlayerManager extends FriendPlayerManager {
     public OnlineFriendPlayer getOnlinePlayer(String name) {
        return getOnlinePlayer(BungeeCord.getInstance().getPlayer(name));
     }
+
+    @Override
+    public void updatePlayerSync(FriendPlayer player) {
+        BungeeCordPartyManager.sendToAllSpigotServers("updatePlayer",new Document().append("uuid",player.getUUID()));
+    }
+
+    @Override
+    public void removeFromCache(UUID uuid) {
+        this.onlinePlayers.remove(BungeeCord.getInstance().getPlayer(uuid));
+    }
+
     public OnlineFriendPlayer getOnlinePlayer(ProxiedPlayer player){
         if(player != null){
             LocalBungeeCordOnlinePlayer online = this.onlinePlayers.get(player);

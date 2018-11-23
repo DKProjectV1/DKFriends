@@ -35,8 +35,8 @@ public class FriendMessageCommand extends SubFriendCommand {
         }
         FriendPlayer player = sender.getAsFriendPlayer();
         if(player != null){
-            if(args.length <= 1){
-                sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ENABLED
+            if(args.length <= 2){
+                sender.sendMessage(Messages.PLAYER_MESSAGE_NO
                         .replace("[prefix]",getPrefix()));
                 return;
             }
@@ -72,7 +72,7 @@ public class FriendMessageCommand extends SubFriendCommand {
                 return;
             }
             String message = "";
-            for(int i = 1; i< args.length;i++) message = message + " "+Messages.PLAYER_MESSAGE_COLOR + args[i];
+            for(int i = 1; i< args.length;i++) message +=  args[i]+" "+Messages.PLAYER_MESSAGE_COLOR;
             message = Messages.PLAYER_MESSAGE_FORMAT
                     .replace("[message]",message)
                     .replace("[prefix]",getPrefix())

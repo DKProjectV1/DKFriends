@@ -32,7 +32,7 @@ public class PartyMessageCommand extends FriendCommand {
             return;
         }
         String message = "";
-        for(int i = 0; i< args.length;i++) message += " "+args[i];
+        for(int i = 0; i< args.length;i++) message += args[i]+" "+Messages.PLAYER_PARTY_MESSAGE_COLOR;
         sender.executeCommand(FriendSystem.getInstance().getConfig().getStringValue("command.party.name")
                 +" "+FriendSystem.getInstance().getConfig().getStringValue("command.party.message.name")
                 +" "+message);

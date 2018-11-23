@@ -9,6 +9,7 @@ package ch.dkrieger.friendsystem.lib.config;
 import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.storage.StorageType;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 public class Config extends SimpleConfig {
@@ -16,7 +17,8 @@ public class Config extends SimpleConfig {
     private final DKFriendsPlatform platform;
     private StorageType storageType;
     private String host, port, user, password, database, mongoDbAuthenticationDatabase, dataFolder;
-    private boolean mongoDbSrv, mongoDbAuthentication, commandFriendEnabled;
+    private boolean mongoDbSrv, mongoDbAuthentication, commandFriendEnabled, bungeeCord;
+    private SimpleDateFormat dateFormat;
 
     public Config(DKFriendsPlatform platform) {
         super(new File(platform.getFolder(),"config.yml"));
@@ -46,6 +48,9 @@ public class Config extends SimpleConfig {
     public String getDatabase() {
         return database;
     }
+    public SimpleDateFormat getDateFormat(){
+        return this.dateFormat;
+    }
 
     public String getMongoDbAuthenticationDatabase() {
         return mongoDbAuthenticationDatabase;
@@ -59,6 +64,11 @@ public class Config extends SimpleConfig {
     public boolean isCommandFriendEnabled() {
         return commandFriendEnabled;
     }
+
+    public boolean isBungeeCord() {
+        return bungeeCord;
+    }
+
     public String getDataFolder() {
         return dataFolder;
     }
@@ -77,9 +87,13 @@ public class Config extends SimpleConfig {
         this.mongoDbSrv = getBooleanValue("storage.mongodb.srv");
 
         this.commandFriendEnabled = getBooleanValue("command.friend.enabled");
+
+        this.dateFormat = new SimpleDateFormat(getStringValue("date.format"));
+        this.bungeeCord = getBooleanValue("bungeecord");
     }
     @Override
     public void registerDefaults() {
+        addValue("bungeecord",false);
         addValue("storage.folder",this.platform.getFolder()+"/data/");
         addValue("storage.type", StorageType.MONGODB.toString().toUpperCase());//change to json
         addValue("storage.host", "127.0.0.1");
@@ -90,6 +104,8 @@ public class Config extends SimpleConfig {
         addValue("storage.mongodb.mongodbauthentication",true);
         addValue("storage.mongodb.authenticationDatabase", "admin");
         addValue("storage.mongodb.srv", false);
+
+        addValue("date.format","yyyy.MM.dd HH:mm");
 
         //Friend commands
         addValue("command.friend.enabled",true);
@@ -156,7 +172,7 @@ public class Config extends SimpleConfig {
 
         addValue("command.friend.message.enabled",true);
         addValue("command.friend.message.name","message");
-        addValue("command.friend.message.description", "Send a message to a friend");
+        addValue("command.friend.message.description", "Send a message");
         addValue("command.friend.message.permission", "none");
         addValue("command.friend.message.aliases", Arrays.asList("msg","nachricht"));
 
@@ -253,15 +269,57 @@ public class Config extends SimpleConfig {
 
         addValue("command.party.message.enabled",true);
         addValue("command.party.message.name","message");
-        addValue("command.party.message.description", "Send a message to your party members");
+        addValue("command.party.message.description", "Send a message ");
         addValue("command.party.message.permission", "none");
         addValue("command.party.message.aliases", Arrays.asList("msg","nachricht","chat"));
+
+        addValue("command.party.join.enabled",true);
+        addValue("command.party.join.name","join");
+        addValue("command.party.join.description", "Join a public party");
+        addValue("command.party.join.permission", "none");
+        addValue("command.party.join.aliases", Arrays.asList());
+
+        addValue("command.party.publiclist.enabled",true);
+        addValue("command.party.publiclist.name","publiclist");
+        addValue("command.party.publiclist.description", "List all public parties");
+        addValue("command.party.publiclist.permission", "none");
+        addValue("command.party.publiclist.aliases", Arrays.asList());
+
+        addValue("command.party.random.enabled",true);
+        addValue("command.party.random.name","random");
+        addValue("command.party.random.description", "Join a random party");
+        addValue("command.party.random.permission", "none");
+        addValue("command.party.random.aliases", Arrays.asList());
 
         addValue("command.party.promote.enabled",true);
         addValue("command.party.promote.name","promote");
         addValue("command.party.promote.description", "Promote a party member");
         addValue("command.party.promote.permission", "none");
         addValue("command.party.promote.aliases", Arrays.asList());
+
+        addValue("command.party.public.enabled",true);
+        addValue("command.party.public.name","public");
+        addValue("command.party.public.description", "Make a party public");
+        addValue("command.party.public.permission", "none");
+        addValue("command.party.public.aliases", Arrays.asList());
+
+        addValue("command.party.private.enabled",true);
+        addValue("command.party.private.name","private");
+        addValue("command.party.private.description", "Kick a party private");
+        addValue("command.party.private.permission", "none");
+        addValue("command.party.private.aliases", Arrays.asList());
+
+        addValue("command.party.ban.enabled",true);
+        addValue("command.party.ban.name","ban");
+        addValue("command.party.ban.description", "Ban a member");
+        addValue("command.party.ban.permission", "none");
+        addValue("command.party.ban.aliases", Arrays.asList());
+
+        addValue("command.party.unban.enabled",true);
+        addValue("command.party.unban.name","unban");
+        addValue("command.party.unban.description", "Unban a member");
+        addValue("command.party.unban.permission", "none");
+        addValue("command.party.unban.aliases", Arrays.asList());
 
         addValue("command.partymessage.enabled",true);
         addValue("command.partymessage.name","pmessage");

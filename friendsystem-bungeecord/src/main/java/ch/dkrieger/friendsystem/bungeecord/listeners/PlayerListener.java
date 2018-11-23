@@ -118,7 +118,7 @@ public class PlayerListener implements Listener {
             FriendPlayer player = FriendSystem.getInstance().getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
             if(player == null) return;
             if(player.isInParty()){
-                BungeeCord.getInstance().getPluginManager().dispatchCommand(event.getPlayer(),"party leave");//change to config
+                BungeeCord.getInstance().getPluginManager().dispatchCommand(event.getPlayer(),"party leave");
             }
             List<Friend> friends = player.getOnlineFriends();
             if(friends.isEmpty()) return;

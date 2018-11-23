@@ -119,11 +119,13 @@ public class FriendSystem {
     }
 
     public void registerCommands(){
-        if(config.getBooleanValue("command.friend.deny.enabled")) new FriendCommand(config);
-        if(config.getBooleanValue("command.friendmessage.enabled")) new FriendMessageCommand();
-        if(config.getBooleanValue("command.friendrespond.enabled")) new FriendRespondCommand();
-        if(config.getBooleanValue("command.party.enabled")) new PartyCommand(config);
-        if(config.getBooleanValue("command.partymessage.enabled")) new PartyMessageCommand();
+        if(!(this.platform.getPlatformName().equalsIgnoreCase("BungeeCord")) && this.config.isBungeeCord()) return;
+
+        if(config.getBooleanValue("command.friend.enabled")) getCommandManager().registerCommand(new FriendCommand(config));
+        if(config.getBooleanValue("command.friendmessage.enabled")) getCommandManager().registerCommand(new FriendMessageCommand());
+        if(config.getBooleanValue("command.friendrespond.enabled")) getCommandManager().registerCommand(new FriendRespondCommand());
+        if(config.getBooleanValue("command.party.enabled")) getCommandManager().registerCommand(new PartyCommand(config));
+        if(config.getBooleanValue("command.partymessage.enabled")) getCommandManager().registerCommand(new PartyMessageCommand());
     }
 
     public static FriendSystem getInstance() {

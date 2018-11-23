@@ -50,9 +50,14 @@ public abstract class FriendPlayerManager {
         FriendSystem.getInstance().getStorage().createPlayer(player);
         return player;
     }
+
     public abstract Collection<OnlineFriendPlayer> getLoadedOnlinePlayers();
 
     public abstract OnlineFriendPlayer getOnlinePlayer(UUID uuid);
 
     public abstract OnlineFriendPlayer getOnlinePlayer(String name);
+
+    public abstract void updatePlayerSync(FriendPlayer player);
+
+    public abstract void removeFromCache(UUID uuid);
 }

@@ -62,11 +62,12 @@ public class FriendListCommand extends SubFriendCommand {
                 OnlineFriendPlayer online = friend.getOnlineFriendPlayer();
                 String text;
                 if(online != null) text = Messages.PLAYER_LIST_ONLINE.replace("[server]",online.getServer());
-                else text = Messages.PLAYER_LIST_OFFLINE.replace("[lastOnline]",""+friendPlayer.getLastLogin());
+                else text = Messages.PLAYER_LIST_OFFLINE
+                        .replace("[lastOnline]",""+FriendSystem.getInstance().getConfig().getDateFormat().format(friendPlayer.getLastLogin()));
                 if(friend.isFavorite()) text = text.replace("[symbol]",Messages.PLAYER_LIST_SYMBOL_FAVORITE);
                 else text = text.replace("[symbol]",Messages.PLAYER_LIST_SYMBOL_NORMAL);
                 text = text.replace("[player]",friendPlayer.getColoredName())
-                        .replace("[friendsSince]",""+friend.getTimeStamp())
+                        .replace("[friendsSince]",""+FriendSystem.getInstance().getConfig().getDateFormat().format(friend.getTimeStamp()))
                         .replace("[prefix]",getPrefix());
                 TextComponent component = new TextComponent(text);
                 if(online != null) component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND

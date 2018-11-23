@@ -9,7 +9,7 @@ package ch.dkrieger.friendsystem.bungeecord.listeners;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
-import de.dytanic.cloudnet.bridge.event.proxied.ProxiedCustomChannelMessageReceiveEvent;
+import de.dytanic.cloudnet.bridge.event.proxied.ProxiedSubChannelMessageEvent;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class CloudNetMessageChannelListener implements Listener {
 
     @EventHandler
-    public void onReceive(ProxiedCustomChannelMessageReceiveEvent event){
+    public void onReceive(ProxiedSubChannelMessageEvent event){
         if(event.getChannel() != null && event.getMessage() != null && event.getDocument() != null
                 && event.getChannel().equalsIgnoreCase("DKFriends")){
             if(event.getMessage().equalsIgnoreCase("sendMessage")){
@@ -41,9 +41,16 @@ public class CloudNetMessageChannelListener implements Listener {
                     ServerInfo server = BungeeCord.getInstance().getServerInfo(event.getDocument().getString("server"));
                     if(server != null && !(player.getServer().getInfo().equals(server))) player.connect(server);
                 }
+            }else if(event.getMessage().equalsIgnoreCase("executeCommand")){
+                ProxiedPlayer player = BungeeCord.getInstance().getPlayer(event.getDocument().getObject("player", UUID.class));
+                if(player != null) BungeeCord.getInstance().getPluginManager().dispatchCommand(player
+                        ,event.getDocument().getString("command"));
             }else if(event.getMessage().equalsIgnoreCase("partySync")){
                 Party party = event.getDocument().getObject("party",Party.class);
                 if(party != null) FriendSystem.getInstance().getPartyManager().replaceParty(party);
+            }else if(event.getMessage().equalsIgnoreCase("updatePlayer")){
+                UUID uuid = event.getDocument().getObject("uuid",UUID.class);
+                if(uuid != null) FriendSystem.getInstance().getPlayerManager().removeFromCache(uuid);
             }
         }
     }

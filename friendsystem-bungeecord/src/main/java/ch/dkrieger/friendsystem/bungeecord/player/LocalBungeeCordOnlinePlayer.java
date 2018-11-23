@@ -58,4 +58,9 @@ public class LocalBungeeCordOnlinePlayer implements OnlineFriendPlayer {
         ServerInfo info = BungeeCord.getInstance().getServerInfo(server);
         if(info != null && !(this.proxiedPlayer.getServer().getInfo().equals(info))) this.proxiedPlayer.connect(info);
     }
+
+    @Override
+    public void executeCommand(String command) {
+        BungeeCord.getInstance().getPluginManager().dispatchCommand(this.proxiedPlayer,command);
+    }
 }

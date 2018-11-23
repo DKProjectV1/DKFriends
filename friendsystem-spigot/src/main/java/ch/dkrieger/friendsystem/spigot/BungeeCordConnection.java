@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
+import java.util.UUID;
 
 public class BungeeCordConnection implements PluginMessageListener {
 
@@ -34,6 +35,9 @@ public class BungeeCordConnection implements PluginMessageListener {
                 if(party != null) this.friendSystem.getPartyManager().replaceParty(party);
             }else if(document.getString("action").equalsIgnoreCase("syncOnlinePlayer")){
 
+            }else if(document.getString("action").equalsIgnoreCase("updatePlayer")){
+                UUID uuid = document.getObject("uuid",UUID.class);
+                if(uuid != null) FriendSystem.getInstance().getPlayerManager().removeFromCache(uuid);
             }
         }catch (Exception exception){
             exception.printStackTrace();

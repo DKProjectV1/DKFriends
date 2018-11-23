@@ -28,4 +28,6 @@ public interface OnlineFriendPlayer {
 
     public void connect(String server);
 
+    public void executeCommand(String command);
+
 }

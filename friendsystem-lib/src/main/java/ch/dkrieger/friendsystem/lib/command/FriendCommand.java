@@ -132,7 +132,8 @@ public abstract class FriendCommand {
                 sender.sendMessage(Messages.HELP_HEADER_LINE
                         .replace("[name]",getName())
                         .replace("[usage]",(subCommand.getUsage() != null?subCommand.getUsage():""))
-                        .replace("[_usage]",(subCommand.getUsage() != null?" "+subCommand.getUsage():""))
+                        .replace("[_usage]",(subCommand.getUsage() != null?
+                                (subCommand.getUsage().equalsIgnoreCase("")?"":" "+subCommand.getUsage()):""))
                         .replace("[subCommand]",subCommand.getName())
                         .replace("[description]",subCommand.getDescription()));
             }

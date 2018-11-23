@@ -55,15 +55,14 @@ public class PluginMessageChannelListener implements Listener {
                 }else if(document.getString("action").equalsIgnoreCase("syncParty")){
                     Party party = document.getObject("party",Party.class);
                     if(party != null) FriendSystem.getInstance().getPartyManager().replaceParty(party);
-                }
-
-                /*
-                else if(document.getString("action").equalsIgnoreCase("executeCommand")){
+                }else if(document.getString("action").equalsIgnoreCase("updatePlayer")){
+                    UUID uuid = document.getObject("uuid",UUID.class);
+                    if(uuid != null) FriendSystem.getInstance().getPlayerManager().removeFromCache(uuid);
+                }else if(document.getString("action").equalsIgnoreCase("executeCommand")){
                     ProxiedPlayer player = BungeeCord.getInstance().getPlayer(document.getObject("player", UUID.class));
                     if(player != null) BungeeCord.getInstance().getPluginManager().dispatchCommand(player
                             ,document.getString("command"));
                 }
-                 */
             }catch (Exception exception){
                 exception.printStackTrace();
             }

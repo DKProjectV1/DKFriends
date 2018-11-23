@@ -22,7 +22,7 @@ public class FriendMessageCommand extends FriendCommand {
                 FriendSystem.getInstance().getConfig().getStringValue("command.friendmessage.name"),
                 FriendSystem.getInstance().getConfig().getStringValue("command.friendmessage.permission"),
                 "<player> <message>",
-                FriendSystem.getInstance().getConfig().getStringListValue("command.message.aliases"));
+                FriendSystem.getInstance().getConfig().getStringListValue("command.friendmessage.aliases"));
         setPrefix(Messages.PREFIX_PARTY);
     }
     @Override
@@ -33,7 +33,7 @@ public class FriendMessageCommand extends FriendCommand {
             return;
         }
         String message = "";
-        for(int i = 1; i< args.length;i++)  message += " "+args[i];
+        for(int i = 1; i< args.length;i++)  message += args[i]+" "+Messages.PLAYER_MESSAGE_COLOR;
         sender.executeCommand(FriendSystem.getInstance().getConfig().getStringValue("command.friend.name")
                 +" "+FriendSystem.getInstance().getConfig().getStringValue("command.friend.message.name")
                 +" "+args[0]+" "+message);

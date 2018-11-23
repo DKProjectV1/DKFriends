@@ -28,12 +28,12 @@ public class FriendRespondCommand extends SubFriendCommand {
     public void onExecute(FriendCommandSender sender, String[] args) {
         if(args.length > 0){
             String message = "";
-            for(int i = 0; i< args.length;i++) message += " "+ args[i];
+            for(int i = 0; i< args.length;i++) message += args[i]+" "+Messages.PLAYER_MESSAGE_COLOR;
             sender.executeCommand(FriendSystem.getInstance().getConfig().getStringValue("command.friend.name")
                     +" "+FriendSystem.getInstance().getConfig().getStringValue("command.friend.respond.name")
                     +" "+message);
         }else{
-            sender.sendMessage(Messages.PLAYER_MESSAGE_NOT_ENABLED
+            sender.sendMessage(Messages.PLAYER_MESSAGE_NO
                     .replace("[prefix]",getPrefix()));
         }
     }
