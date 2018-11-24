@@ -17,7 +17,6 @@ import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -47,14 +46,8 @@ public class PlayerListener implements Listener {
         }
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getConnection().getUniqueId()
-                    ,event.getConnection().getName(),"§8",null);
-        }else player.updateInformations(event.getConnection().getName(),getColor(player));
-        if(BungeeCord.getInstance().getPlayers().size() == 0){
-            BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{
-
-
-            });
-        }
+                    ,event.getConnection().getName(),FriendSystem.getInstance().getConfig().getDefaultColor(),null);
+        }else player.updateInformations(event.getConnection().getName(),FriendSystem.getInstance().getPlatform().getColor(player));
     }
     @EventHandler(priority=100)
     public void onPostLogin(PostLoginEvent event){
@@ -131,7 +124,7 @@ public class PlayerListener implements Listener {
             if(FriendSystem.getInstance().getPlayerManager() instanceof BungeeCordPlayerManager){
                 ((BungeeCordPlayerManager)FriendSystem.getInstance().getPlayerManager()).unregisterOnlinePlayer(event.getPlayer().getUniqueId());
             }
-            player.updateInformations(event.getPlayer().getName(),getColor(player));
+            player.updateInformations(event.getPlayer().getName(),FriendSystem.getInstance().getPlatform().getColor(player));
         });
     }
     @EventHandler
@@ -149,13 +142,5 @@ public class PlayerListener implements Listener {
                 }
             }
         });
-    }
-    private String getColor(FriendPlayer player){
-        return "§8";
-        /*
-
-        returns colors
-
-         */
     }
 }

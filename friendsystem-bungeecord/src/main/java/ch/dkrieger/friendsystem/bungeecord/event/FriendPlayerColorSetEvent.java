@@ -14,16 +14,22 @@ public class FriendPlayerColorSetEvent extends Event{
 
     private String color;
     private FriendPlayer player;
+    private ProxiedPlayer proxiedPlayer;
 
-    public FriendPlayerColorSetEvent(String color, FriendPlayer player) {
+    public FriendPlayerColorSetEvent(String color, FriendPlayer player, ProxiedPlayer proxiedPlayer) {
         this.color = color;
         this.player = player;
+        this.proxiedPlayer = proxiedPlayer;
     }
+
     public String getColor(){
         return this.color;
     }
     public FriendPlayer getPlayer() {
         return this.player;
+    }
+    public ProxiedPlayer getProxiedPlayer() {
+        return this.proxiedPlayer;
     }
     public void setColor(String color){
         this.color = color;

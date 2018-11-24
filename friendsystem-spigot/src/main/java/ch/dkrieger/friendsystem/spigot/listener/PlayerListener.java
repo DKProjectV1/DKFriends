@@ -32,7 +32,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event){
-        if(Bukkit.getOnlineMode() && !(event.getPlayer().isOnline())) return;
         FriendPlayer player = null;
         try{
             player = FriendSystem.getInstance().getPlayerManager().getPlayerSave(event.getPlayer().getUniqueId());
@@ -47,7 +46,7 @@ public class PlayerListener implements Listener {
         }
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getPlayer().getUniqueId()
-                    ,event.getPlayer().getName(),"§8",getGameProfile(event.getPlayer()).toString());
+                    ,event.getPlayer().getName(),FriendSystem.getInstance().getConfig().getDefaultColor(),getGameProfile(event.getPlayer()).toString());
             System.out.println(getGameProfile(event.getPlayer()));
         }else {
             FriendPlayer finalPlayer = player;
@@ -100,7 +99,7 @@ public class PlayerListener implements Listener {
                                 .replace("[player]",finalPlayer.getColoredName()));
                     }
                 }
-                finalPlayer.updateInformations(event.getPlayer().getName(),getColor(finalPlayer),getGameProfile(event.getPlayer()).toString());
+                finalPlayer.updateInformations(event.getPlayer().getName(),FriendSystem.getInstance().getPlatform().getColor(finalPlayer),getGameProfile(event.getPlayer()).toString());
             });
         }
     }
@@ -119,11 +118,11 @@ public class PlayerListener implements Listener {
                         .replace("[prefix]",Messages.PREFIX_FRIEND)
                         .replace("[player]",player.getColoredName()));
             }
-            player.updateInformations(event.getPlayer().getName(),getColor(player));
+            player.updateInformations(event.getPlayer().getName(),FriendSystem.getInstance().getPlatform().getColor(player));
         });
     }
     @EventHandler
-    public void onWolrdChange(PlayerChangedWorldEvent event){
+    public void onWorldChange(PlayerChangedWorldEvent event){
         if(FriendSystem.getInstance().getConfig().isBungeeCord()) return;
         Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(),()->{
             FriendPlayer player = FriendSystem.getInstance().getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
@@ -149,13 +148,5 @@ public class PlayerListener implements Listener {
             exception.printStackTrace();
         }
         return null;
-    }
-    private String getColor(FriendPlayer friendPlayer){
-        return "§8";
-        /*
-
-        returns colors
-
-         */
     }
 }

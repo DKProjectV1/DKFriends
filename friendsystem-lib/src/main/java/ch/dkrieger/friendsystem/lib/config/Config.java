@@ -7,7 +7,10 @@ package ch.dkrieger.friendsystem.lib.config;
  */
 
 import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
+import ch.dkrieger.friendsystem.lib.player.PlayerColor;
 import ch.dkrieger.friendsystem.lib.storage.StorageType;
+import net.md_5.bungee.api.ChatColor;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -18,9 +21,10 @@ public class Config extends SimpleConfig {
 
     private final DKFriendsPlatform platform;
     private StorageType storageType;
-    private String host, port, user, password, database, mongoDbAuthenticationDatabase, dataFolder;
-    private boolean mongoDbSrv, mongoDbAuthentication, commandFriendEnabled, bungeeCord;
+    private String host, port, user, password, database, mongoDbAuthenticationDatabase, dataFolder, defaultColor;
+    private boolean mongoDbSrv, mongoDbAuthentication, commandFriendEnabled, bungeeCord, liveColorUpdate;
     private SimpleDateFormat dateFormat;
+    private List<PlayerColor> playerColors;
 
     public Config(DKFriendsPlatform platform) {
         super(new File(platform.getFolder(),"config.yml"));
@@ -71,6 +75,16 @@ public class Config extends SimpleConfig {
         return bungeeCord;
     }
 
+    public boolean isLiveColorUpdate() {
+        return liveColorUpdate;
+    }
+    public String getDefaultColor() {
+        return defaultColor;
+    }
+    public List<PlayerColor> getPlayerColors() {
+        return playerColors;
+    }
+
     public String getDataFolder() {
         return dataFolder;
     }
@@ -91,7 +105,17 @@ public class Config extends SimpleConfig {
         this.commandFriendEnabled = getBooleanValue("command.friend.enabled");
 
         this.dateFormat = new SimpleDateFormat(getStringValue("date.format"));
+
         this.bungeeCord = getBooleanValue("bungeecord");
+
+        this.liveColorUpdate = getBooleanValue("color.liveupdate");
+        this.defaultColor = getStringValue("color.default");
+        this.playerColors = new LinkedList<>();
+        for(String colors : getStringListValue("color.colors")){
+            String[] split = colors.split(":");
+            if(colors.length() >= 2)
+                this.playerColors.add(new PlayerColor(split[0],split[1]));
+        }
     }
     @Override
     public void registerDefaults() {
@@ -111,15 +135,14 @@ public class Config extends SimpleConfig {
 
         addValue("color.liveupdate",false);
         addValue("color.default","&8");
-        addValue("color.console","&4");
         List<String> colors = new LinkedList<>();
-        colors.add("dkbans.color.admin:&4");
-        colors.add("dkbans.color.developer:&b");
-        colors.add("dkbans.color.mod:&c");
-        colors.add("dkbans.color.supporter:&9");
-        colors.add("dkbans.color.builder:&3");
-        colors.add("dkbans.color.youtuber:&5");
-        colors.add("dkbans.color.premium:&6");
+        colors.add("dkfriends.color.admin:&4");
+        colors.add("dkfriends.color.developer:&b");
+        colors.add("dkfriends.color.mod:&c");
+        colors.add("dkfriends.color.supporter:&9");
+        colors.add("dkfriends.color.builder:&3");
+        colors.add("dkfriends.color.youtuber:&5");
+        colors.add("dkfriends.color.premium:&6");
         addValue("color.colors",colors);
 
         //Friend commands

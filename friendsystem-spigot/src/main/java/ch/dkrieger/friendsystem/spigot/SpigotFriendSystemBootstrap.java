@@ -11,6 +11,8 @@ import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.cloudnet.CloudNetPartyManager;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.lib.player.PlayerColor;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
@@ -21,6 +23,7 @@ import ch.dkrieger.friendsystem.spigot.adapter.inventory.OpenInventoryAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.party.OpenPartyPageAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.settings.OpenSettingsPageAdapter;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStorage;
+import ch.dkrieger.friendsystem.spigot.event.FriendPlayerColorSetEvent;
 import ch.dkrieger.friendsystem.spigot.listener.*;
 import ch.dkrieger.friendsystem.spigot.party.SpigotBungeeCordPartyManager;
 import ch.dkrieger.friendsystem.spigot.party.SpigotPartyManager;
@@ -28,6 +31,7 @@ import ch.dkrieger.friendsystem.spigot.player.SpigotCloudNetPlayerManager;
 import ch.dkrieger.friendsystem.spigot.player.bungeecord.SpigotBungeeCordPlayerManager;
 import ch.dkrieger.friendsystem.spigot.player.local.SpigotFriendPlayerManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -99,6 +103,23 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
     @Override
     public FriendCommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    @Override
+    public String getColor(FriendPlayer player) {
+        Player bukkitPlayer =  Bukkit.getPlayer(player.getUUID());
+        if(bukkitPlayer == null) return null;
+        String color = FriendSystem.getInstance().getConfig().getDefaultColor();
+        for(PlayerColor colors : FriendSystem.getInstance().getConfig().getPlayerColors()){
+            if(bukkitPlayer.hasPermission(colors.getPermission())){
+                color = colors.getColor();
+                break;
+            }
+        }
+        FriendPlayerColorSetEvent event = new FriendPlayerColorSetEvent(color,player,bukkitPlayer);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.getColor() != null) color = event.getColor();
+        return color;
     }
 
     public BungeeCordConnection getBungeeCordConnection() {

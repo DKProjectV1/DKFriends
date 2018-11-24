@@ -1,5 +1,6 @@
 package ch.dkrieger.friendsystem.bungeecord;
 
+import ch.dkrieger.friendsystem.bungeecord.event.FriendPlayerColorSetEvent;
 import ch.dkrieger.friendsystem.bungeecord.listeners.CloudNetMessageChannelListener;
 import ch.dkrieger.friendsystem.bungeecord.listeners.PlayerListener;
 import ch.dkrieger.friendsystem.bungeecord.listeners.PluginMessageChannelListener;
@@ -11,7 +12,10 @@ import ch.dkrieger.friendsystem.lib.DKFriendsPlatform;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.lib.player.PlayerColor;
 import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.File;
@@ -75,6 +79,23 @@ public class BungeeCordFriendSystemBootstrap extends Plugin implements DKFriends
     @Override
     public FriendCommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    @Override
+    public String getColor(FriendPlayer player) {
+        ProxiedPlayer proxyPlayer = BungeeCord.getInstance().getPlayer(player.getUUID());
+        if(proxyPlayer == null) return null;
+        String color = FriendSystem.getInstance().getConfig().getDefaultColor();
+        for(PlayerColor colors : FriendSystem.getInstance().getConfig().getPlayerColors()){
+            if(proxyPlayer.hasPermission(colors.getPermission())){
+                color = colors.getColor();
+                break;
+            }
+        }
+        FriendPlayerColorSetEvent event = new FriendPlayerColorSetEvent(color,player,proxyPlayer);
+        BungeeCord.getInstance().getPluginManager().callEvent(event);
+        if(event.getColor() != null) color = event.getColor();
+        return color;
     }
     private boolean isCloudNet(){
         Plugin cloudnet = BungeeCord.getInstance().getPluginManager().getPlugin("CloudNetAPI");

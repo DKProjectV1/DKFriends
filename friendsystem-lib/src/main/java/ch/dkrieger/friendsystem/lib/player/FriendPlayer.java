@@ -4,6 +4,7 @@ import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.utils.Document;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.*;
@@ -57,7 +58,11 @@ public class FriendPlayer {
     }
 
     public String getColor() {
-        return color;
+        if(FriendSystem.getInstance().getConfig().isLiveColorUpdate()){
+            String color = FriendSystem.getInstance().getPlatform().getColor(this);
+            if(color != null) this.color = color;
+        }
+        return ChatColor.translateAlternateColorCodes('&',this.color);
     }
 
     public String getGameProfile() {

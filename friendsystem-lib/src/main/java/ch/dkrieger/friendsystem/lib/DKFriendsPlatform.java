@@ -1,6 +1,7 @@
 package ch.dkrieger.friendsystem.lib;
 
 import ch.dkrieger.friendsystem.lib.command.FriendCommandManager;
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 
 import java.io.File;
 
@@ -19,6 +20,8 @@ public interface DKFriendsPlatform {
     public File getFolder();
 
     public FriendCommandManager getCommandManager();
+
+    public String getColor(FriendPlayer player);
 
     //public PermissionTaskManager getTaskManager();
 
