@@ -6,6 +6,7 @@ import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.api.Reflection;
 import com.mojang.authlib.GameProfile;
@@ -46,7 +47,7 @@ public class PlayerListener implements Listener {
         }
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getPlayer().getUniqueId()
-                    ,event.getPlayer().getName(),FriendSystem.getInstance().getConfig().getDefaultColor(),getGameProfile(event.getPlayer()).toString());
+                    ,event.getPlayer().getName(),FriendSystem.getInstance().getConfig().getDefaultColor(), GeneralUtil.GSON_NOT_PRETTY.toJson(getGameProfile(event.getPlayer())));
             System.out.println(getGameProfile(event.getPlayer()));
         }else {
             FriendPlayer finalPlayer = player;

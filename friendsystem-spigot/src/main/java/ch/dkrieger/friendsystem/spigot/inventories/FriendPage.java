@@ -81,11 +81,7 @@ public class FriendPage extends PrivateGUI {
     }
 
     private boolean setPage(int page) {
-        System.out.println(page);
-        System.out.println(FriendSystem.getInstance());
-        System.out.println(FriendSystem.getInstance().getPlayerManager());
-        System.out.println(getFriendPlayer());
-        System.out.println(getFriendPlayer().getFriends().size());
+        List<Friend> friends = getFriendPlayer().getSortedFriends();
         if(page < 1)return false;
         int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSkullFirstSlot();
         int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSkullLastSlot();
@@ -93,7 +89,7 @@ public class FriendPage extends PrivateGUI {
 
         int switchPageSlot1 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getFriendSwitchPageInventorySlot1();
         int switchPageSlot2 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getFriendSwitchPageInventorySlot2();
-        int pages = (int) Math.ceil((double)getFriendPlayer().getFriends().size() / skullsPerPage);
+        int pages = (int) Math.ceil((double)friends.size() / skullsPerPage);
         if(page > 1) {
             if(page == pages) setItem(switchPageSlot2, new ItemStack(Material.AIR));
             getInventory().setItem((page == pages ? switchPageSlot1 : switchPageSlot2),
@@ -107,14 +103,14 @@ public class FriendPage extends PrivateGUI {
         if(page == 1) setItem(switchPageSlot2, new ItemStack(Material.AIR));
 
 
-        if(!(getFriendPlayer().getFriends().size() > page + skullLastSlot * (page - 1))) return false;
+        if(!(friends.size() > page + skullLastSlot * (page - 1))) return false;
 
         clear(skullFirstSlot, skullLastSlot);
         for(int i = skullFirstSlot; i <= skullLastSlot; i++) {
             int getter = (page > 1 ? i+((page-1)*skullLastSlot)+(page-1) : i);
-            if(!(getFriendPlayer().getFriends().size() > getter)) break;
+            if(!(friends.size() > getter)) break;
 
-            Friend friend = getFriendPlayer().getFriends().get(getter);
+            Friend friend = friends.get(getter);
             if(friend.isOnline()) getInventory().setItem(i, SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItems().get("onlinePlayerSkull").toBukkitItemStack(friend));
             else getInventory().setItem(i, SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItems().get("offlinePlayerSkull").toBukkitItemStack(friend));
         }

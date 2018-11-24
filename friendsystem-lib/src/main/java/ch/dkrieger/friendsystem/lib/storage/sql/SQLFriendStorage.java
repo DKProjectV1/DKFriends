@@ -143,6 +143,7 @@ public abstract class SQLFriendStorage implements FriendStorage {
 
     @Override
     public void createPlayer(FriendPlayer player) {
+        System.out.println("Create Player sql lite");
         this.friendPlayerTable.insert()
                 .insert("uuid")
                 .insert("name")
@@ -162,7 +163,7 @@ public abstract class SQLFriendStorage implements FriendStorage {
                 .value(player.getUUID())
                 .value(player.getName())
                 .value(player.getColor())
-                .value("test")
+                .value(player.getGameProfile())
                 .value(player.getFirstLogin())
                 .value(player.getLastLogin())
                 .value(player.getMaxFriends())

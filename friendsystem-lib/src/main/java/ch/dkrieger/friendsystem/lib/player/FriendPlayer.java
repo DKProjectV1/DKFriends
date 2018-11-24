@@ -108,10 +108,25 @@ public class FriendPlayer {
     public List<Friend> getFriends() {
         return friends;
     }
+
     public List<String> getFriendNames() {
         List<String> names = new LinkedList<>();
         for(Friend friend : this.friends) names.add(friend.getFriendPlayer().getName());
         return names;
+    }
+
+    public List<Friend> getFriendsSorted() {
+        List<Friend> friends = new LinkedList<>(this.friends);
+        friends.sort((friend1, friend2) -> {
+            if(friend1.isOnline() && friend1.isFavorite() && friend2.isOnline() && !friend2.isFavorite()) return -1;
+            if(friend1.isOnline() && !friend1.isFavorite() && friend2.isOnline() && friend2.isFavorite()) return 1;
+            if(friend1.isOnline() && !friend2.isOnline()) return -1;
+            if(!friend1.isOnline() && friend2.isOnline()) return 1;
+            if(!friend1.isOnline() && friend1.isFavorite() && !friend2.isOnline() && !friend2.isFavorite())return -1;
+            if(!friend1.isOnline() && !friend1.isFavorite() && !friend2.isFavorite() && friend2.isFavorite()) return 1;
+            return 0;
+        });
+        return friends;
     }
 
     public List<Friend> getSortedFriends(){

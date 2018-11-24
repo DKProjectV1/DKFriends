@@ -16,9 +16,11 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        SpigotFriendSystemBootstrap.getInstance().getInventoryManager().createProfile(event.getPlayer());
         Bukkit.getScheduler().runTaskLater(SpigotFriendSystemBootstrap.getInstance(), ()-> {
-            SpigotFriendSystemBootstrap.getInstance().getFriendAdapter("openFriendPage").execute(event.getPlayer());
+            SpigotFriendSystemBootstrap.getInstance().getInventoryManager().createProfile(event.getPlayer());
+            Bukkit.getScheduler().runTaskLater(SpigotFriendSystemBootstrap.getInstance(), ()-> {
+                SpigotFriendSystemBootstrap.getInstance().getFriendAdapter("openFriendPage").execute(event.getPlayer());
+            },20*5);
         }, 20*5);
     }
 }
