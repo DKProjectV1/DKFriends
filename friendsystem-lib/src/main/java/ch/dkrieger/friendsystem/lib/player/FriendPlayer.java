@@ -327,17 +327,21 @@ public class FriendPlayer {
     public boolean isInParty(){
         return getParty() != null;
     }
-    public void updateInformations(String name,String color,String gameProfile){
-        updateInformations(name,color);
+    public void updateGameProfile(String gameProfile){
         this.gameProfile = gameProfile;
-        updateInformations(name,color,this.gameProfile);
+        updateInformations(this.name,this.color);
+        updateSync();
+    }
+    public void updateInformations(String name,String color,String gameProfile){
+        this.gameProfile = gameProfile;
+        updateInformations(name,color);
         updateSync();
     }
     public void updateInformations(String name,String color){
         this.name = name;
         this.color = color;
         this.lastLogin = System.currentTimeMillis();
-        FriendSystem.getInstance().getStorage().saveInformations(this.uuid, this.color, this.lastLogin, this.gameProfile);
+        FriendSystem.getInstance().getStorage().saveInformations(this.uuid, this.color, this.lastLogin,this.gameProfile);
         updateSync();
     }
     public static class Settings {

@@ -13,22 +13,17 @@ import net.md_5.bungee.api.plugin.Event;
 public class FriendPlayerColorSetEvent extends Event{
 
     private String color;
-    private ProxiedPlayer player;
-    private FriendPlayer friendPlayer;
+    private FriendPlayer player;
 
-    public FriendPlayerColorSetEvent(String color, ProxiedPlayer player, FriendPlayer friendPlayer) {
+    public FriendPlayerColorSetEvent(String color, FriendPlayer player) {
         this.color = color;
         this.player = player;
-        this.friendPlayer = friendPlayer;
     }
     public String getColor(){
         return this.color;
     }
-    public ProxiedPlayer getPlayer(){
+    public FriendPlayer getPlayer() {
         return this.player;
-    }
-    public FriendPlayer getFriendPlayer() {
-        return this.friendPlayer;
     }
     public void setColor(String color){
         this.color = color;

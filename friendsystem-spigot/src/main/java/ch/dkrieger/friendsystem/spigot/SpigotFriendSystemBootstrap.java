@@ -64,6 +64,7 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
                 FriendSystem.getInstance().setPlayerManager(new SpigotCloudNetPlayerManager());
                 FriendSystem.getInstance().setPartyManager(new CloudNetPartyManager());
             }else if(isCloudNet()){
+                Bukkit.getPluginManager().registerEvents(new CloudNetMessageChannelListener(),this);
                 FriendSystem.getInstance().setPlayerManager(new SpigotCloudNetPlayerManager());
                 FriendSystem.getInstance().setPartyManager(new CloudNetPartyManager());
             }else if(FriendSystem.getInstance().getConfig().isBungeeCord()){
@@ -134,6 +135,7 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
 
     private void registerListener() {
         PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new PlayerListener(),this);
         pluginManager.registerEvents(new InventoryOpenListener(), this);
         pluginManager.registerEvents(new InventoryClickListener(), this);
         pluginManager.registerEvents(new InventoryCloseListener(), this);

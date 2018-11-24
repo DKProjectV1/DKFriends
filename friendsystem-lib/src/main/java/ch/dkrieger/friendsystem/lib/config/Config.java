@@ -11,6 +11,8 @@ import ch.dkrieger.friendsystem.lib.storage.StorageType;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Config extends SimpleConfig {
 
@@ -106,6 +108,19 @@ public class Config extends SimpleConfig {
         addValue("storage.mongodb.srv", false);
 
         addValue("date.format","yyyy.MM.dd HH:mm");
+
+        addValue("color.liveupdate",false);
+        addValue("color.default","&8");
+        addValue("color.console","&4");
+        List<String> colors = new LinkedList<>();
+        colors.add("dkbans.color.admin:&4");
+        colors.add("dkbans.color.developer:&b");
+        colors.add("dkbans.color.mod:&c");
+        colors.add("dkbans.color.supporter:&9");
+        colors.add("dkbans.color.builder:&3");
+        colors.add("dkbans.color.youtuber:&5");
+        colors.add("dkbans.color.premium:&6");
+        addValue("color.colors",colors);
 
         //Friend commands
         addValue("command.friend.enabled",true);

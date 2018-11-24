@@ -48,7 +48,7 @@ public class PlayerListener implements Listener {
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getConnection().getUniqueId()
                     ,event.getConnection().getName(),"§8",null);
-        }
+        }else player.updateInformations(event.getConnection().getName(),getColor(player));
         if(BungeeCord.getInstance().getPlayers().size() == 0){
             BungeeCord.getInstance().getScheduler().runAsync(BungeeCordFriendSystemBootstrap.getInstance(),()->{
 
@@ -110,7 +110,6 @@ public class PlayerListener implements Listener {
                             .replace("[player]",player.getColoredName()));
                 }
             }
-            player.updateInformations(event.getPlayer().getName(),getColor(player,event.getPlayer()));
         });
     }
     @EventHandler
@@ -132,7 +131,7 @@ public class PlayerListener implements Listener {
             if(FriendSystem.getInstance().getPlayerManager() instanceof BungeeCordPlayerManager){
                 ((BungeeCordPlayerManager)FriendSystem.getInstance().getPlayerManager()).unregisterOnlinePlayer(event.getPlayer().getUniqueId());
             }
-            player.updateInformations(event.getPlayer().getName(),getColor(player,event.getPlayer()));
+            player.updateInformations(event.getPlayer().getName(),getColor(player));
         });
     }
     @EventHandler
@@ -151,7 +150,7 @@ public class PlayerListener implements Listener {
             }
         });
     }
-    private String getColor(FriendPlayer friendPlayer, ProxiedPlayer player){
+    private String getColor(FriendPlayer player){
         return "§8";
         /*
 
