@@ -20,6 +20,7 @@ public abstract class FriendPlayerManager {
         return new LinkedList<>(this.loadedPlayers.values());
     }
     public FriendPlayer getPlayer(UUID uuid) {
+        System.out.println(loadedPlayers);
         FriendPlayer player = this.loadedPlayers.get(uuid);
         if(player != null) return player;
         try{
@@ -41,6 +42,7 @@ public abstract class FriendPlayerManager {
     }
     public FriendPlayer getPlayerSave(UUID uuid) throws Exception{
         FriendPlayer player = FriendSystem.getInstance().getStorage().getPlayer(uuid);
+        System.out.println("getPlayerSave: " + player);
         if(player != null) this.loadedPlayers.put(player.getUUID(),player);
         return player;
     }

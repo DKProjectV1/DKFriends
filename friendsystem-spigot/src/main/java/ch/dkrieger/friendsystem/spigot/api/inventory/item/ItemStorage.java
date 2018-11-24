@@ -6,32 +6,33 @@ package ch.dkrieger.friendsystem.spigot.api.inventory.item;
  *
  */
 
-import org.bukkit.inventory.ItemStack;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ItemStorage {
 
-    private static Map<String, ItemStack> itemStorage;
+    private Map<String, org.bukkit.inventory.ItemStack> itemStorage;
+    private Map<String, ItemStack> configItemStackStorage;
 
-    static {
-        itemStorage = new LinkedHashMap<>();
+    public ItemStorage(Map<String, ItemStack> configItemStackStorage) {
+        this.itemStorage = new LinkedHashMap<>();
+        this.configItemStackStorage = configItemStackStorage;
     }
 
-    public static boolean contains(String key) {
+
+    public boolean containsConfigItemStack(String key) {
+        return configItemStackStorage.containsKey(key);
+    }
+
+    public boolean containsItemStack(String key) {
         return itemStorage.containsKey(key);
     }
 
-    public static ItemStack get(String key) {
-        return itemStorage.get(key);
+    public ItemStack get(String key) {
+        return configItemStackStorage.get(key);
     }
 
-    public static ItemStack put(String key, ItemStack itemStack) {
-        return itemStorage.put(key, itemStack);
-    }
-
-    public static ItemStack put(String key, ItemBuilder itemBuilder) {
-        return put(key, itemBuilder.build());
+    public ItemStack put(String key, ItemStack itemStack) {
+        return configItemStackStorage.put(key, itemStack);
     }
 }

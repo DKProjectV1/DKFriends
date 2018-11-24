@@ -17,6 +17,10 @@ import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.friends.NextPageFriendAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.friends.OpenFriendPageAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.friends.PreviousPageFriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.inventory.OpenInventoryAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.party.OpenPartyPageAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.settings.OpenSettingsPageAdapter;
+import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStorage;
 import ch.dkrieger.friendsystem.spigot.listener.*;
 import ch.dkrieger.friendsystem.spigot.party.SpigotBungeeCordPartyManager;
 import ch.dkrieger.friendsystem.spigot.party.SpigotPartyManager;
@@ -43,15 +47,13 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
     @Override
     public void onLoad() {
         instance = this;
-        new FriendSystem(this, new SpigotFriendPlayerManager(), new SpigotPartyManager());
+        this.commandManager = new SpigotCommandManager();
         this.bungeeCordConnection = new BungeeCordConnection();
+        new FriendSystem(this, new SpigotFriendPlayerManager(), new SpigotPartyManager());
         this.adapters = new LinkedList<>();
-        registerAdapter(new NextPageFriendAdapter());
-        registerAdapter(new PreviousPageFriendAdapter());
-        registerAdapter(new OpenFriendPageAdapter());
+        registerAdapters();
         loadAdvancedConfig();
         this.inventoryManager = new InventoryManager(getAdvancedConfig().getInventories());
-        this.commandManager = new SpigotCommandManager();
     }
 
     @Override
@@ -111,7 +113,7 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
     }
 
     public Adapter getAdapter(String name) {
-        for(Adapter adapter : this.adapters) if(adapter.getName().equalsIgnoreCase(name))return adapter;
+        for(Adapter adapter : this.adapters) if(adapter.getName().startsWith(name))return adapter;
         return null;
     }
 
@@ -152,6 +154,15 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
 
     public void registerAdapter(Adapter adapter) {
         this.adapters.add(adapter);
+    }
+
+    private void registerAdapters() {
+        registerAdapter(new NextPageFriendAdapter());
+        registerAdapter(new PreviousPageFriendAdapter());
+        registerAdapter(new OpenFriendPageAdapter());
+        registerAdapter(new OpenInventoryAdapter());
+        registerAdapter(new OpenPartyPageAdapter());
+        registerAdapter(new OpenSettingsPageAdapter());
     }
 
     public static SpigotFriendSystemBootstrap getInstance() {

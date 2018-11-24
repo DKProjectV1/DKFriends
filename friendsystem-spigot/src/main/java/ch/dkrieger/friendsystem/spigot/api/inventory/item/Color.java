@@ -1,10 +1,10 @@
-package ch.dkrieger.friendsystem.spigot.api.inventory;
+package ch.dkrieger.friendsystem.spigot.api.inventory.item;
 
 import org.apache.commons.lang.Validate;
 
 /*
  *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 20.11.18 15:28
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 24.11.18 12:33
  *
  */
 

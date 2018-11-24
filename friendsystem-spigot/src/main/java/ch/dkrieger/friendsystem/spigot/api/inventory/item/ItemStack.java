@@ -1,12 +1,16 @@
 package ch.dkrieger.friendsystem.spigot.api.inventory.item;
 
+import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
-import ch.dkrieger.friendsystem.spigot.api.inventory.Color;
+import com.google.gson.reflect.TypeToken;
 import de.tr7zw.itemnbtapi.NBTItem;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /*
  *
@@ -18,11 +22,12 @@ public class ItemStack {
 
     private ItemStackType type;
     private String key, itemId, displayName, skullName;
-    private int amount, durability;
+    private int amount, durability, inventorySlot;
     private boolean glow;
     private Color color;
     private List<String> lore;
     private List<Listener> listeners;
+    private Map<String, Object> properties;
 
     public ItemStack(ItemStackType type) {
         this(type, null);
@@ -56,6 +61,7 @@ public class ItemStack {
         this.color = color;
         this.lore = lore;
         this.listeners = new LinkedList<>();
+        this.properties = new LinkedHashMap<>();
     }
 
     public String getKey() {
@@ -98,6 +104,20 @@ public class ItemStack {
         return listeners;
     }
 
+    public List<Listener> getListeners(Listener.DefaultEvent event) {
+        List<Listener> listeners = new LinkedList<>();
+        for(Listener listener : getListeners()) if(listener.getEvent().equalsIgnoreCase(event.getName())) listeners.add(listener);
+        return listeners;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public Object getProperty(String property) {
+        return getProperties().get(property);
+    }
+
     public void setItemId(String itemId) {
         this.itemId = itemId;
     }
@@ -131,6 +151,26 @@ public class ItemStack {
         this.lore = lore;
     }
 
+    public ItemStack setInventorySlot(int inventorySlot) {
+        this.inventorySlot = inventorySlot;
+        return this;
+    }
+
+    public ItemStack addLore(String lore) {
+        this.lore.add(lore);
+        return this;
+    }
+
+    public ItemStack setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    public ItemStack setListeners(List<Listener> listeners) {
+        this.listeners = listeners;
+        return this;
+    }
+
     public org.bukkit.inventory.ItemStack toBukkitItemStack() {
         if(this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder("160:15").build(); //Default placeholder
         if(this.type == ItemStackType.EMPTY)return new ItemBuilder("0").build();
@@ -141,11 +181,13 @@ public class ItemStack {
         if(this.durability != -1)itemBuilder.setDurability(this.durability);
         itemBuilder.setGlowing(this.glow);
         if(this.color != null)itemBuilder.setLeatherColor(org.bukkit.Color.fromBGR(this.color.getBlue(), this.color.getGreen(), this.color.getRed()));
-        if(!this.lore.isEmpty())itemBuilder.setLore(this.lore);
-
-        if(this.key == null)return itemBuilder.build();
+        if(!this.lore.isEmpty()) {
+            for(String lore : this.lore) {
+                itemBuilder.addLore(lore);
+            }
+        }
         NBTItem nbtItem = new NBTItem(itemBuilder.build());
-        nbtItem.setString("defaultitem", this.key);
+        nbtItem.setString("listeners", GeneralUtil.GSON_NOT_PRETTY.toJson(this.listeners, new TypeToken<List<Listener>>(){}.getType()));
         return nbtItem.getItem();
     }
 
@@ -155,6 +197,19 @@ public class ItemStack {
         return toBukkitItemStack();
     }
 
+    public org.bukkit.inventory.ItemStack toBukkitItemStack(Friend friend) {
+        org.bukkit.inventory.ItemStack itemStack = toBukkitItemStack();
+        if(itemStack.getItemMeta().hasLore()) {
+            List<String> lore = itemStack.getItemMeta().getLore();
+            itemStack.getItemMeta().getLore().clear();
+            for(String string : lore) {
+                string = string.replace("[lastonline]", String.valueOf(friend.getTimeStamp()));
+                if(friend.isOnline()) itemStack.getItemMeta().getLore().add(string.replace("[server]", friend.getOnlineFriendPlayer().getServer()));
+            }
+        }
+        return itemStack;
+    }
+
     public ItemStack addListener(Listener listener) {
         this.listeners.add(listener);
         return this;
@@ -162,6 +217,6 @@ public class ItemStack {
 
     @Override
     protected ItemStack clone() {
-        return new ItemStack(this.type, this.key, this.itemId, this.amount, this.durability, this.displayName, this.skullName, this.glow, this.color, this.lore);
+        return new ItemStack(this.type, this.key, this.itemId, this.amount, this.durability, this.displayName, this.skullName, this.glow, this.color, this.lore).setProperties(this.properties).setListeners(this.listeners);
     }
 }

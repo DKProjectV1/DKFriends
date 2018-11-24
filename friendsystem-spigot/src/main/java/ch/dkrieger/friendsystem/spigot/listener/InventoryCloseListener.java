@@ -1,11 +1,9 @@
 package ch.dkrieger.friendsystem.spigot.listener;
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
-import ch.dkrieger.friendsystem.spigot.api.inventory.GUI;
+import ch.dkrieger.friendsystem.spigot.api.inventory.gui.GUI;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
-import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
+import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConfigInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,20 +24,10 @@ public class InventoryCloseListener implements org.bukkit.event.Listener {
         if(event.getInventory().getHolder() == null && event.getInventory().getHolder() instanceof GUI) ((GUI)event.getInventory().getHolder()).handleClose(event);
         final Player player = (Player)event.getPlayer();
         Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), () -> {
-            MainInventory mainInventory = SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(event.getInventory().getName());
-            if(mainInventory != null) {
-                for(Listener listener : mainInventory.getListeners()) {
-                    if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
-                        if(listener.getCommand() != null && listener.getCommandRunner() != null) {
-                            if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
-                            else player.chat("/" + listener.getCommand());
-                        }
-                        if(listener.getAdapter() != null) {
-                            Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(listener.getAdapter());
-                            if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player);
-                        }
-                        return;
-                    }
+            ConfigInventory inventory = SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(event.getInventory().getName());
+            if(inventory != null) {
+                for(Listener listener : inventory.getListeners(Listener.DefaultEvent.INVENTORY_CLOSE)) {
+                    listener.execute(player);
                 }
             }
         });

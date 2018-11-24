@@ -1,6 +1,6 @@
-package ch.dkrieger.friendsystem.spigot.api.inventory;
+package ch.dkrieger.friendsystem.spigot.api.inventory.gui;
 
-import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
+import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConfigInventory;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,14 +16,14 @@ import javax.annotation.Nullable;
 
 /*
  *
- *  * Copyright (c) 2018 Davide Wietlisbach on 16.11.18 17:46
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 24.11.18 12:33
  *
  */
 
 public abstract class GUI implements InventoryHolder {
 
     @Nullable
-    private MainInventory mainInventory;
+    private ConfigInventory configInventory;
     private Inventory inventory;
 
     protected GUI(){
@@ -34,9 +34,9 @@ public abstract class GUI implements InventoryHolder {
         this.inventory = Bukkit.createInventory(this,size,name);
     }
 
-    public GUI(MainInventory mainInventory) {
-        this.mainInventory = mainInventory;
-        this.inventory = mainInventory.toBukkitInventory(this);
+    public GUI(ConfigInventory configInventory) {
+        this.configInventory = configInventory;
+        this.inventory = configInventory.toBukkitInventory(this);
     }
 
     public ItemStack getItem(int place){
@@ -44,8 +44,8 @@ public abstract class GUI implements InventoryHolder {
     }
 
     @Nullable
-    public MainInventory getMainInventory() {
-        return mainInventory;
+    public ConfigInventory getConfigInventory() {
+        return this.configInventory;
     }
 
     public Inventory getInventory() {
@@ -77,7 +77,7 @@ public abstract class GUI implements InventoryHolder {
     }
 
     public void fill(ItemStack item){
-        for(int i = 0; i < inventory.getContents().length;i++){
+        for(int i = 0; i < inventory.getContents().length; i++){
             if(this.inventory.getItem(i) == null || this.inventory.getItem(i).getType() == Material.AIR)
                 this.inventory.setItem(i,item);
         }
@@ -87,12 +87,8 @@ public abstract class GUI implements InventoryHolder {
         this.inventory.clear();
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
-    public void setMainInventory(@Nullable MainInventory mainInventory) {
-        this.mainInventory = mainInventory;
+    public void setConfigInventory(@Nullable ConfigInventory configInventory) {
+        this.configInventory = configInventory;
     }
 
     public void createInventory(String name, int size){

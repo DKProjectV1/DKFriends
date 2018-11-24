@@ -6,17 +6,19 @@ package ch.dkrieger.friendsystem.spigot.inventories;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
+import ch.dkrieger.friendsystem.lib.player.Friend;
+import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.api.inventory.PrivateGUI;
+import ch.dkrieger.friendsystem.spigot.api.inventory.gui.PrivateGUI;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemBuilder;
-import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
-import de.tr7zw.itemnbtapi.NBTItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -24,15 +26,13 @@ import java.util.UUID;
 public class FriendPage extends PrivateGUI {
 
     private int currentPage;
-    private List<org.bukkit.inventory.ItemStack> skulls = new LinkedList<>();
+    //private List<ItemStack> itemStacks = new LinkedList<>();
 
     public FriendPage(Player owner) {
         super("friends", owner);
         this.currentPage = 1;
-        getMainInventory().getConditionInventory("friendRequests").setContent(getInventory());
-        getMainInventory().getConditionInventory("nextFriendPage").setContent(getInventory());
-        getMainInventory().getConditionInventory("previousFriendPage").setContent(getInventory());
-        for(int i = 0; i < 100; i++) skulls.add(new ItemBuilder(Material.SKULL_ITEM, 1, 3).setDisplayName(UUID.randomUUID().toString()).build());
+        //getMainInventory().getConditionInventory("friendRequests").setContent(getInventory());
+        //for(int i = 0; i < 75; i++) itemStacks.add(new ItemBuilder(Material.SKULL_ITEM).setDisplayName(UUID.randomUUID().toString()).build());
         setPage(currentPage);
     }
 
@@ -44,6 +44,7 @@ public class FriendPage extends PrivateGUI {
     @Override
     protected void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
+
         /*if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)return;
         Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), ()-> {
             NBTItem nbtItem = new NBTItem(event.getCurrentItem());
@@ -61,10 +62,8 @@ public class FriendPage extends PrivateGUI {
                     }else if(defaultItemStack.getKey().equalsIgnoreCase("friendRequests")) {
 
                     }else if(defaultItemStack.getKey().equalsIgnoreCase("nextPage")) {
-                        System.out.println("next page");
                         nextPage();
                     }else if(defaultItemStack.getKey().equalsIgnoreCase("previousPage")) {
-                        System.out.println("Previous page");
                         previousPage();
                     }
                 }
@@ -77,19 +76,47 @@ public class FriendPage extends PrivateGUI {
 
     }
 
-    public boolean setPage(int page) {
+    public FriendPlayer getFriendPlayer() {
+        return FriendSystem.getInstance().getPlayerManager().getPlayer(getOwner().getUniqueId());
+    }
+
+    private boolean setPage(int page) {
         System.out.println(page);
+        System.out.println(FriendSystem.getInstance());
+        System.out.println(FriendSystem.getInstance().getPlayerManager());
+        System.out.println(getFriendPlayer());
+        System.out.println(getFriendPlayer().getFriends().size());
         if(page < 1)return false;
         int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSkullFirstSlot();
         int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSkullLastSlot();
-        if(!(this.skulls.size() > page + skullLastSlot * (page - 1))) return false;
+        int skullsPerPage = skullLastSlot-skullFirstSlot+1;
+
+        int switchPageSlot1 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getFriendSwitchPageInventorySlot1();
+        int switchPageSlot2 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getFriendSwitchPageInventorySlot2();
+        int pages = (int) Math.ceil((double)getFriendPlayer().getFriends().size() / skullsPerPage);
+        if(page > 1) {
+            if(page == pages) setItem(switchPageSlot2, new ItemStack(Material.AIR));
+            getInventory().setItem((page == pages ? switchPageSlot1 : switchPageSlot2),
+                    SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItem("previousPage").toBukkitItemStack());
+            //getMainInventory().getConditionInventory("previousFriendPage").setContent(getInventory());
+        }
+        if(pages > page) {
+            getInventory().setItem(switchPageSlot1, SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItem("nextPage").toBukkitItemStack());
+            //getMainInventory().getConditionInventory("nextFriendPage").setContent(getInventory());
+        }
+        if(page == 1) setItem(switchPageSlot2, new ItemStack(Material.AIR));
+
+
+        if(!(getFriendPlayer().getFriends().size() > page + skullLastSlot * (page - 1))) return false;
+
         clear(skullFirstSlot, skullLastSlot);
         for(int i = skullFirstSlot; i <= skullLastSlot; i++) {
             int getter = (page > 1 ? i+((page-1)*skullLastSlot)+(page-1) : i);
-            System.out.println(getter + ":" + skulls.size());
-            if(!(this.skulls.size() > getter)) break;
-            org.bukkit.inventory.ItemStack itemStack = this.skulls.get(getter);
-            if(itemStack != null && itemStack.getType() != Material.AIR) getInventory().setItem(i, itemStack);
+            if(!(getFriendPlayer().getFriends().size() > getter)) break;
+
+            Friend friend = getFriendPlayer().getFriends().get(getter);
+            if(friend.isOnline()) getInventory().setItem(i, SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItems().get("onlinePlayerSkull").toBukkitItemStack(friend));
+            else getInventory().setItem(i, SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItems().get("offlinePlayerSkull").toBukkitItemStack(friend));
         }
         return true;
     }
@@ -97,10 +124,11 @@ public class FriendPage extends PrivateGUI {
     public void previousPage() {
         currentPage--;
         if(!setPage(currentPage)) currentPage++;
+
     }
 
     public void nextPage() {
         currentPage++;
-        if(!setPage(currentPage)) currentPage--;
+        if (!setPage(currentPage)) currentPage--;
     }
 }
