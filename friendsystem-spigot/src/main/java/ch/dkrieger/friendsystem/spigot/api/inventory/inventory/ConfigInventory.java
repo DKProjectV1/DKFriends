@@ -7,22 +7,27 @@ package ch.dkrieger.friendsystem.spigot.api.inventory.inventory;
  */
 
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
+import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.InventoryHolder;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
-public class Inventory {
+public class ConfigInventory {
 
     private String title;
     private int size;
     private Map<Integer, ItemStack> items;
+    private List<Listener> listeners;
 
-    public Inventory(String title, int size) {
+    public ConfigInventory(String title, int size) {
         this.title = title;
         this.size = size;
         this.items = new LinkedHashMap<>();
+        this.listeners = new LinkedList<>();
     }
 
     public String getTitle() {
@@ -50,8 +55,6 @@ public class Inventory {
         return null;
     }
 
-
-
     public ItemStack getItem(int slot) {
         return items.get(slot);
     }
@@ -66,7 +69,27 @@ public class Inventory {
         return null;
     }
 
-    public Inventory setItems(Map<Integer, ItemStack> items) {
+    public List<Listener> getListeners() {
+        return listeners;
+    }
+
+    public List<Listener> getListeners(Listener.DefaultEvent event) {
+        List<Listener> listeners = new LinkedList<>();
+        for(Listener listener : getListeners()) if(listener.getEvent().equalsIgnoreCase(event.getName())) listeners.add(listener);
+        return listeners;
+    }
+
+    public ConfigInventory setListeners(List<Listener> listeners) {
+        this.listeners = listeners;
+        return this;
+    }
+
+    public ConfigInventory addListener(Listener listener) {
+        this.listeners.add(listener);
+        return this;
+    }
+
+    public ConfigInventory setItems(Map<Integer, ItemStack> items) {
         this.items = items;
         return this;
     }
@@ -93,7 +116,7 @@ public class Inventory {
     }
 
     public org.bukkit.inventory.Inventory toBukkitInventory(InventoryHolder inventoryHolder) {
-        return toBukkitInventory(inventoryHolder);
+        return toBukkitInventory(inventoryHolder, null);
     }
 
     public org.bukkit.inventory.Inventory toBukkitInventory() {
@@ -101,8 +124,8 @@ public class Inventory {
     }
 
     @Override
-    public Inventory clone() {
-        return new Inventory(this.title, this.size).setItems(this.items);
+    public ConfigInventory clone() {
+        return new ConfigInventory(this.title, this.size).setItems(this.items).setListeners(this.listeners);
     }
 
 }

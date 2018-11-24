@@ -6,7 +6,7 @@ package ch.dkrieger.friendsystem.spigot.inventories;
  *
  */
 
-import ch.dkrieger.friendsystem.spigot.api.inventory.PrivateGUI;
+import ch.dkrieger.friendsystem.spigot.api.inventory.gui.PrivateGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;

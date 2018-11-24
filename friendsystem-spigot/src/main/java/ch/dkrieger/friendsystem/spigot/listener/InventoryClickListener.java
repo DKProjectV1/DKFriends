@@ -1,18 +1,19 @@
 package ch.dkrieger.friendsystem.spigot.listener;
 
+import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
-import ch.dkrieger.friendsystem.spigot.api.inventory.GUI;
-import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConditionInventory;
-import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.MainInventory;
-import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
+import ch.dkrieger.friendsystem.spigot.api.inventory.gui.GUI;
+import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConfigInventory;
+import com.google.gson.reflect.TypeToken;
+import de.tr7zw.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import java.util.List;
 
 /*
  *
@@ -23,47 +24,19 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class InventoryClickListener implements org.bukkit.event.Listener {
 
     @EventHandler(priority= EventPriority.HIGH)
-    public void onInventoryClick(InventoryClickEvent event){
+    public void onInventoryClick(InventoryClickEvent event) {
         if(!(event.getWhoClicked() instanceof Player)) return;
         if(event.getInventory() == null) return;
         if(event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof GUI) ((GUI)event.getInventory().getHolder()).handleClick(event);
         final Player player = (Player)event.getWhoClicked();
         Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), () -> {
-            MainInventory mainInventory = SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(event.getInventory().getName());
-            if(mainInventory != null) {
-                for(ConditionInventory conditionInventory : mainInventory.getConditionInventories()) {
-                    ItemStack itemStack1 = conditionInventory.getItem(event.getCurrentItem());
-                    if(itemStack1 != null) {
-                        for(Listener listener : itemStack1.getListeners()) {
-                            if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
-                                if(listener.getCommand() != null && listener.getCommandRunner() != null) {
-                                    if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
-                                    else player.chat("/" + listener.getCommand());
-                                }
-                                if(listener.getAdapter() != null) {
-                                    Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(listener.getAdapter());
-                                    if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player);
-                                }
-                                return;
-                            }
-                        }
-                    }
-                }
-                ItemStack itemStack = mainInventory.getItem(event.getCurrentItem());
-                if(itemStack != null) {
-                    for(Listener listener : itemStack.getListeners()) {
-                        if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
-                            if(listener.getCommand() != null && listener.getCommandRunner() != null) {
-                                if(listener.getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), listener.getCommand());
-                                else player.chat("/" + listener.getCommand());
-                            }
-                            if(listener.getAdapter() != null) {
-                                Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(listener.getAdapter());
-                                if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player);
-                            }
-                            return;
-                        }
-                    }
+            ConfigInventory inventory = SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(event.getInventory().getName());
+            if(inventory != null) {
+                if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
+                NBTItem nbtItem = new NBTItem(event.getCurrentItem());
+                if(nbtItem.hasKey("listeners") && nbtItem.getString("listeners") != null) {
+                    List<Listener> listeners = GeneralUtil.GSON_NOT_PRETTY.fromJson(nbtItem.getString("listeners"), new TypeToken<List<Listener>>(){}.getType());
+                    for(Listener listener : listeners) if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) listener.execute(player);
                 }
             }
         });
