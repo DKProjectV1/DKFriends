@@ -103,6 +103,9 @@ public class PlayerListener implements Listener {
                             .replace("[player]",player.getColoredName()));
                 }
             }
+            if(FriendSystem.getInstance().getPlayerManager() instanceof BungeeCordPlayerManager){
+                ((BungeeCordPlayerManager)FriendSystem.getInstance().getPlayerManager()).syncOnlinePlayer(event.getPlayer());
+            }
         });
     }
     @EventHandler
@@ -140,6 +143,9 @@ public class PlayerListener implements Listener {
                             .replace("[player]",player.getColoredName()));
                     party.connect(event.getServer().getInfo().getName());
                 }
+            }
+            if(FriendSystem.getInstance().getPlayerManager() instanceof BungeeCordPlayerManager){
+                ((BungeeCordPlayerManager)FriendSystem.getInstance().getPlayerManager()).syncOnlinePlayer(event.getPlayer());
             }
         });
     }
