@@ -9,6 +9,7 @@ package ch.dkrieger.friendsystem.spigot.api.inventory;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.FriendRemoveAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.inventory.OpenInventoryAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -55,16 +56,14 @@ public class Listener {
         return commandRunner;
     }
 
-    public void execute(Player player) {
+    public void execute(Player player, Object... objects) {
         if(getCommand() != null && getCommandRunner() != null) {
             if(getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), getCommand());
             else player.chat("/" + getCommand());
         }
         if(getAdapter() != null) {
             Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(getAdapter());
-            if(adapter instanceof FriendAdapter) {
-                ((FriendAdapter) adapter).execute(player);
-            }
+            if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player, objects);
             else if(adapter instanceof OpenInventoryAdapter) ((OpenInventoryAdapter) adapter).execute(player, getAdapter());
         }
     }

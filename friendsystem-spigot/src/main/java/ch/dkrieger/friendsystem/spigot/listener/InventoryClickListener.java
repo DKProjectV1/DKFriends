@@ -36,7 +36,10 @@ public class InventoryClickListener implements org.bukkit.event.Listener {
                 NBTItem nbtItem = new NBTItem(event.getCurrentItem());
                 if(nbtItem.hasKey("listeners") && nbtItem.getString("listeners") != null) {
                     List<Listener> listeners = GeneralUtil.GSON_NOT_PRETTY.fromJson(nbtItem.getString("listeners"), new TypeToken<List<Listener>>(){}.getType());
-                    for(Listener listener : listeners) if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) listener.execute(player);
+                    for(Listener listener : listeners) if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
+                        if(nbtItem.hasKey("friend")) listener.execute(player, nbtItem.getString("friend"));
+                        else listener.execute(player);
+                    }
                 }
             }
         });

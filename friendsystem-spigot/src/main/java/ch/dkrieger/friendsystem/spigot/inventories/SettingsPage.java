@@ -6,16 +6,22 @@ package ch.dkrieger.friendsystem.spigot.inventories;
  *
  */
 
+import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.api.inventory.gui.PrivateGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
+import java.util.Map;
+
 public class SettingsPage extends PrivateGUI {
 
     public SettingsPage(Player owner) {
         super("settings", owner);
+        for(Map.Entry<Integer, ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack> entry : SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getDefaultInventoryItems().entrySet()) {
+            getInventory().setItem(entry.getKey(), entry.getValue().toBukkitItemStack());
+        }
     }
 
     @Override

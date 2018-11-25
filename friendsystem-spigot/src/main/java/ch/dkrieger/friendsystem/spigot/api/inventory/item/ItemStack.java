@@ -1,11 +1,16 @@
 package ch.dkrieger.friendsystem.spigot.api.inventory.item;
 
+import ch.dkrieger.friendsystem.lib.FriendSystem;
+import ch.dkrieger.friendsystem.lib.Messages;
+import ch.dkrieger.friendsystem.lib.party.PartyMember;
 import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
+import ch.dkrieger.friendsystem.spigot.util.SpigotUtil;
 import com.google.gson.reflect.TypeToken;
 import de.tr7zw.itemnbtapi.NBTItem;
+import org.bukkit.Bukkit;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -197,22 +202,43 @@ public class ItemStack {
         return toBukkitItemStack();
     }
 
+    @SuppressWarnings("Only to build a friend skull or to add friend uuid as NBT data")
     public org.bukkit.inventory.ItemStack toBukkitItemStack(Friend friend) {
-        org.bukkit.inventory.ItemStack itemStack = toBukkitItemStack();
-        if(itemStack.getItemMeta().hasLore()) {
-            List<String> lore = itemStack.getItemMeta().getLore();
-            itemStack.getItemMeta().getLore().clear();
-            for(String string : lore) {
-                string = string.replace("[lastonline]", String.valueOf(friend.getTimeStamp()));
-                if(friend.isOnline()) itemStack.getItemMeta().getLore().add(string.replace("[server]", friend.getOnlineFriendPlayer().getServer()));
+        org.bukkit.inventory.ItemStack itemStack;
+        if(this.itemId.startsWith("397")) {
+            ItemBuilder itemBuilder;
+            if (friend.isOnline()) {
+                itemBuilder = new ItemBuilder(SpigotUtil.getGameProfile(Bukkit.getPlayer(friend.getUUID())),
+                        (friend.isFavorite() ? Messages.PLAYER_LIST_SYMBOL_FAVORITE : Messages.PLAYER_LIST_SYMBOL_NORMAL) + friend.getFriendPlayer().getColoredName());
+            } else {
+                itemBuilder = new ItemBuilder(getItemId())
+                        .setDisplayName((friend.isFavorite() ? Messages.PLAYER_LIST_SYMBOL_FAVORITE : Messages.PLAYER_LIST_SYMBOL_NORMAL) + friend.getFriendPlayer().getColoredName());
             }
-        }
-        return itemStack;
+            for (String lore : this.lore) {
+                lore = lore.replace("[lastonline]", String.valueOf(friend.getTimeStamp()));
+                if (friend.isOnline()) lore = lore.replace("[server]", friend.getOnlineFriendPlayer().getServer());
+                itemBuilder.addLore(lore);
+            }
+            itemStack = itemBuilder.build();
+        }else itemStack = toBukkitItemStack();
+
+        NBTItem nbtItem = new NBTItem(itemStack);
+        nbtItem.setString("friend", friend.getUUID().toString());
+        return nbtItem.getItem();
+    }
+
+    @SuppressWarnings("Only to build a party member skull")
+    public org.bukkit.inventory.ItemStack toBukkitItemStack(PartyMember partyMember) {
+        return new ItemBuilder(SpigotUtil.getGameProfile(Bukkit.getPlayer(partyMember.getUUID())), partyMember.getPlayer().getColoredName()).build();
     }
 
     public ItemStack addListener(Listener listener) {
         this.listeners.add(listener);
         return this;
+    }
+
+    public ItemStack addListener(Listener.DefaultEvent event, String adapter) {
+        return addListener(new Listener(event, adapter));
     }
 
     @Override

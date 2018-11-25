@@ -1,6 +1,7 @@
 package ch.dkrieger.friendsystem.spigot.util;
 
 import ch.dkrieger.friendsystem.spigot.api.Reflection;
+import com.mojang.authlib.GameProfile;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import static ch.dkrieger.friendsystem.spigot.api.Reflection.*;
@@ -82,6 +84,17 @@ public class SpigotUtil {
         return getFreeInventoryPlaces(inventory, 0, inventory.getSize()-1);
     }
 
+    public static GameProfile getGameProfile(Player player){
+        try{
+            Class<?> craftPlayerClass = Reflection.getCraftBukkitClass("entity.CraftPlayer");
+
+            Method getHandle = craftPlayerClass.getMethod("getProfile");
+            return (GameProfile)getHandle.invoke(player);
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return null;
+    }
 
     public static double getArmorPoints(Player player) {
         PlayerInventory inventory = player.getInventory();

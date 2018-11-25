@@ -13,7 +13,6 @@ import ch.dkrieger.friendsystem.lib.storage.FriendStorage;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import com.google.gson.reflect.TypeToken;
 import io.netty.util.internal.ConcurrentSet;
-
 import java.io.File;
 import java.util.*;
 

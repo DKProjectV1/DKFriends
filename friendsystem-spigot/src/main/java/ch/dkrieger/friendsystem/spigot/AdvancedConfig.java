@@ -14,50 +14,51 @@ import java.util.Map;
 
 public class AdvancedConfig {
 
-    private int skullFirstSlot, skullLastSlot, friendSwitchPageInventorySlot1, friendSwitchPageInventorySlot2;
+    private int skullFirstSlot, skullLastSlot, friendSwitchPageInventorySlot1, friendSwitchPageInventorySlot2, partySwitchPageInventorySlot1, partySwitchPageInventorySlot2;
     private Map<String, ItemStack> items;
     private Map<String, ConfigInventory> inventories;
+    private Map<Integer, ItemStack> defaultInventoryItems;
 
     public AdvancedConfig() {
         this.skullFirstSlot = 1;
         this.skullLastSlot = 36;
         this.friendSwitchPageInventorySlot1 = 44;
         this.friendSwitchPageInventorySlot2 = 43;
+        this.partySwitchPageInventorySlot1 = 44;
+        this.partySwitchPageInventorySlot2 = 43;
 
         this.items = new LinkedHashMap<>();
 
-        items.put("onlinePlayerSkull", new ItemStack("397:3").addLore("§aOnline auf [server]"));
+        items.put("onlinePlayerSkull", new ItemStack("397:3").addLore("§aOnline auf [server]").addListener(Listener.DefaultEvent.CLICK, "openFriendOptionsPage"));
         items.put("offlinePlayerSkull", new ItemStack("397:0").addLore("§cZuletzt online: [lastonline]"));
-        items.put("friendRequests", new ItemStack("friendRequests","358:0").setDisplayName("§6Friend Requests").setInventorySlot(50));
-        items.put("nextPage", new ItemStack("nextPage", "262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextFriendPage")));
-        items.put("previousPage", new ItemStack("previousPage", "262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousFriendPage")));
+        items.put("friendRequests", new ItemStack("358:0").setDisplayName("§6Friend Requests").setInventorySlot(50));
+        items.put("nextFriendPage", new ItemStack("262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextFriendPage")));
+        items.put("previousFriendPage", new ItemStack("262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousFriendPage")));
+        items.put("partyPlayerSkull", new ItemStack("393:3"));
+        items.put("nextPartyPage", new ItemStack("262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextPartyPage")));
+        items.put("previousPartyPage", new ItemStack("262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousPartyPage")));
+
+
+        this.defaultInventoryItems = new LinkedHashMap<>();
+
+        defaultInventoryItems.put(45, new ItemStack("friends","314:0").setDisplayName("§eFriends").addListener(new Listener(Listener.DefaultEvent.CLICK, "openFriendPage")));
+        defaultInventoryItems.put(46, new ItemStack("parties", "401:0").setDisplayName("§5Party").addListener(new Listener(Listener.DefaultEvent.CLICK, "openPartyPage")));
+        defaultInventoryItems.put(47, new ItemStack("settings", "356:0").setDisplayName("§cSettings").addListener(new Listener(Listener.DefaultEvent.CLICK, "openSettingsPage")));
+
 
         this.inventories = new LinkedHashMap<>();
 
+
         ConfigInventory friendInventory = new ConfigInventory("§eFriends", 54);
-
-        friendInventory.setItem(46, new ItemStack("friends","314:0").setDisplayName("§eFriends").addListener(new Listener(Listener.DefaultEvent.CLICK, "openFriendPage")));
-        friendInventory.setItem(47, new ItemStack("parties", "401:0").setDisplayName("§5Party").addListener(new Listener(Listener.DefaultEvent.CLICK, "openPartyPage")));
-        friendInventory.setItem(48, new ItemStack("settings", "356:0").setDisplayName("§cSettings").addListener(new Listener(Listener.DefaultEvent.CLICK, "openSettingsPage")));
-
-        /*ConditionInventory friendRequests = new ConditionInventory("friends", friendInventory, "friendRequests");
-        friendRequests.setItem(50, new ItemStack("friendRequests","358:0").setDisplayName("§6Friend Requests"));
-        friendInventory.addConditionInventory(friendRequests);
-
-        ConditionInventory nextPage = new ConditionInventory("friends", friendInventory, "nextFriendPage");
-        nextPage.setItem(44, new ItemStack("nextPage", "262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextFriendPage")));
-        friendInventory.addConditionInventory(nextPage);
-
-        ConditionInventory previousPage = new ConditionInventory("friends", friendInventory, "previousFriendPage");
-        previousPage.setItem(43, new ItemStack("previousPage", "262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousFriendPage")));
-        friendInventory.addConditionInventory(previousPage);*/
 
         ConfigInventory partyInventory = new ConfigInventory("§5Party", 54);
 
-
         ConfigInventory settingsInventory = new ConfigInventory("§cSettings", 54);
 
+        ConfigInventory friendOptions = new ConfigInventory("", 54);
+
         inventories.put("friends", friendInventory);
+        inventories.put("friendOptions", friendOptions);
         inventories.put("parties", partyInventory);
         inventories.put("settings", settingsInventory);
     }
@@ -78,6 +79,14 @@ public class AdvancedConfig {
         return friendSwitchPageInventorySlot2;
     }
 
+    public int getPartySwitchPageInventorySlot1() {
+        return partySwitchPageInventorySlot1;
+    }
+
+    public int getPartySwitchPageInventorySlot2() {
+        return partySwitchPageInventorySlot2;
+    }
+
     public Map<String, ConfigInventory> getInventories() {
         return inventories;
     }
@@ -86,7 +95,11 @@ public class AdvancedConfig {
         return items;
     }
 
+    public Map<Integer, ItemStack> getDefaultInventoryItems() {
+        return defaultInventoryItems;
+    }
+
     public ItemStack getItem(String key) {
-        return getItems().get(key);
+        return (ItemStack) getItems().get(key);
     }
 }

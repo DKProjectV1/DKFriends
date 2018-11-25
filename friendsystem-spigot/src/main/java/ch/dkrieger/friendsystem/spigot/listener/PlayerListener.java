@@ -8,19 +8,15 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.api.Reflection;
-import com.mojang.authlib.GameProfile;
+import ch.dkrieger.friendsystem.spigot.util.SpigotUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.lang.reflect.Method;
 import java.util.List;
 
 /*
@@ -47,13 +43,13 @@ public class PlayerListener implements Listener {
         }
         if(player == null){
             player = FriendSystem.getInstance().getPlayerManager().createPlayer(event.getPlayer().getUniqueId()
-                    ,event.getPlayer().getName(),FriendSystem.getInstance().getConfig().getDefaultColor(), GeneralUtil.GSON_NOT_PRETTY.toJson(getGameProfile(event.getPlayer())));
-            System.out.println(getGameProfile(event.getPlayer()));
+                    ,event.getPlayer().getName(),FriendSystem.getInstance().getConfig().getDefaultColor(), GeneralUtil.GSON_NOT_PRETTY.toJson(SpigotUtil.getGameProfile(event.getPlayer())));
+            System.out.println(SpigotUtil.getGameProfile(event.getPlayer()));
         }else {
             FriendPlayer finalPlayer = player;
             Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(),()->{
                 if(FriendSystem.getInstance().getConfig().isBungeeCord()) return;
-                else finalPlayer.updateGameProfile(getGameProfile(event.getPlayer()).toString());
+                else finalPlayer.updateGameProfile(SpigotUtil.getGameProfile(event.getPlayer()).toString());
                 if(FriendSystem.getInstance().getConfig().getBooleanValue("join.requestinfo.enabled")){
                     List<Friend> requests = finalPlayer.getRequests();
                     if(requests.size() > 0){
@@ -100,7 +96,7 @@ public class PlayerListener implements Listener {
                                 .replace("[player]",finalPlayer.getColoredName()));
                     }
                 }
-                finalPlayer.updateInformations(event.getPlayer().getName(),FriendSystem.getInstance().getPlatform().getColor(finalPlayer),getGameProfile(event.getPlayer()).toString());
+                finalPlayer.updateInformations(event.getPlayer().getName(),FriendSystem.getInstance().getPlatform().getColor(finalPlayer), SpigotUtil.getGameProfile(event.getPlayer()).toString());
             });
         }
     }
@@ -138,16 +134,5 @@ public class PlayerListener implements Listener {
                 }
             }
         });
-    }
-    private GameProfile getGameProfile(Player player){
-        try{
-            Class<?> craftPlayerClass = Reflection.getCraftBukkitClass("entity.CraftPlayer");
-
-            Method getHandle = craftPlayerClass.getMethod("getProfile");
-            return (GameProfile)getHandle.invoke(player);
-        }catch (Exception exception){
-            exception.printStackTrace();
-        }
-        return null;
     }
 }
