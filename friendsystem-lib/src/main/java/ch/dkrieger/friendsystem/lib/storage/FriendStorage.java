@@ -1,6 +1,5 @@
 package ch.dkrieger.friendsystem.lib.storage;
 
-import ch.dkrieger.friendsystem.lib.config.Config;
 import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.utils.Document;

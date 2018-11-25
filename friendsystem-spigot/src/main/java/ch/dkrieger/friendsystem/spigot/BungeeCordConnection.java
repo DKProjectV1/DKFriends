@@ -9,8 +9,11 @@ package ch.dkrieger.friendsystem.spigot;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
 import ch.dkrieger.friendsystem.lib.party.Party;
-import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.utils.Document;
+import ch.dkrieger.friendsystem.spigot.event.BukkitFriendPlayerLogoutEvent;
+import ch.dkrieger.friendsystem.spigot.event.BukkitFriendPlayerUpdateEvent;
+import ch.dkrieger.friendsystem.spigot.event.BukkitOnlineFriendPlayerUpdateEvent;
+import ch.dkrieger.friendsystem.spigot.event.BukkitPartyUpdateEvent;
 import ch.dkrieger.friendsystem.spigot.player.bungeecord.SpigotBungeeCordOnlinePlayer;
 import ch.dkrieger.friendsystem.spigot.player.bungeecord.SpigotBungeeCordPlayerManager;
 import com.google.gson.reflect.TypeToken;
@@ -47,15 +50,23 @@ public class BungeeCordConnection implements PluginMessageListener {
                     for(Document player0 : players) updateOnlinePlayer(player0);
                 }else if(document.getString("action").equalsIgnoreCase("syncParty")){
                     Party party = document.getObject("party",Party.class);
-                    if(party != null) this.friendSystem.getPartyManager().replaceParty(party);
+                    if(party != null){
+                        this.friendSystem.getPartyManager().replaceParty(party);
+                        Bukkit.getPluginManager().callEvent(new BukkitPartyUpdateEvent(party));
+                    }
+
                 }else if(document.getString("action").equalsIgnoreCase("syncOnlinePlayer")){
                     updateOnlinePlayer(document);
                 }else if(document.getString("action").equalsIgnoreCase("playerLogout")){
-                    ((SpigotBungeeCordPlayerManager)friendSystem.getPlayerManager())
-                            .unregisterOnlinePlayer(document.getObject("uuid",UUID.class));
+                    UUID uuid = document.getObject("uuid",UUID.class);
+                    ((SpigotBungeeCordPlayerManager)friendSystem.getPlayerManager()).unregisterOnlinePlayer(uuid);
+                    Bukkit.getPluginManager().callEvent(new BukkitFriendPlayerLogoutEvent(uuid));
                 }else if(document.getString("action").equalsIgnoreCase("updatePlayer")){
                     UUID uuid = document.getObject("uuid",UUID.class);
-                    if(uuid != null) friendSystem.getPlayerManager().removeFromCache(uuid);
+                    if(uuid != null){
+                        friendSystem.getPlayerManager().removeFromCache(uuid);
+                        Bukkit.getPluginManager().callEvent(new BukkitFriendPlayerUpdateEvent(uuid));
+                    }
                 }
             }catch (Exception exception){
                 exception.printStackTrace();
@@ -65,14 +76,14 @@ public class BungeeCordConnection implements PluginMessageListener {
     public void updateOnlinePlayer(Document document){
         UUID uuid = document.getObject("uuid",UUID.class);
         if(uuid == null) return;
-        SpigotBungeeCordOnlinePlayer online = (SpigotBungeeCordOnlinePlayer)friendSystem.getPlayerManager()
-                .getOnlinePlayer(uuid);
+        SpigotBungeeCordOnlinePlayer online = (SpigotBungeeCordOnlinePlayer)friendSystem.getPlayerManager().getOnlinePlayer(uuid);
         if(online == null) online = new SpigotBungeeCordOnlinePlayer(uuid,document.getString("name"),document.getString("server"));
         else{
             online.setName(document.getString("name"));
             online.setServer(document.getString("server"));
         }
         ((SpigotBungeeCordPlayerManager)friendSystem.getPlayerManager()).updateOnlinePlayers(online);
+        Bukkit.getPluginManager().callEvent(new BukkitOnlineFriendPlayerUpdateEvent(uuid,online));
     }
     /*
     new Document().append("parties",getParties())

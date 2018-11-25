@@ -22,8 +22,7 @@ import ch.dkrieger.friendsystem.spigot.adapter.friends.PreviousPageFriendAdapter
 import ch.dkrieger.friendsystem.spigot.adapter.inventory.OpenInventoryAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.party.OpenPartyPageAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.settings.OpenSettingsPageAdapter;
-import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStorage;
-import ch.dkrieger.friendsystem.spigot.event.FriendPlayerColorSetEvent;
+import ch.dkrieger.friendsystem.spigot.event.BukkitFriendPlayerColorSetEvent;
 import ch.dkrieger.friendsystem.spigot.listener.*;
 import ch.dkrieger.friendsystem.spigot.party.SpigotBungeeCordPartyManager;
 import ch.dkrieger.friendsystem.spigot.party.SpigotPartyManager;
@@ -68,7 +67,7 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
                 FriendSystem.getInstance().setPlayerManager(new SpigotCloudNetPlayerManager());
                 FriendSystem.getInstance().setPartyManager(new CloudNetPartyManager());
             }else if(isCloudNet()){
-                Bukkit.getPluginManager().registerEvents(new CloudNetMessageChannelListener(),this);
+                Bukkit.getPluginManager().registerEvents(new CloudNetListener(),this);
                 FriendSystem.getInstance().setPlayerManager(new SpigotCloudNetPlayerManager());
                 FriendSystem.getInstance().setPartyManager(new CloudNetPartyManager());
             }else if(FriendSystem.getInstance().getConfig().isBungeeCord()){
@@ -116,7 +115,7 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
                 break;
             }
         }
-        FriendPlayerColorSetEvent event = new FriendPlayerColorSetEvent(color,player,bukkitPlayer);
+        BukkitFriendPlayerColorSetEvent event = new BukkitFriendPlayerColorSetEvent(color,player,bukkitPlayer);
         Bukkit.getPluginManager().callEvent(event);
         if(event.getColor() != null) color = event.getColor();
         return color;

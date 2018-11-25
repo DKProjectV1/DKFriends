@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  *
  */
 
-public class FriendPlayerColorSetEvent extends Event {
+public class BukkitFriendPlayerColorSetEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
@@ -19,7 +19,7 @@ public class FriendPlayerColorSetEvent extends Event {
     private FriendPlayer player;
     private Player bukkitPlayer;
 
-    public FriendPlayerColorSetEvent(String color, FriendPlayer player, Player bukkitPlayer) {
+    public BukkitFriendPlayerColorSetEvent(String color, FriendPlayer player, Player bukkitPlayer) {
         this.color = color;
         this.player = player;
         this.bukkitPlayer = bukkitPlayer;
