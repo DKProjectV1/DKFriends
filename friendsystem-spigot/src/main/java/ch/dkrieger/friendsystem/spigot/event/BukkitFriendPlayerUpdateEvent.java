@@ -9,6 +9,7 @@ package ch.dkrieger.friendsystem.spigot.event;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -32,6 +33,9 @@ public class BukkitFriendPlayerUpdateEvent extends Event {
     }
     public OnlineFriendPlayer getOnlinePlayer(){
         return FriendSystem.getInstance().getPlayerManager().getOnlinePlayer(uuid);
+    }
+    public boolean isLocalOnline(){
+        return Bukkit.getPlayer(uuid) != null;
     }
 
     @Override

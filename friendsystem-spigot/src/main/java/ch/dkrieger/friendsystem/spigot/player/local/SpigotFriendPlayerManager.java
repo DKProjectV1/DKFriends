@@ -3,6 +3,8 @@ package ch.dkrieger.friendsystem.spigot.player.local;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayerManager;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
+import ch.dkrieger.friendsystem.spigot.event.BukkitFriendPlayerUpdateEvent;
+import ch.dkrieger.friendsystem.spigot.event.BukkitPartyUpdateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -46,7 +48,9 @@ public class SpigotFriendPlayerManager extends FriendPlayerManager {
     }
 
     @Override
-    public void updatePlayerSync(FriendPlayer player) {}
+    public void updatePlayerSync(FriendPlayer player) {
+        Bukkit.getPluginManager().callEvent(new BukkitFriendPlayerUpdateEvent(player.getUUID()));
+    }
     @Override
     public void removeFromCache(UUID uuid) {}
 }

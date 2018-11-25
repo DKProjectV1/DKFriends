@@ -8,9 +8,13 @@ package ch.dkrieger.friendsystem.spigot.party;
 
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.party.PartyManager;
+import ch.dkrieger.friendsystem.spigot.event.BukkitPartyUpdateEvent;
+import org.bukkit.Bukkit;
 
 public class SpigotPartyManager extends PartyManager {
 
     @Override
-    public void update(Party party) {}
+    public void update(Party party) {
+        Bukkit.getPluginManager().callEvent(new BukkitPartyUpdateEvent(party));
+    }
 }

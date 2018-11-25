@@ -70,7 +70,7 @@ public class FriendPlayer {
     }
 
     public String getColoredName(){
-        return this.color+this.name;
+        return getColor()+this.name;
     }
 
     public long getFirstLogin() {

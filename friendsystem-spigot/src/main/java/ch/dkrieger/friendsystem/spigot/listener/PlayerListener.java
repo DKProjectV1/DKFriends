@@ -8,6 +8,9 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.OnlineFriendPlayer;
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
+import ch.dkrieger.friendsystem.spigot.event.BukkitFriendPlayerLogoutEvent;
+import ch.dkrieger.friendsystem.spigot.event.BukkitFriendPlayerUpdateEvent;
+import ch.dkrieger.friendsystem.spigot.event.BukkitOnlineFriendPlayerUpdateEvent;
 import ch.dkrieger.friendsystem.spigot.util.SpigotUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -96,6 +99,7 @@ public class PlayerListener implements Listener {
                                 .replace("[player]",finalPlayer.getColoredName()));
                     }
                 }
+                Bukkit.getPluginManager().callEvent(new BukkitOnlineFriendPlayerUpdateEvent(finalPlayer.getUUID(),finalPlayer.getOnlinePlayer()));
                 finalPlayer.updateInformations(event.getPlayer().getName(),FriendSystem.getInstance().getPlatform().getColor(finalPlayer), SpigotUtil.getGameProfile(event.getPlayer()).toString());
             });
         }
@@ -115,6 +119,7 @@ public class PlayerListener implements Listener {
                         .replace("[prefix]",Messages.PREFIX_FRIEND)
                         .replace("[player]",player.getColoredName()));
             }
+            Bukkit.getPluginManager().callEvent(new BukkitFriendPlayerLogoutEvent(player.getUUID()));
             player.updateInformations(event.getPlayer().getName(),FriendSystem.getInstance().getPlatform().getColor(player));
         });
     }
@@ -132,6 +137,7 @@ public class PlayerListener implements Listener {
                             .replace("[player]",player.getColoredName()));
                     party.connect(event.getPlayer().getWorld().getName());
                 }
+                Bukkit.getPluginManager().callEvent(new BukkitOnlineFriendPlayerUpdateEvent(player.getUUID(),player.getOnlinePlayer()));
             }
         });
     }
