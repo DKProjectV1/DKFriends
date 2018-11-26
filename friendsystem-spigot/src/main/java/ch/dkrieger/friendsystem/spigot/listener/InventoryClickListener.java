@@ -25,17 +25,26 @@ public class InventoryClickListener implements org.bukkit.event.Listener {
 
     @EventHandler(priority= EventPriority.HIGH)
     public void onInventoryClick(InventoryClickEvent event) {
+        System.out.println("click");
         if(!(event.getWhoClicked() instanceof Player)) return;
         if(event.getInventory() == null) return;
         if(event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof GUI) ((GUI)event.getInventory().getHolder()).handleClick(event);
         final Player player = (Player)event.getWhoClicked();
+        System.out.println("con1");
         Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), () -> {
+            System.out.println("async " + event.getInventory().getName());
             ConfigInventory inventory = SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(event.getInventory().getName());
+
             if(inventory != null) {
+                System.out.println("inventory not null");
                 if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
                 NBTItem nbtItem = new NBTItem(event.getCurrentItem());
+                System.out.println("nbtItem");
+                System.out.println(nbtItem.getKeys());
                 if(nbtItem.hasKey("listeners") && nbtItem.getString("listeners") != null) {
+                    System.out.println("hasListener key");
                     List<Listener> listeners = GeneralUtil.GSON_NOT_PRETTY.fromJson(nbtItem.getString("listeners"), new TypeToken<List<Listener>>(){}.getType());
+                    System.out.println(listeners);
                     for(Listener listener : listeners) if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
                         if(nbtItem.hasKey("friend")) listener.execute(player, nbtItem.getString("friend"));
                         else listener.execute(player);

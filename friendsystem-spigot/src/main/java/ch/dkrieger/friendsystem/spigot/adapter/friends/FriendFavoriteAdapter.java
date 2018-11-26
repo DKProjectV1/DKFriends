@@ -12,15 +12,14 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class FriendAddFavoriteAdapter extends FriendAdapter {
+public class FriendFavoriteAdapter extends FriendAdapter {
 
-    public FriendAddFavoriteAdapter(String name) {
-        super("addFriendAsFavorite");
+    public FriendFavoriteAdapter() {
+        super("favoriteFriend");
     }
 
     @Override
     public void execute(Player player, Object... objects) {
-        FriendSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId()).getFriend(UUID.fromString((String) objects[0])).setFavorite(true);
-
+        FriendSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId()).getOnlinePlayer().executeCommand("friend favorite " + String.valueOf(objects[0]));
     }
 }

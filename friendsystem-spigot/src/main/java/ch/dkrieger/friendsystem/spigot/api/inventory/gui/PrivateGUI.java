@@ -1,6 +1,7 @@
 package ch.dkrieger.friendsystem.spigot.api.inventory.gui;
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
+import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConfigInventory;
 import org.bukkit.entity.Player;
@@ -16,11 +17,29 @@ public abstract class PrivateGUI extends GUI {
     private Player owner;
 
     public PrivateGUI(String configInventory, Player owner) {
-        this(SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(configInventory), owner);
+        this(SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(configInventory), null, owner, null);
     }
 
-    public PrivateGUI(ConfigInventory configInventory, Player owner) {
-        super(configInventory);
+    public PrivateGUI(String configInventory, String condition, Player owner, Friend friend) {
+        this(SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(configInventory), condition, owner, friend);
+    }
+
+    public PrivateGUI(String configInventory, Player owner, Friend friend) {
+        this(SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(configInventory), null, owner, friend);
+    }
+
+    public PrivateGUI(ConfigInventory configInventory, Player owner, Friend friend) {
+        this(configInventory, null, owner, friend);
+    }
+
+    public PrivateGUI(ConfigInventory configInventory, String condition, Player owner, Friend friend) {
+        //super(configInventory.clone().setTitle(configInventory.getTitle().replace("[player]", FriendSystem.getInstance().getPlayerManager().getPlayer(owner.getUniqueId()).getColoredName())));
+        setConfigInventory(configInventory);
+        setInventory(configInventory.clone()
+                .setTitle(configInventory.getTitle()
+                        .replace("[player]", FriendSystem.getInstance().getPlayerManager().getPlayer(owner.getUniqueId()).getColoredName())
+                        .replace("[friend]", (friend == null ? "[friend]" : friend.getFriendPlayer().getColoredName())))
+                .toBukkitInventory(this, friend, condition));
         this.owner = owner;
     }
 

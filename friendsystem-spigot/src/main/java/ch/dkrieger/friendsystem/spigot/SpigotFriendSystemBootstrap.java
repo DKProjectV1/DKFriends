@@ -16,11 +16,9 @@ import ch.dkrieger.friendsystem.lib.player.PlayerColor;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
-import ch.dkrieger.friendsystem.spigot.adapter.friends.NextPageFriendAdapter;
-import ch.dkrieger.friendsystem.spigot.adapter.friends.OpenFriendPageAdapter;
-import ch.dkrieger.friendsystem.spigot.adapter.friends.PreviousPageFriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.*;
 import ch.dkrieger.friendsystem.spigot.adapter.inventory.OpenInventoryAdapter;
-import ch.dkrieger.friendsystem.spigot.adapter.party.OpenPartyPageAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.party.*;
 import ch.dkrieger.friendsystem.spigot.adapter.settings.OpenSettingsPageAdapter;
 import ch.dkrieger.friendsystem.spigot.event.BukkitFriendPlayerColorSetEvent;
 import ch.dkrieger.friendsystem.spigot.listener.*;
@@ -179,11 +177,25 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
     }
 
     private void registerAdapters() {
+        //Friend Adapter
+        registerAdapter(new FriendFavoriteAdapter());
+        registerAdapter(new FriendRemoveAdapter());
         registerAdapter(new NextPageFriendAdapter());
-        registerAdapter(new PreviousPageFriendAdapter());
+        registerAdapter(new OpenFriendOptionsPageAdapter());
         registerAdapter(new OpenFriendPageAdapter());
+        registerAdapter(new PreviousPageFriendAdapter());
+
+        //Inventory Adapter
         registerAdapter(new OpenInventoryAdapter());
+
+        //Party Adapter
+        registerAdapter(new InvitePartyAdapter());
+        registerAdapter(new JumpPartyAdapter());
+        registerAdapter(new NextPagePartyAdapter());
         registerAdapter(new OpenPartyPageAdapter());
+        registerAdapter(new PreviousPartyPageAdapter());
+
+        //Settings
         registerAdapter(new OpenSettingsPageAdapter());
     }
 

@@ -6,10 +6,13 @@ package ch.dkrieger.friendsystem.spigot.api.inventory.inventory;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.item.ItemStack;
+import net.minecraft.server.v1_8_R3.Item;
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -22,12 +25,14 @@ public class ConfigInventory {
     private int size;
     private Map<Integer, ItemStack> items;
     private List<Listener> listeners;
+    private Map<String, Map<Integer, ItemStack>> conditionItems;
 
     public ConfigInventory(String title, int size) {
         this.title = title;
         this.size = size;
         this.items = new LinkedHashMap<>();
         this.listeners = new LinkedList<>();
+        this.conditionItems = new LinkedHashMap<>();
     }
 
     public String getTitle() {
@@ -46,13 +51,6 @@ public class ConfigInventory {
         org.bukkit.inventory.ItemStack[] itemStacks = new org.bukkit.inventory.ItemStack[getSize()];
         for(int i = 0; i < this.size; i++) itemStacks[i] = getItem(i).toBukkitItemStack();
         return itemStacks;
-    }
-
-    public ItemStack getItem(String defaultKey) {
-        for(ItemStack itemStack : this.items.values()) {
-            if(itemStack.getKey() != null && itemStack.getKey().equalsIgnoreCase(defaultKey)) return itemStack;
-        }
-        return null;
     }
 
     public ItemStack getItem(int slot) {
@@ -94,8 +92,22 @@ public class ConfigInventory {
         return this;
     }
 
+    public ConfigInventory setConditionItems(Map<String, Map<Integer, ItemStack>> conditionItems) {
+        this.conditionItems = conditionItems;
+        return this;
+    }
+
     public void setItem(int slot, ItemStack itemStack) {
         this.items.put(slot, itemStack);
+    }
+
+    public void setItem(String condition, int slot, ItemStack itemStack) {
+        if(!this.conditionItems.containsKey(condition)) {
+            System.out.println("setItem not contains: " + condition);
+            this.conditionItems.put(condition, new LinkedHashMap<>());
+        }
+        this.conditionItems.get(condition).put(slot, itemStack);
+        System.out.println("setItem: " + this.conditionItems);
     }
 
     public void addItem(ItemStack itemStack) {
@@ -107,25 +119,69 @@ public class ConfigInventory {
         }
     }
 
+    public void addItem(String condition, ItemStack itemStack) {
+        if(!this.conditionItems.containsKey(condition))conditionItems.put(condition, new LinkedHashMap<>());
+        for(int i = 0; i <= this.size; i++) {
+            if(!this.conditionItems.get(condition).containsKey(i)) {
+                this.conditionItems.get(condition).put(i, itemStack);
+                return;
+            }
+        }
+    }
+
+    public ConfigInventory setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public Inventory toBukkitInventory(InventoryHolder inventoryHolder, Friend friend) {
+        return toBukkitInventory(inventoryHolder, friend, null);
+    }
+
+    public Inventory toBukkitInventory(InventoryHolder inventoryHolder, Friend friend, String condition) {
+        System.out.println("TO Bukkit inventory " + this.title);
+        System.out.println("conditon: " + condition);
+        Inventory inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
+        for(Map.Entry<Integer, ItemStack> entry : this.items.entrySet()) {
+            inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack(friend));
+        }
+        if(condition != null) {
+            System.out.println("map: ");
+            System.out.println(this.conditionItems);
+            if(!this.conditionItems.containsKey(condition)) {
+                System.out.println("condition in map null");
+                conditionItems.put(condition, new LinkedHashMap<>());
+            }
+            for(Map.Entry<Integer, ItemStack> entry : this.conditionItems.get(condition).entrySet()) {
+                System.out.println(entry.getKey() + ":" + entry.getValue());
+                inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack(friend));
+            }
+        }
+        return inventory;
+    }
+
     public org.bukkit.inventory.Inventory toBukkitInventory(InventoryHolder inventoryHolder, FriendPlayer player) {
         org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
         for(Map.Entry<Integer, ItemStack> entry : this.items.entrySet()) {
-            inventory.setItem(entry.getKey()-1, entry.getValue().toBukkitItemStack(player));
+            inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack(player));
         }
         return inventory;
     }
 
     public org.bukkit.inventory.Inventory toBukkitInventory(InventoryHolder inventoryHolder) {
-        return toBukkitInventory(inventoryHolder, null);
+        org.bukkit.inventory.Inventory inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
+        for(Map.Entry<Integer, ItemStack> entry : this.items.entrySet()) {
+            inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack());
+        }
+        return inventory;
     }
 
     public org.bukkit.inventory.Inventory toBukkitInventory() {
-        return toBukkitInventory(null, null);
+        return toBukkitInventory(null);
     }
 
     @Override
     public ConfigInventory clone() {
-        return new ConfigInventory(this.title, this.size).setItems(this.items).setListeners(this.listeners);
+        return new ConfigInventory(this.title, this.size).setItems(this.items).setListeners(this.listeners).setConditionItems(this.conditionItems);
     }
-
 }

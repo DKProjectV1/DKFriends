@@ -57,10 +57,12 @@ public class Listener {
     }
 
     public void execute(Player player, Object... objects) {
+        System.out.println("listener execute");
         if(getCommand() != null && getCommandRunner() != null) {
             if(getCommandRunner() == Listener.CommandRunner.CONSOLE) Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), getCommand());
             else player.chat("/" + getCommand());
         }
+        System.out.println(getAdapter());
         if(getAdapter() != null) {
             Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(getAdapter());
             if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player, objects);

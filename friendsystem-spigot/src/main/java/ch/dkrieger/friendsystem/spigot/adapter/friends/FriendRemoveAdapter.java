@@ -20,6 +20,6 @@ public class FriendRemoveAdapter extends FriendAdapter {
 
     @Override
     public void execute(Player player, Object... objects) {
-        FriendSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId()).removeFriend(FriendSystem.getInstance().getPlayerManager().getPlayer(UUID.fromString((String) objects[0])));
+        FriendSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId()).getOnlinePlayer().executeCommand("friend remove " + String.valueOf(objects[0]));
     }
 }

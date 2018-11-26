@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class AdvancedConfig {
 
-    private int skullFirstSlot, skullLastSlot, friendSwitchPageInventorySlot1, friendSwitchPageInventorySlot2, partySwitchPageInventorySlot1, partySwitchPageInventorySlot2;
+    private int skullFirstSlot, skullLastSlot, friendSwitchPageInventorySlot1, friendSwitchPageInventorySlot2, partySwitchPageInventorySlot1, partySwitchPageInventorySlot2, friendRequestsInventorySlot;
     private Map<String, ItemStack> items;
     private Map<String, ConfigInventory> inventories;
     private Map<Integer, ItemStack> defaultInventoryItems;
@@ -26,12 +26,12 @@ public class AdvancedConfig {
         this.friendSwitchPageInventorySlot2 = 43;
         this.partySwitchPageInventorySlot1 = 44;
         this.partySwitchPageInventorySlot2 = 43;
-
+        this.friendRequestsInventorySlot = 50;
         this.items = new LinkedHashMap<>();
 
         items.put("onlinePlayerSkull", new ItemStack("397:3").addLore("§aOnline auf [server]").addListener(Listener.DefaultEvent.CLICK, "openFriendOptionsPage"));
-        items.put("offlinePlayerSkull", new ItemStack("397:0").addLore("§cZuletzt online: [lastonline]"));
-        items.put("friendRequests", new ItemStack("358:0").setDisplayName("§6Friend Requests").setInventorySlot(50));
+        items.put("offlinePlayerSkull", new ItemStack("397:0").addLore("§cZuletzt online: [lastonline]").addListener(Listener.DefaultEvent.CLICK, "openFriendOptionsPage"));
+        items.put("friendRequests", new ItemStack("358:0").setDisplayName("§6Friend Requests"));
         items.put("nextFriendPage", new ItemStack("262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextFriendPage")));
         items.put("previousFriendPage", new ItemStack("262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousFriendPage")));
         items.put("partyPlayerSkull", new ItemStack("393:3"));
@@ -41,9 +41,9 @@ public class AdvancedConfig {
 
         this.defaultInventoryItems = new LinkedHashMap<>();
 
-        defaultInventoryItems.put(45, new ItemStack("friends","314:0").setDisplayName("§eFriends").addListener(new Listener(Listener.DefaultEvent.CLICK, "openFriendPage")));
-        defaultInventoryItems.put(46, new ItemStack("parties", "401:0").setDisplayName("§5Party").addListener(new Listener(Listener.DefaultEvent.CLICK, "openPartyPage")));
-        defaultInventoryItems.put(47, new ItemStack("settings", "356:0").setDisplayName("§cSettings").addListener(new Listener(Listener.DefaultEvent.CLICK, "openSettingsPage")));
+        defaultInventoryItems.put(45, new ItemStack("314:0").setDisplayName("§eFriends").addListener(new Listener(Listener.DefaultEvent.CLICK, "openFriendPage")));
+        defaultInventoryItems.put(46, new ItemStack("401:0").setDisplayName("§5Party").addListener(new Listener(Listener.DefaultEvent.CLICK, "openPartyPage")));
+        defaultInventoryItems.put(47, new ItemStack("356:0").setDisplayName("§cSettings").addListener(new Listener(Listener.DefaultEvent.CLICK, "openSettingsPage")));
 
 
         this.inventories = new LinkedHashMap<>();
@@ -55,7 +55,14 @@ public class AdvancedConfig {
 
         ConfigInventory settingsInventory = new ConfigInventory("§cSettings", 54);
 
-        ConfigInventory friendOptions = new ConfigInventory("", 54);
+        ConfigInventory friendOptions = new ConfigInventory("[friend]", 27);
+        friendOptions.setItem("friendOnline", 12, new ItemStack("354:0").setDisplayName("").addListener(Listener.DefaultEvent.CLICK, "invitePlayerToParty"));
+        friendOptions.setItem("friendOnline", 14, new ItemStack("368:0").addListener(Listener.DefaultEvent.CLICK, "jumpToPlayer"));
+        friendOptions.setItem(15, new ItemStack("166:0").addListener(Listener.DefaultEvent.CLICK, "removeFriend"));
+
+        friendOptions.setItem("friendOnline", 11, new ItemStack("397:3").addLore("§aOnline auf [server]"));
+        friendOptions.setItem("friendOffline", 11, new ItemStack("397:0"));
+
 
         inventories.put("friends", friendInventory);
         inventories.put("friendOptions", friendOptions);

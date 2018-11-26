@@ -274,6 +274,11 @@ public class FriendPlayer {
         while(iterator.hasNext() && (request= iterator.next()) != null) if(request.getUUID().equals(uuid)) return request;
         return null;
     }
+
+    public Friend getFriend(String name) {
+        return getFriend(FriendSystem.getInstance().getPlayerManager().getPlayer(name));
+    }
+
     public void addFriend(FriendPlayer player){
         addFriend(player,false);
     }

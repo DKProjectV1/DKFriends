@@ -26,7 +26,7 @@ import java.util.Map;
 public class ItemStack {
 
     private ItemStackType type;
-    private String key, itemId, displayName, skullName;
+    private String itemId, displayName, skullName;
     private int amount, durability, inventorySlot;
     private boolean glow;
     private Color color;
@@ -38,25 +38,16 @@ public class ItemStack {
         this(type, null);
     }
 
-    public ItemStack(String key, String itemId) {
-        this(key, ItemStackType.NORMAL, itemId);
-    }
-
-    public ItemStack(String key, ItemStackType type, String itemId) {
-        this(type, key, itemId, 1, -1, null, null, false, null, new LinkedList<>());
-    }
-
     public ItemStack(String itemId) {
         this(ItemStackType.NORMAL, itemId);
     }
 
     public ItemStack(ItemStackType type, String itemId) {
-        this(null, type, itemId);
+        this(type, itemId, 1, -1, null, null, false, null, new LinkedList<>());
     }
 
-    public ItemStack(ItemStackType type, String key, String itemId, int amount, int durability, String displayName, String skullName, boolean glow, Color color, List<String> lore) {
+    public ItemStack(ItemStackType type, String itemId, int amount, int durability, String displayName, String skullName, boolean glow, Color color, List<String> lore) {
         this.type = type;
-        this.key = key;
         this.itemId = itemId;
         this.amount = amount;
         this.durability = durability;
@@ -67,10 +58,6 @@ public class ItemStack {
         this.lore = lore;
         this.listeners = new LinkedList<>();
         this.properties = new LinkedHashMap<>();
-    }
-
-    public String getKey() {
-        return key;
     }
 
     public String getItemId() {
@@ -205,7 +192,7 @@ public class ItemStack {
     @SuppressWarnings("Only to build a friend skull or to add friend uuid as NBT data")
     public org.bukkit.inventory.ItemStack toBukkitItemStack(Friend friend) {
         org.bukkit.inventory.ItemStack itemStack;
-        if(this.itemId.startsWith("397")) {
+        if(this.itemId.startsWith("397") && friend != null) {
             ItemBuilder itemBuilder;
             if (friend.isOnline()) {
                 itemBuilder = new ItemBuilder(SpigotUtil.getGameProfile(Bukkit.getPlayer(friend.getUUID())),
@@ -219,11 +206,12 @@ public class ItemStack {
                 if (friend.isOnline()) lore = lore.replace("[server]", friend.getOnlineFriendPlayer().getServer());
                 itemBuilder.addLore(lore);
             }
-            itemStack = itemBuilder.build();
+            itemStack = itemBuilder.setDisplayName(this.displayName.replace("[friend]", friend.getFriendPlayer().getColoredName())).build();
         }else itemStack = toBukkitItemStack();
 
         NBTItem nbtItem = new NBTItem(itemStack);
-        nbtItem.setString("friend", friend.getUUID().toString());
+        if(friend != null)nbtItem.setString("friend", friend.getFriendPlayer().getName());
+        nbtItem.setString("listeners", GeneralUtil.GSON_NOT_PRETTY.toJson(this.listeners, new TypeToken<List<Listener>>(){}.getType()));
         return nbtItem.getItem();
     }
 
@@ -243,6 +231,6 @@ public class ItemStack {
 
     @Override
     protected ItemStack clone() {
-        return new ItemStack(this.type, this.key, this.itemId, this.amount, this.durability, this.displayName, this.skullName, this.glow, this.color, this.lore).setProperties(this.properties).setListeners(this.listeners);
+        return new ItemStack(this.type, this.itemId, this.amount, this.durability, this.displayName, this.skullName, this.glow, this.color, this.lore).setProperties(this.properties).setListeners(this.listeners);
     }
 }

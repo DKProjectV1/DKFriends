@@ -91,6 +91,10 @@ public abstract class GUI implements InventoryHolder {
         this.configInventory = configInventory;
     }
 
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     public void createInventory(String name, int size){
         this.inventory = Bukkit.createInventory(this,size,name);
     }
