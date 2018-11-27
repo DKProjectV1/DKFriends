@@ -1,8 +1,12 @@
 package ch.dkrieger.friendsystem.spigot.adapter;
 
+import org.bukkit.entity.Player;
+
+import java.util.Map;
+
 /*
  *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 23.11.18 14:32
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 23.11.18 20:29
  *
  */
 
@@ -17,4 +21,6 @@ public abstract class Adapter {
     public String getName() {
         return name;
     }
+
+    public abstract void execute(Player player, Map<String, Object> properties);
 }

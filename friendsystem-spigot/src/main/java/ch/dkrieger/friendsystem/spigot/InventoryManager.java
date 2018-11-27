@@ -11,6 +11,7 @@ import ch.dkrieger.friendsystem.spigot.inventories.Profile;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 public class InventoryManager {
 
@@ -49,8 +50,15 @@ public class InventoryManager {
     }
 
     public void updateFriendPages() {
-        SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getProfiles().forEach((player, profile) -> {
-            profile.getFriendPage().setPage(profile.getFriendPage().getCurrentPage());
+        getProfiles().forEach((player, profile) -> {
+            profile.getFriendPage().updateCurrentPage();
+            profile.getFriendRequestsPage().updateCurrentPage();
+        });
+    }
+
+    public void updatePartyPages() {
+        getProfiles().forEach((player, profile) -> {
+            profile.getPartyPage().updateCurrentPage();
         });
     }
 }

@@ -12,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.LinkedHashMap;
+
 public class PlayerJoinListener implements Listener {
 
     @EventHandler
@@ -19,7 +21,7 @@ public class PlayerJoinListener implements Listener {
         Bukkit.getScheduler().runTaskLater(SpigotFriendSystemBootstrap.getInstance(), ()-> {
             SpigotFriendSystemBootstrap.getInstance().getInventoryManager().createProfile(event.getPlayer());
             Bukkit.getScheduler().runTaskLater(SpigotFriendSystemBootstrap.getInstance(), ()-> {
-                SpigotFriendSystemBootstrap.getInstance().getFriendAdapter("openFriendPage").execute(event.getPlayer());
+                SpigotFriendSystemBootstrap.getInstance().getAdapter("openFriendPage").execute(event.getPlayer(), new LinkedHashMap<>());
             },20*5);
         }, 20*5);
     }

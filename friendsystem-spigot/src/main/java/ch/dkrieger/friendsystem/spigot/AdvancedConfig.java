@@ -22,11 +22,21 @@ public class AdvancedConfig {
 
     public AdvancedConfig() {
         this.settings = new LinkedHashMap<>();
+        addSetting("friendPageSkullFirstSlot", 1);
+        addSetting("friendPageSkullLastSlot", 1);
 
-        addSetting("skullFirstSlot", 1);
-        addSetting("skullLastSlot", 36);
+        addSetting("friendRequestsPageSkullFirstSlot", 1);
+        addSetting("friendRequestsPageSkullLastSlot", 1);
+
+        addSetting("partyPageSkullFirstSlot", 1);
+        addSetting("partyPageSkullLastSlot", 1);
+
         addSetting("friendSwitchPageInventorySlot1", 44);
         addSetting("friendSwitchPageInventorySlot2", 43);
+
+        addSetting("friendRequestsSwitchPageInventorySlot1", 44);
+        addSetting("friendRequestsSwitchPageInventorySlot2", 43);
+
         addSetting("partySwitchPageInventorySlot1", 44);
         addSetting("partySwitchPageInventorySlot2", 43);
 
@@ -40,6 +50,8 @@ public class AdvancedConfig {
         items.put("nextPartyPage", new ItemStack("262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextPartyPage")));
         items.put("previousPartyPage", new ItemStack("262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousPartyPage")));
         items.put("requestItem", new ItemStack("339:0").setDisplayName("[requester]").addListener(new Listener(Listener.DefaultEvent.CLICK, "acceptFriendRequest")));
+        items.put("nextFriendRequestsPage", new ItemStack("262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextFriendRequestsPage")));
+        items.put("previousFriendRequestsPage", new ItemStack("262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousFriendRequestsPage")));
 
         this.defaultInventoryItems = new LinkedHashMap<>();
 

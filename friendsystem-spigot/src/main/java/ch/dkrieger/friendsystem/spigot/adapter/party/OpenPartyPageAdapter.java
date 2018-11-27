@@ -7,13 +7,13 @@ package ch.dkrieger.friendsystem.spigot.adapter.party;
  */
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class OpenPartyPageAdapter extends FriendAdapter {
+public class OpenPartyPageAdapter extends Adapter {
 
     public OpenPartyPageAdapter() {
         super("openPartyPage");

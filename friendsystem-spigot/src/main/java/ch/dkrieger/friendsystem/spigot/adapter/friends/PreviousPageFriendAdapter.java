@@ -7,12 +7,12 @@ package ch.dkrieger.friendsystem.spigot.adapter.friends;
  */
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class PreviousPageFriendAdapter extends FriendAdapter {
+public class PreviousPageFriendAdapter extends Adapter {
 
     public PreviousPageFriendAdapter() {
         super("previousFriendPage");

@@ -15,7 +15,6 @@ import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.lib.player.PlayerColor;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.friends.*;
 import ch.dkrieger.friendsystem.spigot.adapter.inventory.OpenInventoryAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.party.*;
@@ -134,10 +133,6 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
     public Adapter getAdapter(String name) {
         for(Adapter adapter : this.adapters) if(adapter.getName().startsWith(name))return adapter;
         return null;
-    }
-
-    public FriendAdapter getFriendAdapter(String name) {
-        return (FriendAdapter)getAdapter(name);
     }
 
     private boolean isCloudNet(){

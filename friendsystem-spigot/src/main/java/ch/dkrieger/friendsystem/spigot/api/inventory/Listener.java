@@ -9,7 +9,6 @@ package ch.dkrieger.friendsystem.spigot.api.inventory;
 import ch.dkrieger.friendsystem.lib.utils.GeneralUtil;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.inventory.OpenInventoryAdapter;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConfigInventory;
 import com.google.gson.reflect.TypeToken;
@@ -72,8 +71,7 @@ public class Listener {
         }
         if(getAdapter() != null) {
             Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(getAdapter());
-            if(adapter instanceof FriendAdapter) ((FriendAdapter) adapter).execute(player, properties);
-            else if(adapter instanceof OpenInventoryAdapter) ((OpenInventoryAdapter) adapter).execute(player, getAdapter());
+            if(adapter != null) adapter.execute(player, properties);
         }
     }
 

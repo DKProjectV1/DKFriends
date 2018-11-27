@@ -7,13 +7,13 @@ package ch.dkrieger.friendsystem.spigot.adapter.settings;
  */
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class OpenSettingsPageAdapter extends FriendAdapter {
+public class OpenSettingsPageAdapter extends Adapter {
 
     public OpenSettingsPageAdapter() {
         super("openSettingsPage");

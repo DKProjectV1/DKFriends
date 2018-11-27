@@ -54,13 +54,17 @@ public class PartyPage extends PrivateGUI {
         Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), ()-> Listener.execute(Listener.DefaultEvent.INVENTORY_CLOSE, (Player) event.getPlayer(), getConfigInventory()));
     }
 
+    public void updateCurrentPage() {
+        setPage(this.currentPage);
+    }
+
     private boolean setPage(int page) {
         if(page < 1)return false;
         Party party = FriendSystem.getInstance().getPartyManager().getParty(getOwner().getUniqueId());
         if(party != null) {
             List<PartyMember> partyMembers = party.getSortedMembers();
-            int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("skullFirstSlot");
-            int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("skullLastSlot");
+            int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("partyPageSkullFirstSlot");
+            int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("partyPageSkullLastSlot");
             int skullsPerPage = skullLastSlot-skullFirstSlot+1;
 
             int switchPageSlot1 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("partySwitchPageInventorySlot1");

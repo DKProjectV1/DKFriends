@@ -1,9 +1,6 @@
 package ch.dkrieger.friendsystem.spigot.listener;
 
-import ch.dkrieger.friendsystem.lib.config.Config;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
 import ch.dkrieger.friendsystem.spigot.api.inventory.gui.GUI;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.inventory.ConfigInventory;

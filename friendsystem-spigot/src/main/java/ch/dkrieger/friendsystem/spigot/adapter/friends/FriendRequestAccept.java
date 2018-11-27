@@ -7,13 +7,12 @@ package ch.dkrieger.friendsystem.spigot.adapter.friends;
  */
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
-import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class FriendRequestAccept extends FriendAdapter {
+public class FriendRequestAccept extends Adapter {
 
     public FriendRequestAccept() {
         super("acceptFriendRequest");

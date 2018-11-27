@@ -10,13 +10,15 @@ import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class OpenInventoryAdapter extends Adapter {
 
     public OpenInventoryAdapter() {
         super("openMainInventory");
     }
 
-    public void execute(Player player, String mainInventory) {
-        player.openInventory(SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(mainInventory.split("[)(]")[1]).toBukkitInventory());
+    public void execute(Player player, Map<String, Object> properties) {
+        player.openInventory(SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(((String)properties.get("mainInventory")).split("[)(]")[1]).toBukkitInventory());
     }
 }

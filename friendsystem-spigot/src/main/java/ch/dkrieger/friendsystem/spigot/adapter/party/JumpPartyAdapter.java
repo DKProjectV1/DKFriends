@@ -7,12 +7,12 @@ package ch.dkrieger.friendsystem.spigot.adapter.party;
  */
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class JumpPartyAdapter extends FriendAdapter {
+public class JumpPartyAdapter extends Adapter {
 
     public JumpPartyAdapter() {
         super("jumpToPlayer");

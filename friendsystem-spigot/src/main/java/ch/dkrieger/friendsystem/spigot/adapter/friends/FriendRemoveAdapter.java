@@ -7,13 +7,12 @@ package ch.dkrieger.friendsystem.spigot.adapter.friends;
  */
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
-import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
-import java.util.UUID;
 
-public class FriendRemoveAdapter extends FriendAdapter {
+public class FriendRemoveAdapter extends Adapter {
 
     public FriendRemoveAdapter() {
         super("removeFriend");

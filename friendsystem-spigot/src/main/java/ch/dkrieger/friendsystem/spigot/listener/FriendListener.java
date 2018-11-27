@@ -39,6 +39,6 @@ public class FriendListener implements Listener {
 
     @EventHandler
     public void onBukkitPartyUpdate(BukkitPartyUpdateEvent event) {
-        
+        SpigotFriendSystemBootstrap.getInstance().getInventoryManager().updatePartyPages();
     }
 }

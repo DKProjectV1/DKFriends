@@ -63,13 +63,17 @@ public class FriendPage extends PrivateGUI {
         return currentPage;
     }
 
+    public void updateCurrentPage() {
+        setPage(this.currentPage);
+    }
+
     public boolean setPage(int page) {
         if(getFriendPlayer().hasRequests()) getConfigInventory().getConditionItems("hasRequests").forEach((slot, itemStack) -> getInventory().setItem(slot, itemStack.toBukkitItemStack(getFriendPlayer())));
 
         List<Friend> friends = getFriendPlayer().getSortedFriends();
         if(page < 1)return false;
-        int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("skullFirstSlot");
-        int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("skullLastSlot");
+        int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("friendPageSkullFirstSlot");
+        int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("friendPageSkullLastSlot");
         int skullsPerPage = skullLastSlot-skullFirstSlot+1;
 
         int switchPageSlot1 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("friendSwitchPageInventorySlot1");

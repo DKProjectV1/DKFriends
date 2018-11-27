@@ -50,27 +50,31 @@ public class FriendRequestsPage extends PrivateGUI {
         Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), ()-> Listener.execute(Listener.DefaultEvent.INVENTORY_CLOSE, (Player) event.getPlayer(), getConfigInventory()));
     }
 
+    public void updateCurrentPage() {
+        setPage(this.currentPage);
+    }
+
     private boolean setPage(int page) {
         if(page < 1)return false;
 
 
         List<Friend> requests = getFriendPlayer().getRequests();
-        int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("skullFirstSlot");
-        int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("skullLastSlot");
+        int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("friendRequestsPageSkullFirstSlot");
+        int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("friendRequestsPageSkullLastSlot");
         int skullsPerPage = skullLastSlot-skullFirstSlot+1;
 
-        int switchPageSlot1 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("partySwitchPageInventorySlot1");
-        int switchPageSlot2 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("partySwitchPageInventorySlot2");
+        int switchPageSlot1 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("friendRequestsSwitchPageInventorySlot1");
+        int switchPageSlot2 = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("friendRequestsSwitchPageInventorySlot2");
         int pages = (int) Math.ceil((double)requests.size() / skullsPerPage);
 
         if(page > 1) {
             if(page == pages) setItem(switchPageSlot2, new ItemStack(Material.AIR));
             getInventory().setItem((page == pages ? switchPageSlot1 : switchPageSlot2),
-                    SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItem("previousPartyPage").toBukkitItemStack());
+                    SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItem("previousFriendRequestsPage").toBukkitItemStack());
 
         }
         if(pages > page) {
-            getInventory().setItem(switchPageSlot1, SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItem("nextPartyPage").toBukkitItemStack());
+            getInventory().setItem(switchPageSlot1, SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getItem("nextFriendRequestsPage").toBukkitItemStack());
         }
         if(page == 1) setItem(switchPageSlot2, new ItemStack(Material.AIR));
 
