@@ -77,6 +77,10 @@ public class ConfigInventory {
         return listeners;
     }
 
+    public Map<Integer, ItemStack> getConditionItems(String condition) {
+        return this.conditionItems.get(condition);
+    }
+
     public ConfigInventory setListeners(List<Listener> listeners) {
         this.listeners = listeners;
         return this;

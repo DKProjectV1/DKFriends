@@ -184,6 +184,7 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         registerAdapter(new OpenFriendOptionsPageAdapter());
         registerAdapter(new OpenFriendPageAdapter());
         registerAdapter(new PreviousPageFriendAdapter());
+        registerAdapter(new OpenFriendRequestsPageAdapter());
 
         //Inventory Adapter
         registerAdapter(new OpenInventoryAdapter());

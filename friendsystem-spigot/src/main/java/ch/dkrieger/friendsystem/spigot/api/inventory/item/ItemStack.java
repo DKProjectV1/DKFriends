@@ -186,7 +186,10 @@ public class ItemStack {
     public org.bukkit.inventory.ItemStack toBukkitItemStack(FriendPlayer player) {
         if(player == null && this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder(160).setDurability(15).build();
         if(player != null && this.type == ItemStackType.PLACEHOLDER)return new ItemBuilder(160).setDurability(player.getSettings().getDesign()).build();
-        return toBukkitItemStack();
+        org.bukkit.inventory.ItemStack itemStack = toBukkitItemStack();
+        NBTItem nbtItem = new NBTItem(itemStack);
+        nbtItem.setString("friendPlayer", player.getUUID().toString());
+        return nbtItem.getItem();
     }
 
     @SuppressWarnings("Only to build a friend skull or to add friend uuid as NBT data")
@@ -206,7 +209,7 @@ public class ItemStack {
                 if (friend.isOnline()) lore = lore.replace("[server]", friend.getOnlineFriendPlayer().getServer());
                 itemBuilder.addLore(lore);
             }
-            itemStack = itemBuilder.setDisplayName(this.displayName.replace("[friend]", friend.getFriendPlayer().getColoredName())).build();
+            itemStack = itemBuilder.setDisplayName(this.displayName.replace("[friend]", friend.getFriendPlayer().getColoredName()).replace("[requester]", friend.getFriendPlayer().getColoredName())).build();
         }else itemStack = toBukkitItemStack();
 
         NBTItem nbtItem = new NBTItem(itemStack);

@@ -24,15 +24,14 @@ public class InventoryOpenListener implements org.bukkit.event.Listener {
     @EventHandler(priority= EventPriority.HIGH)
     public void onInventoryOpen(InventoryOpenEvent event) {
         if(event.getInventory() == null) return;
-        if(event.getInventory().getHolder() == null && event.getInventory().getHolder() instanceof GUI) ((GUI)event.getInventory().getHolder()).handleOpen(event);
+        if(event.getInventory().getHolder() == null && event.getInventory().getHolder() instanceof GUI) {
+            ((GUI)event.getInventory().getHolder()).handleOpen(event);
+            return;
+        }
         final Player player = (Player)event.getPlayer();
         Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), () -> {
             ConfigInventory inventory = SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getInventory(event.getInventory().getName());
-            if(inventory != null) {
-                for(Listener listener : inventory.getListeners()) {
-                    listener.execute(player);
-                }
-            }
+            if(inventory != null) Listener.execute(Listener.DefaultEvent.INVENTORY_OPEN, player, inventory);
         });
     }
 }

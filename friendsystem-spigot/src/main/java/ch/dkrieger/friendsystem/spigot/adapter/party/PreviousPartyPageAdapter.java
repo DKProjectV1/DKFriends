@@ -10,6 +10,8 @@ import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.adapter.FriendAdapter;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class PreviousPartyPageAdapter extends FriendAdapter {
 
     public PreviousPartyPageAdapter() {
@@ -17,7 +19,7 @@ public class PreviousPartyPageAdapter extends FriendAdapter {
     }
 
     @Override
-    public void execute(Player player, Object... objects) {
+    public void execute(Player player, Map<String, Object> properties) {
         SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getProfile(player).getPartyPage().previousPage();
     }
 }

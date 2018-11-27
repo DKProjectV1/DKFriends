@@ -33,28 +33,17 @@ public class FriendOptionsPage extends PrivateGUI {
 
     @Override
     protected void onOpen(InventoryOpenEvent event) {
-
+        Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), ()-> Listener.execute(Listener.DefaultEvent.INVENTORY_OPEN, (Player) event.getPlayer(), getConfigInventory()));
     }
 
     @Override
     protected void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
-        Player player = (Player) event.getWhoClicked();
-        Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), ()-> {
-            if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
-            NBTItem nbtItem = new NBTItem(event.getCurrentItem());
-            if(nbtItem.hasKey("listeners") && nbtItem.getString("listeners") != null) {
-                List<Listener> listeners = GeneralUtil.GSON_NOT_PRETTY.fromJson(nbtItem.getString("listeners"), new TypeToken<List<Listener>>(){}.getType());
-                for(Listener listener : listeners) if(listener.getEvent().equalsIgnoreCase(Listener.DefaultEvent.CLICK.getName())) {
-                    if(nbtItem.hasKey("friend")) listener.execute(player, nbtItem.getString("friend"));
-                    else listener.execute(player);
-                }
-            }
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), ()-> Listener.execute(Listener.DefaultEvent.CLICK, (Player) event.getWhoClicked(), event.getCurrentItem()));
     }
 
     @Override
     protected void onClose(InventoryCloseEvent event) {
-
+        Bukkit.getScheduler().runTaskAsynchronously(SpigotFriendSystemBootstrap.getInstance(), ()-> Listener.execute(Listener.DefaultEvent.INVENTORY_CLOSE, (Player) event.getPlayer(), getConfigInventory()));
     }
 }

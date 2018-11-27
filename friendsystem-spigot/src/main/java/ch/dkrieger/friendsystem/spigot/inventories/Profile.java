@@ -17,6 +17,7 @@ public class Profile {
     private FriendPage friendPage;
     private PartyPage partyPage;
     private SettingsPage settingsPage;
+    private FriendRequestsPage friendRequestsPage;
     private Map<String, Object> properties;
 
     public Profile(Player player) {
@@ -24,6 +25,7 @@ public class Profile {
         this.friendPage = new FriendPage(player);
         this.partyPage = new PartyPage(player);
         this.settingsPage = new SettingsPage(player);
+        this.friendRequestsPage = new FriendRequestsPage(player);
         this.properties = new LinkedHashMap<>();
     }
 
@@ -33,6 +35,10 @@ public class Profile {
 
     public FriendPage getFriendPage() {
         return friendPage;
+    }
+
+    public FriendRequestsPage getFriendRequestsPage() {
+        return friendRequestsPage;
     }
 
     public PartyPage getPartyPage() {

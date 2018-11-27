@@ -13,6 +13,7 @@ import ch.dkrieger.friendsystem.spigot.inventories.FriendOptionsPage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class OpenFriendOptionsPageAdapter extends FriendAdapter {
@@ -22,7 +23,7 @@ public class OpenFriendOptionsPageAdapter extends FriendAdapter {
     }
 
     @Override
-    public void execute(Player player, Object... objects) {
-        Bukkit.getScheduler().runTask(SpigotFriendSystemBootstrap.getInstance(), ()-> new FriendOptionsPage(player, FriendSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId()).getFriend(String.valueOf(objects[0]))).open());
+    public void execute(Player player, Map<String, Object> properties) {
+        Bukkit.getScheduler().runTask(SpigotFriendSystemBootstrap.getInstance(), ()-> new FriendOptionsPage(player, FriendSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId()).getFriend((String) properties.get("friend"))).open());
     }
 }

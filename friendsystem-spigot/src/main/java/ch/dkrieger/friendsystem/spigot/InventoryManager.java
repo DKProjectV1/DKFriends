@@ -26,6 +26,10 @@ public class InventoryManager {
         return this.playerProfiles.get(player);
     }
 
+    public Map<Player, Profile> getProfiles() {
+        return playerProfiles;
+    }
+
     public ConfigInventory getInventory(String name) {
         ConfigInventory configInventory = configInventories.get(name);
         if(configInventory == null) {
@@ -42,5 +46,11 @@ public class InventoryManager {
 
     public void removeProfile(Player player) {
         this.playerProfiles.remove(player);
+    }
+
+    public void updateFriendPages() {
+        SpigotFriendSystemBootstrap.getInstance().getInventoryManager().getProfiles().forEach((player, profile) -> {
+            profile.getFriendPage().setPage(profile.getFriendPage().getCurrentPage());
+        });
     }
 }

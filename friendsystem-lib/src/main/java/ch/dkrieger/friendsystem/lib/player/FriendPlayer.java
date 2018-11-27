@@ -265,6 +265,11 @@ public class FriendPlayer {
     public boolean hasRequest(UUID uuid){
         return getRequest(uuid) != null;
     }
+
+    public boolean hasRequests() {
+        return !this.requests.isEmpty();
+    }
+
     public Friend getFriend(FriendPlayer player){
         return getFriend(player.getUUID());
     }
