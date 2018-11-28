@@ -68,9 +68,6 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         registerListener();
         Bukkit.getScheduler().runTaskLater(this,()->{
             if(isCloudNet()){
-                FriendSystem.getInstance().setPlayerManager(new SpigotCloudNetPlayerManager());
-                FriendSystem.getInstance().setPartyManager(new CloudNetPartyManager());
-            }else if(isCloudNet()){
                 Bukkit.getPluginManager().registerEvents(new CloudNetListener(),this);
                 FriendSystem.getInstance().setPlayerManager(new SpigotCloudNetPlayerManager());
                 FriendSystem.getInstance().setPartyManager(new CloudNetPartyManager());
