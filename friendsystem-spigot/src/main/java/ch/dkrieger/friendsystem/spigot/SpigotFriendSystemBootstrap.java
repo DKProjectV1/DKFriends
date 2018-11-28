@@ -16,8 +16,15 @@ import ch.dkrieger.friendsystem.lib.player.PlayerColor;
 import ch.dkrieger.friendsystem.lib.utils.Document;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
 import ch.dkrieger.friendsystem.spigot.adapter.friends.*;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.inventory.*;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.settings.ChangeDesignSettingAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.settings.ToggleJumpSettingAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.settings.ToggleMessageSettingAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.friends.settings.ToggleNotifySettingAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.inventory.OpenInventoryAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.party.*;
+import ch.dkrieger.friendsystem.spigot.adapter.settings.OpenDesignSettingsPageAdapter;
+import ch.dkrieger.friendsystem.spigot.adapter.settings.OpenFriendSettingsPageAdapter;
 import ch.dkrieger.friendsystem.spigot.adapter.settings.OpenSettingsPageAdapter;
 import ch.dkrieger.friendsystem.spigot.event.BukkitFriendPlayerColorSetEvent;
 import ch.dkrieger.friendsystem.spigot.listener.*;
@@ -206,6 +213,12 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
 
         //Settings
         registerAdapter(new OpenSettingsPageAdapter());
+        registerAdapter(new ToggleJumpSettingAdapter());
+        registerAdapter(new ToggleMessageSettingAdapter());
+        registerAdapter(new ToggleNotifySettingAdapter());
+        registerAdapter(new ChangeDesignSettingAdapter());
+        registerAdapter(new OpenDesignSettingsPageAdapter());
+        registerAdapter(new OpenFriendSettingsPageAdapter());
     }
 
     public static SpigotFriendSystemBootstrap getInstance() {

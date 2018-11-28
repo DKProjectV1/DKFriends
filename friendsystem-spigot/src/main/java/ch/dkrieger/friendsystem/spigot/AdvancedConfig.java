@@ -78,6 +78,8 @@ public class AdvancedConfig {
         partyInventory.setItem("canDemote", 4, new ItemStack("4:0").addListener(Listener.DefaultEvent.CLICK, "demotePartyPlayer"));
 
         ConfigInventory settingsInventory = new ConfigInventory("§cSettings", 54);
+        settingsInventory.setItem(11, new ItemStack("314:0").setDisplayName("§eFriend settings").addListener(Listener.DefaultEvent.CLICK, "openFriendSettingsPage"));
+        settingsInventory.setItem(15, new ItemStack("20:0").setDisplayName("§5Design settings").addListener(Listener.DefaultEvent.CLICK, "openDesignSettingsPage"));
 
         ConfigInventory friendOptionsInventory = new ConfigInventory("[friend]", 27);
         friendOptionsInventory.setItem("friendOnline", 12, new ItemStack("354:0").setDisplayName("").addListener(Listener.DefaultEvent.CLICK, "invitePlayerToParty"));
@@ -91,13 +93,30 @@ public class AdvancedConfig {
         friendRequestDecisionInventory.addItem(new ItemStack("159:13").addListener(Listener.DefaultEvent.CLICK, "acceptFriendRequest"));
         friendRequestDecisionInventory.addItem(new ItemStack("159:14").addListener(Listener.DefaultEvent.CLICK, "denyFriendRequest"));
 
+        ConfigInventory friendSettingsInventory = new ConfigInventory("§cFriend settings", 54);
+        friendSettingsInventory.setItem("isJumpEnabled", 10, new ItemStack("368:0").setDisplayName("§cToggle jump").addListener(Listener.DefaultEvent.CLICK, "toggleJumpSetting"));
+        friendSettingsInventory.setItem("isMessageEnabled", 13, new ItemStack("340:0").setDisplayName("§cToggle message").addListener(Listener.DefaultEvent.CLICK, "toggleMessageSetting"));
+        friendSettingsInventory.setItem("isNotifyEnabled", 16, new ItemStack("339:0").setDisplayName("§cToggle notify").addListener(Listener.DefaultEvent.CLICK, "toggleNotifySetting"));
+
+        friendSettingsInventory.setItem("isJumpDisabled", 10, new ItemStack("368:0").setDisplayName("§aToggle jump").addListener(Listener.DefaultEvent.CLICK, "toggleJumpSetting"));
+        friendSettingsInventory.setItem("isMessageDisabled", 13, new ItemStack("340:0").setDisplayName("§aToggle message").addListener(Listener.DefaultEvent.CLICK, "toggleMessageSetting"));
+        friendSettingsInventory.setItem("isNotifyDisabled", 16, new ItemStack("339:0").setDisplayName("§aToggle notify").addListener(Listener.DefaultEvent.CLICK, "toggleNotifySetting"));
+
+        ConfigInventory designSettingsInventory = new ConfigInventory("§5Design settings", 54);
+        for(int i = 0; i <= 15; i++) {
+            designSettingsInventory.setItem(0, new ItemStack("95:"+i).addListener(Listener.DefaultEvent.CLICK, "changeDesignSetting("+i+")"));
+        }
+
+
         inventories.put("friends", friendInventory);
         inventories.put("friendRequests", friendRequestsInventory);
         inventories.put("friendOptions", friendOptionsInventory);
         inventories.put("friendRequestDecision", friendRequestDecisionInventory);
+        inventories.put("friendSettings", friendSettingsInventory);
         inventories.put("parties", partyInventory);
         inventories.put("partyPlayer", partyPlayerInventory);
         inventories.put("settings", settingsInventory);
+        inventories.put("designSettings", designSettingsInventory);
     }
 
     public Map<String, Object> getSettings() {

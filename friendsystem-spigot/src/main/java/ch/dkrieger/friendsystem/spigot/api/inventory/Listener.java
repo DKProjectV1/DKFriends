@@ -70,6 +70,7 @@ public class Listener {
             else player.chat("/" + getCommand());
         }
         if(getAdapter() != null) {
+            properties.put("adapter", getAdapter());
             Adapter adapter = SpigotFriendSystemBootstrap.getInstance().getAdapter(getAdapter());
             if(adapter != null) adapter.execute(player, properties);
         }

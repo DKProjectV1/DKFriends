@@ -1,10 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.adapter.friends;
-
-/*
- *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 27.11.18 20:49
- *
- */
+package ch.dkrieger.friendsystem.spigot.adapter.friends.inventory;
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
@@ -12,6 +6,12 @@ import ch.dkrieger.friendsystem.spigot.inventories.friend.FriendRequestDecisionP
 import org.bukkit.entity.Player;
 
 import java.util.Map;
+
+/*
+ *
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 28.11.18 17:34
+ *
+ */
 
 public class OpenFriendRequestDecisionPageAdapter extends Adapter {
 

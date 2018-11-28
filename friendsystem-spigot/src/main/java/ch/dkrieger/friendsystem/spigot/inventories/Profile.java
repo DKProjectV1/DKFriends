@@ -3,6 +3,8 @@ package ch.dkrieger.friendsystem.spigot.inventories;
 import ch.dkrieger.friendsystem.spigot.inventories.friend.FriendPage;
 import ch.dkrieger.friendsystem.spigot.inventories.friend.FriendRequestsPage;
 import ch.dkrieger.friendsystem.spigot.inventories.party.PartyPage;
+import ch.dkrieger.friendsystem.spigot.inventories.settings.DesignSettingsPage;
+import ch.dkrieger.friendsystem.spigot.inventories.settings.FriendSettingsPage;
 import ch.dkrieger.friendsystem.spigot.inventories.settings.SettingsPage;
 import org.bukkit.entity.Player;
 import java.util.LinkedHashMap;
@@ -21,6 +23,8 @@ public class Profile {
     private PartyPage partyPage;
     private SettingsPage settingsPage;
     private FriendRequestsPage friendRequestsPage;
+    private FriendSettingsPage friendSettingsPage;
+    private DesignSettingsPage designSettingsPage;
     private Map<String, Object> properties;
 
     public Profile(Player player) {
@@ -29,6 +33,8 @@ public class Profile {
         this.partyPage = new PartyPage(player);
         this.settingsPage = new SettingsPage(player);
         this.friendRequestsPage = new FriendRequestsPage(player);
+        this.friendSettingsPage = new FriendSettingsPage(player);
+        this.designSettingsPage = new DesignSettingsPage(player);
         this.properties = new LinkedHashMap<>();
     }
 
@@ -50,6 +56,14 @@ public class Profile {
 
     public SettingsPage getSettingsPage() {
         return settingsPage;
+    }
+
+    public FriendSettingsPage getFriendSettingsPage() {
+        return friendSettingsPage;
+    }
+
+    public DesignSettingsPage getDesignSettingsPage() {
+        return designSettingsPage;
     }
 
     public Map<String, Object> getProperties() {

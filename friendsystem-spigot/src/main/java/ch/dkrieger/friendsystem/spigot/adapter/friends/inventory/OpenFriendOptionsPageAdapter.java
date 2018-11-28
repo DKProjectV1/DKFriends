@@ -1,10 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.adapter.friends;
-
-/*
- *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 25.11.18 15:45
- *
- */
+package ch.dkrieger.friendsystem.spigot.adapter.friends.inventory;
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
@@ -14,6 +8,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
+
+/*
+ *
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 28.11.18 17:34
+ *
+ */
 
 public class OpenFriendOptionsPageAdapter extends Adapter {
 
