@@ -62,6 +62,7 @@ public class FriendPlayer {
             String color = FriendSystem.getInstance().getPlatform().getColor(this);
             if(color != null) this.color = color;
         }
+        if(this.color == null) return "";
         return ChatColor.translateAlternateColorCodes('&',this.color);
     }
 
@@ -177,6 +178,7 @@ public class FriendPlayer {
     }
 
     public void setColor(String color) {
+        if(this.color == null) return;
         this.color = color;
     }
 
@@ -369,7 +371,7 @@ public class FriendPlayer {
     }
     public void updateInformations(String name,String color){
         this.name = name;
-        this.color = color;
+        if(color != null) this.color = color;
         this.lastLogin = System.currentTimeMillis();
         FriendSystem.getInstance().getStorage().saveInformations(this.uuid, this.color, this.lastLogin,this.gameProfile);
         updateSync();
