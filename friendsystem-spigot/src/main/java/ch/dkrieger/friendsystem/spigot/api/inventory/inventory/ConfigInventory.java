@@ -6,6 +6,7 @@ package ch.dkrieger.friendsystem.spigot.api.inventory.inventory;
  *
  */
 
+import ch.dkrieger.friendsystem.lib.party.PartyMember;
 import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
@@ -142,23 +143,37 @@ public class ConfigInventory {
         return toBukkitInventory(inventoryHolder, friend, null);
     }
 
-    public Inventory toBukkitInventory(InventoryHolder inventoryHolder, Friend friend, String condition) {
-        System.out.println("TO Bukkit inventory " + this.title);
-        System.out.println("conditon: " + condition);
+    public Inventory toBukkitInventory(InventoryHolder inventoryHolder, Friend friend, String... conditions) {
         Inventory inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
         for(Map.Entry<Integer, ItemStack> entry : this.items.entrySet()) {
             inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack(friend));
         }
-        if(condition != null) {
-            System.out.println("map: ");
-            System.out.println(this.conditionItems);
-            if(!this.conditionItems.containsKey(condition)) {
-                System.out.println("condition in map null");
-                conditionItems.put(condition, new LinkedHashMap<>());
+        for(String condition : conditions) {
+            if(condition != null) {
+                if(!this.conditionItems.containsKey(condition)) {
+                    conditionItems.put(condition, new LinkedHashMap<>());
+                }
+                for(Map.Entry<Integer, ItemStack> entry : this.conditionItems.get(condition).entrySet()) {
+                    inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack(friend));
+                }
             }
-            for(Map.Entry<Integer, ItemStack> entry : this.conditionItems.get(condition).entrySet()) {
-                System.out.println(entry.getKey() + ":" + entry.getValue());
-                inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack(friend));
+        }
+        return inventory;
+    }
+
+    public Inventory toBukkitInventory(InventoryHolder inventoryHolder, PartyMember partyMember, String... conditions) {
+        Inventory inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
+        for(Map.Entry<Integer, ItemStack> entry : this.items.entrySet()) {
+            inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack(partyMember));
+        }
+        for(String condition : conditions) {
+            if(condition != null) {
+                if(!this.conditionItems.containsKey(condition)) {
+                    conditionItems.put(condition, new LinkedHashMap<>());
+                }
+                for(Map.Entry<Integer, ItemStack> entry : this.conditionItems.get(condition).entrySet()) {
+                    inventory.setItem(entry.getKey(), entry.getValue().toBukkitItemStack(partyMember));
+                }
             }
         }
         return inventory;

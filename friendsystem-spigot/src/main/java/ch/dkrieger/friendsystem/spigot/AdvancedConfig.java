@@ -22,23 +22,23 @@ public class AdvancedConfig {
 
     public AdvancedConfig() {
         this.settings = new LinkedHashMap<>();
-        addSetting("friendPageSkullFirstSlot", 1);
-        addSetting("friendPageSkullLastSlot", 1);
+        addSettingAsInt("friendPageSkullFirstSlot", 0);
+        addSettingAsInt("friendPageSkullLastSlot", 35);
 
-        addSetting("friendRequestsPageSkullFirstSlot", 1);
-        addSetting("friendRequestsPageSkullLastSlot", 1);
+        addSettingAsInt("friendRequestsPageSkullFirstSlot", 0);
+        addSettingAsInt("friendRequestsPageSkullLastSlot", 35);
 
-        addSetting("partyPageSkullFirstSlot", 1);
-        addSetting("partyPageSkullLastSlot", 1);
+        addSettingAsInt("partyPageSkullFirstSlot", 0);
+        addSettingAsInt("partyPageSkullLastSlot", 35);
 
-        addSetting("friendSwitchPageInventorySlot1", 44);
-        addSetting("friendSwitchPageInventorySlot2", 43);
+        addSettingAsInt("friendSwitchPageInventorySlot1", 44);
+        addSettingAsInt("friendSwitchPageInventorySlot2", 43);
 
-        addSetting("friendRequestsSwitchPageInventorySlot1", 44);
-        addSetting("friendRequestsSwitchPageInventorySlot2", 43);
+        addSettingAsInt("friendRequestsSwitchPageInventorySlot1", 44);
+        addSettingAsInt("friendRequestsSwitchPageInventorySlot2", 43);
 
-        addSetting("partySwitchPageInventorySlot1", 44);
-        addSetting("partySwitchPageInventorySlot2", 43);
+        addSettingAsInt("partySwitchPageInventorySlot1", 44);
+        addSettingAsInt("partySwitchPageInventorySlot2", 43);
 
         this.items = new LinkedHashMap<>();
 
@@ -46,7 +46,7 @@ public class AdvancedConfig {
         items.put("offlinePlayerSkull", new ItemStack("397:0").addLore("§cZuletzt online: [lastonline]").addListener(Listener.DefaultEvent.CLICK, "openFriendOptionsPage"));
         items.put("nextFriendPage", new ItemStack("262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextFriendPage")));
         items.put("previousFriendPage", new ItemStack("262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousFriendPage")));
-        items.put("partyPlayerSkull", new ItemStack("393:3"));
+        items.put("partyPlayerSkull", new ItemStack("393:3").addListener(Listener.DefaultEvent.CLICK, "openPartyPlayerPage"));
         items.put("nextPartyPage", new ItemStack("262:0").setDisplayName("§aNext Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "nextPartyPage")));
         items.put("previousPartyPage", new ItemStack("262:0").setDisplayName("§cPrevious Page").addListener(new Listener(Listener.DefaultEvent.CLICK, "previousPartyPage")));
         items.put("requestItem", new ItemStack("339:0").setDisplayName("[requester]").addListener(new Listener(Listener.DefaultEvent.CLICK, "acceptFriendRequest")));
@@ -59,33 +59,44 @@ public class AdvancedConfig {
         defaultInventoryItems.put(46, new ItemStack("401:0").setDisplayName("§5Party").addListener(new Listener(Listener.DefaultEvent.CLICK, "openPartyPage")));
         defaultInventoryItems.put(47, new ItemStack("356:0").setDisplayName("§cSettings").addListener(new Listener(Listener.DefaultEvent.CLICK, "openSettingsPage")));
 
-
         this.inventories = new LinkedHashMap<>();
-
 
         ConfigInventory friendInventory = new ConfigInventory("§eFriends", 54);
         friendInventory.setItem("hasRequests", 50, new ItemStack("358:0").setDisplayName("§6Friend Requests").addListener(Listener.DefaultEvent.CLICK, "openFriendRequestsPage"));
 
         ConfigInventory friendRequestsInventory = new ConfigInventory("§cRequests", 54);
 
-
         ConfigInventory partyInventory = new ConfigInventory("§5Party", 54);
+        partyInventory.setItem("partyPublic", 53, new ItemStack("147:0").setDisplayName("§cUnPublish").addListener(Listener.DefaultEvent.CLICK, "unPublishParty"));
+        partyInventory.setItem("partyPrivate", 53, new ItemStack("70:0").setDisplayName("§aPublish").addListener(Listener.DefaultEvent.CLICK, "publishParty"));
+        partyInventory.setItem("isInParty", 52, new ItemStack("341").setDisplayName("§cLeave").addListener(Listener.DefaultEvent.CLICK, "leaveParty"));
+
+        ConfigInventory partyPlayerInventory = new ConfigInventory("[partymember]", 27);
+        partyPlayerInventory.setItem("canIntegrate", 1, new ItemStack("166:0").addListener(Listener.DefaultEvent.CLICK, "banPlayerFromParty"));
+        partyPlayerInventory.setItem("canIntegrate", 2, new ItemStack("2:0").addListener(Listener.DefaultEvent.CLICK, "kickPlayerFromParty"));
+        partyPlayerInventory.setItem("canPromote", 3, new ItemStack("3:0").addListener(Listener.DefaultEvent.CLICK, "promotePartyPlayer"));
+        partyInventory.setItem("canDemote", 4, new ItemStack("4:0").addListener(Listener.DefaultEvent.CLICK, "demotePartyPlayer"));
 
         ConfigInventory settingsInventory = new ConfigInventory("§cSettings", 54);
 
-        ConfigInventory friendOptions = new ConfigInventory("[friend]", 27);
-        friendOptions.setItem("friendOnline", 12, new ItemStack("354:0").setDisplayName("").addListener(Listener.DefaultEvent.CLICK, "invitePlayerToParty"));
-        friendOptions.setItem("friendOnline", 14, new ItemStack("368:0").addListener(Listener.DefaultEvent.CLICK, "jumpToPlayer"));
-        friendOptions.setItem(15, new ItemStack("166:0").addListener(Listener.DefaultEvent.CLICK, "removeFriend"));
+        ConfigInventory friendOptionsInventory = new ConfigInventory("[friend]", 27);
+        friendOptionsInventory.setItem("friendOnline", 12, new ItemStack("354:0").setDisplayName("").addListener(Listener.DefaultEvent.CLICK, "invitePlayerToParty"));
+        friendOptionsInventory.setItem("friendOnline", 14, new ItemStack("368:0").addListener(Listener.DefaultEvent.CLICK, "jumpToPlayer"));
+        friendOptionsInventory.setItem(15, new ItemStack("166:0").addListener(Listener.DefaultEvent.CLICK, "removeFriend"));
 
-        friendOptions.setItem("friendOnline", 11, new ItemStack("397:3").addLore("§aOnline auf [server]"));
-        friendOptions.setItem("friendOffline", 11, new ItemStack("397:0"));
+        friendOptionsInventory.setItem("friendOnline", 11, new ItemStack("397:3").addLore("§aOnline auf [server]"));
+        friendOptionsInventory.setItem("friendOffline", 11, new ItemStack("397:0"));
 
+        ConfigInventory friendRequestDecisionInventory = new ConfigInventory("[friend]", 27);
+        friendRequestDecisionInventory.addItem(new ItemStack("159:13").addListener(Listener.DefaultEvent.CLICK, "acceptFriendRequest"));
+        friendRequestDecisionInventory.addItem(new ItemStack("159:14").addListener(Listener.DefaultEvent.CLICK, "denyFriendRequest"));
 
         inventories.put("friends", friendInventory);
         inventories.put("friendRequests", friendRequestsInventory);
-        inventories.put("friendOptions", friendOptions);
+        inventories.put("friendOptions", friendOptionsInventory);
+        inventories.put("friendRequestDecision", friendRequestDecisionInventory);
         inventories.put("parties", partyInventory);
+        inventories.put("partyPlayer", partyPlayerInventory);
         inventories.put("settings", settingsInventory);
     }
 
@@ -98,7 +109,8 @@ public class AdvancedConfig {
     }
 
     public int getSettingAsInt(String setting) {
-        return (int) getSetting(setting);
+        System.out.println(setting + ":" + getSetting(setting));
+        return (int) Math.round((Double) getSetting(setting));
     }
 
     public String getSettingAsString(String setting) {
@@ -121,7 +133,11 @@ public class AdvancedConfig {
         return getItems().get(key);
     }
 
-    public void addSetting(String setting, Object object) {
-        this.settings.put(setting, object);
+    public void addSetting(String setting, Object value) {
+        this.settings.put(setting, value);
+    }
+
+    public void addSettingAsInt(String setting, int value) {
+        addSetting(setting, (int)value);
     }
 }

@@ -209,7 +209,8 @@ public class ItemStack {
                 if (friend.isOnline()) lore = lore.replace("[server]", friend.getOnlineFriendPlayer().getServer());
                 itemBuilder.addLore(lore);
             }
-            itemStack = itemBuilder.setDisplayName(this.displayName.replace("[friend]", friend.getFriendPlayer().getColoredName()).replace("[requester]", friend.getFriendPlayer().getColoredName())).build();
+            itemStack = itemBuilder.build();
+            itemStack.getItemMeta().setDisplayName(itemStack.getItemMeta().getDisplayName().replace("[friend]", friend.getFriendPlayer().getColoredName()).replace("[requester]", friend.getFriendPlayer().getColoredName()));
         }else itemStack = toBukkitItemStack();
 
         NBTItem nbtItem = new NBTItem(itemStack);
@@ -220,7 +221,25 @@ public class ItemStack {
 
     @SuppressWarnings("Only to build a party member skull")
     public org.bukkit.inventory.ItemStack toBukkitItemStack(PartyMember partyMember) {
-        return new ItemBuilder(SpigotUtil.getGameProfile(Bukkit.getPlayer(partyMember.getUUID())), partyMember.getPlayer().getColoredName()).build();
+        org.bukkit.inventory.ItemStack itemStack;
+        if(this.itemId.startsWith("397") && partyMember != null) {
+            ItemBuilder itemBuilder;
+            itemBuilder = new ItemBuilder(SpigotUtil.getGameProfile(Bukkit.getPlayer(partyMember.getUUID())),
+                    partyMember.getPlayer().getColoredName());
+            for (String lore : this.lore) {
+                lore = lore.replace("[server]", partyMember.getOnlinePlayer().getServer());
+                itemBuilder.addLore(lore);
+            }
+            itemStack = itemBuilder.setDisplayName(this.displayName.replace("[partymember]", partyMember.getPlayer().getColoredName())).build();
+        }else itemStack = toBukkitItemStack();
+
+        NBTItem nbtItem = new NBTItem(itemStack);
+        if(partyMember != null) {
+            nbtItem.setString("friend", partyMember.getPlayer().getName());
+            nbtItem.setString("partymember", partyMember.getUUID().toString());
+        }
+        nbtItem.setString("listeners", GeneralUtil.GSON_NOT_PRETTY.toJson(this.listeners, new TypeToken<List<Listener>>(){}.getType()));
+        return nbtItem.getItem();
     }
 
     public ItemStack addListener(Listener listener) {

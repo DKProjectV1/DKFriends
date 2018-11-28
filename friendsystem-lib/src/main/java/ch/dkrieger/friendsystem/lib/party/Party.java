@@ -253,14 +253,18 @@ public class Party {
         return this.bans.contains(uuid);
     }
     public boolean canIntegrate(FriendPlayer integrator, FriendPlayer player){
+        return canIntegrate(integrator.getUUID(), player.getUUID());
+    }
+
+    public boolean canIntegrate(UUID integrator, UUID player) {
         if(!isLeader(integrator)){
             if(isModerator(integrator)){
-                if(isLeader(player) || isModerator(player)) return false;
-                else return true;
+                return !isLeader(player) && !isModerator(player);
             }else return false;
         }
         return true;
     }
+
     public void sendMessage(String message){
         for(PartyMember member : this.members){
             OnlineFriendPlayer online = member.getOnlinePlayer();

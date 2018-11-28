@@ -83,8 +83,8 @@ public class Listener {
             for(Listener listener : listeners) {
                 if (listener.getEvent().equalsIgnoreCase(event.getName())) {
                     Map<String, Object> properties = new LinkedHashMap<>();
-                    properties.put("friendPlayer", UUID.fromString(nbtItem.getString("friendPlayer")));
-                    properties.put("friend", nbtItem.getString("friend"));
+                    if(nbtItem.hasKey("friendPlayer")) properties.put("friendPlayer", UUID.fromString(nbtItem.getString("friendPlayer")));
+                    if(nbtItem.hasKey("friend")) properties.put("friend", nbtItem.getString("friend"));
                     listener.execute(player, properties);
                 }
             }

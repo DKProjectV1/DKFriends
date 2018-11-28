@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class FriendRequestAccept extends Adapter {
+public class FriendRequestAcceptAdapter extends Adapter {
 
-    public FriendRequestAccept() {
+    public FriendRequestAcceptAdapter() {
         super("acceptFriendRequest");
     }
 

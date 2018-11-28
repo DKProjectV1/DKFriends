@@ -175,11 +175,16 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         //Friend Adapter
         registerAdapter(new FriendFavoriteAdapter());
         registerAdapter(new FriendRemoveAdapter());
+        registerAdapter(new FriendRequestAcceptAdapter());
+        registerAdapter(new FriendRequestDenyAdapter());
+        registerAdapter(new NextFriendRequestsPageAdapter());
         registerAdapter(new NextPageFriendAdapter());
         registerAdapter(new OpenFriendOptionsPageAdapter());
         registerAdapter(new OpenFriendPageAdapter());
         registerAdapter(new PreviousPageFriendAdapter());
+        registerAdapter(new PreviousFriendRequestsPageAdapter());
         registerAdapter(new OpenFriendRequestsPageAdapter());
+        registerAdapter(new OpenFriendRequestDecisionPageAdapter());
 
         //Inventory Adapter
         registerAdapter(new OpenInventoryAdapter());
@@ -190,6 +195,14 @@ public class SpigotFriendSystemBootstrap extends JavaPlugin implements DKFriends
         registerAdapter(new NextPagePartyAdapter());
         registerAdapter(new OpenPartyPageAdapter());
         registerAdapter(new PreviousPartyPageAdapter());
+        registerAdapter(new OpenPartyPlayerPageAdapter());
+        registerAdapter(new BanPartyAdapter());
+        registerAdapter(new KickPartyAdapter());
+        registerAdapter(new PromotePartyAdapter());
+        registerAdapter(new DemotePartyAdapter());
+        registerAdapter(new PublishPartyAdapter());
+        registerAdapter(new UnPublishPartyAdapter());
+        registerAdapter(new LeavePartyAdapter());
 
         //Settings
         registerAdapter(new OpenSettingsPageAdapter());

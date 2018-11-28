@@ -1,15 +1,8 @@
-package ch.dkrieger.friendsystem.spigot.inventories;
-
-/*
- *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 21.11.18 19:42
- *
- */
+package ch.dkrieger.friendsystem.spigot.inventories.party;
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.party.PartyMember;
-import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
 import ch.dkrieger.friendsystem.spigot.api.inventory.gui.PrivateGUI;
@@ -20,10 +13,15 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
+
+/*
+ *
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 28.11.18 13:56
+ *
+ */
 
 public class PartyPage extends PrivateGUI {
 
@@ -62,6 +60,11 @@ public class PartyPage extends PrivateGUI {
         if(page < 1)return false;
         Party party = FriendSystem.getInstance().getPartyManager().getParty(getOwner().getUniqueId());
         if(party != null) {
+            if(party.getMember(getOwner().getUniqueId()).isLeader()) {
+                if(party.isPublic()) getConfigInventory().getConditionItems("partyPublic").forEach((slot, itemStack) -> getInventory().setItem(slot, itemStack.toBukkitItemStack(party.getMember(getOwner().getUniqueId()))));
+                else getConfigInventory().getConditionItems("partyPrivate").forEach((slot, itemStack) -> getInventory().setItem(slot, itemStack.toBukkitItemStack(party.getMember(getOwner().getUniqueId()))));
+            }
+            getConfigInventory().getConditionItems("isInParty").forEach((slot, itemStack) -> getInventory().setItem(slot, itemStack.toBukkitItemStack(party.getMember(getOwner().getUniqueId()))));
             List<PartyMember> partyMembers = party.getSortedMembers();
             int skullFirstSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("partyPageSkullFirstSlot");
             int skullLastSlot = SpigotFriendSystemBootstrap.getInstance().getAdvancedConfig().getSettingAsInt("partyPageSkullLastSlot");

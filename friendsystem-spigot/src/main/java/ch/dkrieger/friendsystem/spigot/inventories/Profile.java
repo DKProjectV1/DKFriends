@@ -1,6 +1,9 @@
 package ch.dkrieger.friendsystem.spigot.inventories;
 
-import ch.dkrieger.friendsystem.spigot.inventories.FriendPage;
+import ch.dkrieger.friendsystem.spigot.inventories.friend.FriendPage;
+import ch.dkrieger.friendsystem.spigot.inventories.friend.FriendRequestsPage;
+import ch.dkrieger.friendsystem.spigot.inventories.party.PartyPage;
+import ch.dkrieger.friendsystem.spigot.inventories.settings.SettingsPage;
 import org.bukkit.entity.Player;
 import java.util.LinkedHashMap;
 import java.util.Map;

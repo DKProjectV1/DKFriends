@@ -9,7 +9,7 @@ package ch.dkrieger.friendsystem.spigot.adapter.friends;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.adapter.Adapter;
-import ch.dkrieger.friendsystem.spigot.inventories.FriendOptionsPage;
+import ch.dkrieger.friendsystem.spigot.inventories.friend.FriendOptionsPage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -23,6 +23,8 @@ public class OpenFriendOptionsPageAdapter extends Adapter {
 
     @Override
     public void execute(Player player, Map<String, Object> properties) {
+        System.out.println("openfriendoptions");
+        System.out.println(properties);
         Bukkit.getScheduler().runTask(SpigotFriendSystemBootstrap.getInstance(), ()-> new FriendOptionsPage(player, FriendSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId()).getFriend((String) properties.get("friend"))).open());
     }
 }

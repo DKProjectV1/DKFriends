@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class PartyMember {
 
-    private UUID uuid;
+    private final UUID uuid;
     private boolean leader, moderator;
     private long joined;
 
@@ -55,9 +55,10 @@ public class PartyMember {
         return joined;
     }
 
-    public void setUUID(UUID uuid) {
-        this.uuid = uuid;
+    public boolean canIntegrate(UUID player){
+        return FriendSystem.getInstance().getPartyManager().getParty(this.uuid).canIntegrate(this.uuid, player);
     }
+
     public void setLeader(boolean leader) {
         this.leader = leader;
     }

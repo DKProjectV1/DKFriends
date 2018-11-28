@@ -1,10 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.inventories;
-
-/*
- *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 26.11.18 18:02
- *
- */
+package ch.dkrieger.friendsystem.spigot.inventories.friend;
 
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.player.Friend;
@@ -20,6 +14,12 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import java.util.List;
+
+/*
+ *
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 28.11.18 13:56
+ *
+ */
 
 public class FriendRequestsPage extends PrivateGUI {
 

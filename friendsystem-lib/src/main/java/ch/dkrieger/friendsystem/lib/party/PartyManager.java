@@ -32,40 +32,55 @@ public abstract class PartyManager {
         while(iterator.hasNext() && (party = iterator.next()) != null) if(party.isPublic()) parties.add(party);
         return parties;
     }
+
+    public Party getParty(PartyMember partyMember) {
+        return getParty(partyMember.getUUID());
+    }
+
     public Party getParty(FriendPlayer player){
         return getParty(player.getUUID());
     }
+
     public Party getParty(OnlineFriendPlayer player){
         return getParty(player.getUUID());
     }
+
     public Party getParty(UUID player){
         Iterator<Party> iterator = new ArrayList<>(this.parties.values()).iterator();
         Party party = null;
         while(iterator.hasNext() && (party = iterator.next()) != null) if(party.isMember(player)) return party;
         return null;
     }
+
     public Party getRandomPublicParty(){
         List<Party> parties = getPublicParties();
         return parties.get(GeneralUtil.RANDOM.nextInt(parties.size()));
     }
+
     public boolean isInParty(FriendPlayer player){
         return isInParty(player.getUUID());
     }
+
     public boolean isInParty(OnlineFriendPlayer player){
         return isInParty(player.getUUID());
     }
+
     public boolean isInParty(UUID player){
         return getParty(player) != null;
     }
+
     public Party createParty(OnlineFriendPlayer player){
         return createParty(player.getUUID());
     }
+
     public Party createParty(FriendPlayer player){
         return createParty(player.getUUID());
     }
+
     public void deleteParty(Party party){
         this.parties.remove(party.getUUID());
     }
+
     public Party createParty(UUID player){
         UUID uuid = UUID.randomUUID();
         while(this.parties.containsKey(uuid)) uuid = UUID.randomUUID();
@@ -73,6 +88,7 @@ public abstract class PartyManager {
         this.parties.put(uuid,party);
         return party;
     }
+
     public abstract void update(Party party);
     public void replaceParty(Party party){
         this.parties.put(party.getUUID(),party);

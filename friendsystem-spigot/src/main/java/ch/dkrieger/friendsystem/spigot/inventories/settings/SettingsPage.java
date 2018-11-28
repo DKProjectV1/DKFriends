@@ -1,10 +1,4 @@
-package ch.dkrieger.friendsystem.spigot.inventories;
-
-/*
- *
- *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 21.11.18 19:57
- *
- */
+package ch.dkrieger.friendsystem.spigot.inventories.settings;
 
 import ch.dkrieger.friendsystem.spigot.SpigotFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.spigot.api.inventory.Listener;
@@ -16,6 +10,12 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
 import java.util.Map;
+
+/*
+ *
+ *  * Copyright (c) 2018 Philipp Elvin Friedhoff on 28.11.18 13:56
+ *
+ */
 
 public class SettingsPage extends PrivateGUI {
 
