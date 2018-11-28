@@ -10,6 +10,7 @@ import ch.dkrieger.friendsystem.bungeecord.BungeeCordFriendSystemBootstrap;
 import ch.dkrieger.friendsystem.bungeecord.player.BungeeCordPlayerManager;
 import ch.dkrieger.friendsystem.lib.FriendSystem;
 import ch.dkrieger.friendsystem.lib.Messages;
+import ch.dkrieger.friendsystem.lib.config.Config;
 import ch.dkrieger.friendsystem.lib.party.Party;
 import ch.dkrieger.friendsystem.lib.player.Friend;
 import ch.dkrieger.friendsystem.lib.player.FriendPlayer;
@@ -66,7 +67,8 @@ public class PlayerListener implements Listener {
                             .replace("[prefix]",Messages.PREFIX_FRIEND)
                             .replace("[amount]",""+requests.size())
                             .replace("[design]",design));
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend requests"));
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/"+FriendSystem.getInstance().getConfig().getStringValue("command.friend.name")
+                            +" "+FriendSystem.getInstance().getConfig().getStringValue("command.friend.requestlist.name")));
                     player.sendMessage(message);
                 }
             }

@@ -230,7 +230,7 @@ public class Config extends SimpleConfig {
         addValue("command.friend.requestlist.name","requestlist");
         addValue("command.friend.requestlist.description", "List all requests");
         addValue("command.friend.requestlist.permission", "none");
-        addValue("command.friend.requestlist.aliases", Arrays.asList());
+        addValue("command.friend.requestlist.aliases", Arrays.asList("requests"));
 
         addValue("command.friend.toggle.enabled",true);
         addValue("command.friend.toggle.name","toggle");
