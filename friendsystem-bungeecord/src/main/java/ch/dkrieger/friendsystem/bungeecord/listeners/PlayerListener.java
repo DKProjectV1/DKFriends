@@ -69,7 +69,7 @@ public class PlayerListener implements Listener {
                             .replace("[design]",design));
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/"+FriendSystem.getInstance().getConfig().getStringValue("command.friend.name")
                             +" "+FriendSystem.getInstance().getConfig().getStringValue("command.friend.requestlist.name")));
-                    player.sendMessage(message);
+                    event.getPlayer().sendMessage(message);
                 }
             }
             if(FriendSystem.getInstance().getConfig().getBooleanValue("join.friendinfo.enabled")){
@@ -77,22 +77,22 @@ public class PlayerListener implements Listener {
 
                 if(friends.isEmpty()) return;
                 if(friends.size() == 1){
-                    player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_ONE
+                    event.getPlayer().sendMessage(new TextComponent(Messages.PLAYER_ONLINE_ONE
                             .replace("[prefix]",Messages.PREFIX_FRIEND)
                             .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())));
                 }else if(friends.size() == 2){
-                    player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_TWO
+                    event.getPlayer().sendMessage(new TextComponent(Messages.PLAYER_ONLINE_TWO
                             .replace("[prefix]",Messages.PREFIX_FRIEND)
                             .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
                             .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())));
                 }else if(friends.size() == 3){
-                    player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_THREE
+                    event.getPlayer().sendMessage(new TextComponent(Messages.PLAYER_ONLINE_THREE
                             .replace("[prefix]",Messages.PREFIX_FRIEND)
                             .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
                             .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
                             .replace("[player-3]",friends.get(2).getFriendPlayer().getColoredName())));
                 }else{
-                    player.sendMessage(new TextComponent(Messages.PLAYER_ONLINE_THREE
+                    event.getPlayer().sendMessage(new TextComponent(Messages.PLAYER_ONLINE_THREE
                             .replace("[prefix]",Messages.PREFIX_FRIEND)
                             .replace("[player-1]",friends.get(0).getFriendPlayer().getColoredName())
                             .replace("[player-2]",friends.get(1).getFriendPlayer().getColoredName())
