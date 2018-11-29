@@ -46,6 +46,7 @@ public class ExternCloudNetOnlinePlayer implements OnlineFriendPlayer {
     public void sendMessage(TextComponent component) {
         CloudAPI.getInstance().sendCustomSubProxyMessage("DKFriends","sendMessage"
                 ,new Document().append("player",getUUID()).append("message",component),this.cloudPlayer.getProxy());
+        System.out.println("sending : "+component);
     }
 
     @Override

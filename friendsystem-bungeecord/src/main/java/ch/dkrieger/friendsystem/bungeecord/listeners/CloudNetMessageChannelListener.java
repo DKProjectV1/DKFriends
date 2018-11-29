@@ -27,7 +27,10 @@ public class CloudNetMessageChannelListener implements Listener {
                 && event.getChannel().equalsIgnoreCase("DKFriends")){
             if(event.getMessage().equalsIgnoreCase("sendMessage")){
                 ProxiedPlayer player = BungeeCord.getInstance().getPlayer(event.getDocument().getObject("player", UUID.class));
-                if(player != null) player.sendMessage(event.getDocument().getObject("message", TextComponent.class));
+                if(player != null){
+                    System.out.println("receive: "+event.getDocument().getString("message"));
+                    player.sendMessage(event.getDocument().getObject("message", TextComponent.class));
+                }
             }else if(event.getMessage().equalsIgnoreCase("privateMessage")){
                 ProxiedPlayer player = BungeeCord.getInstance().getPlayer(event.getDocument().getObject("player", UUID.class));
                 if(player != null){
